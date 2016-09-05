@@ -1,6 +1,10 @@
 package de.mpii.sticsAnalysis;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -20,4 +24,32 @@ public class Mentions  {
     }
 
 
+    public static Mentions fromJSONArray(JSONArray mentionsJSONArr) {
+
+        Mentions mentions=new Mentions();
+
+        Iterator<JSONObject> iterator = mentionsJSONArr.iterator();
+        while (iterator.hasNext()) {
+            JSONObject current= iterator.next();
+//            System.out.println(current);
+
+            mentions.add(Mention.fromJSON(current));
+        }
+
+
+
+        return mentions;
+
+    }
+
+    @Override
+    public String toString() {
+        return "Mentions{" +
+                "mentions=" + mentions +
+                '}';
+    }
+
+    private void add(Mention mention) {
+        mentions.add(mention);
+    }
 }
