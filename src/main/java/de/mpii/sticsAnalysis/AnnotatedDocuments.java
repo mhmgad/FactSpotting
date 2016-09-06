@@ -1,11 +1,16 @@
 package de.mpii.sticsAnalysis;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.SetMultimap;
+import com.google.common.collect.Sets;
 import mpi.tools.javatools.util.FileUtils;
 
 import java.io.BufferedReader;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by gadelrab on 9/5/16.
@@ -14,9 +19,11 @@ public class AnnotatedDocuments {
 
 
     ArrayList<AnnotatedDocument> docs;
+    SetMultimap<String,AnnotatedDocument> entity2doc;
 
     public AnnotatedDocuments() {
         this.docs = new ArrayList<>();
+        this.entity2doc= HashMultimap.create();
     }
 
 
@@ -37,6 +44,7 @@ public class AnnotatedDocuments {
 
     private void add(AnnotatedDocument annotatedDocument) {
         docs.add(annotatedDocument);
+        annotatedDocument.getEntities().forEach(entity-> entity2doc.put(entity,annotatedDocument));
     }
 
     @Override
@@ -48,8 +56,26 @@ public class AnnotatedDocuments {
 
     public static void main(String[]args) throws IOException {
 
-        System.out.println(AnnotatedDocuments.fromJSONFile("Amy_Adams_Academy_Awards.json"));
+        AnnotatedDocuments annDocs = AnnotatedDocuments.fromJSONFile("Amy_Adams_Academy_Awards.json");
 
+        System.out.println(annDocs.size());
+        Set<AnnotatedDocument> filteredDocs = annDocs.getDocsWith("<Amy_Adams>", "<Academy_Awards>","<France>" );
+        System.out.println(filteredDocs.size());
+        filteredDocs.forEach(d-> System.out.println(d.getMentionsWith("<Amy_Adams>")));
+
+    }
+
+    private int size() {
+        return docs.size();
+
+    }
+
+    private Set<AnnotatedDocument> getDocsWith(String ...entity) {
+        Set<AnnotatedDocument> output=entity2doc.get(entity[0]);
+        for (int i = 1; i <entity.length ; i++) {
+            output=Sets.intersection(output,entity2doc.get(entity[i]));
+        }
+        return output;
     }
 
 }

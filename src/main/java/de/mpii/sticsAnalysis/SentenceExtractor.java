@@ -26,32 +26,65 @@ import java.util.Properties;
  */
 public class SentenceExtractor {
 
+    private  static  SentenceExtractor instance;
+
+    Properties props;
+    StanfordCoreNLP pipeline;
+
+    private SentenceExtractor() {
+        System.out.println("New Sentence extractor");
+        this.props = new Properties();
+        props.setProperty("annotators", "tokenize, ssplit ");//, pos, lemma, ner, parse, dcoref");
+        this.pipeline = new StanfordCoreNLP(props);
+//        props.setProperty("annotators", "tokenize, ssplit ");//, pos, lemma, ner, parse, dcoref");
+
+    }
+
+    public synchronized static SentenceExtractor getInstance() {
+
+        if(instance==null)
+            instance=new SentenceExtractor();
+        return instance;
+    }
+
+
+    public static List<CoreMap> getSentences(String text){
+
+        Annotation document = new Annotation(text);
+
+            // run all Annotators on this text
+        getInstance().pipeline.annotate(document);
+
+        List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
+
+        return sentences;
+    }
+
+
 
     public static void main(String[] args) throws IOException {
 
-
+        System.out.println("test Extractor");
            // String text="Near the beginning of his career, Einstein thought that Newtonian mechanics was no longer enough to reconcile the laws of classical mechanics with the laws of the electromagnetic field. This led to the development of his special theory of relativity. He realized, however, that the principle of relativity could also be extended to gravitational fields, and with his subsequent theory of gravitation in 1916, he published a paper on general relativity.";
         String text="Barack Obama was born in Hawaii.  He is the president.  Obama was elected in 2008.";
-            Properties props = new Properties();
-            props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref");
-            StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+
+
+        System.out.println(getSentences(text));
+
 
 // read some text in the text variable
            // String text = ... // Add your text here!
 
 // create an empty Annotation just with the given text
-            Annotation document = new Annotation(text);
-
-// run all Annotators on this text
-            pipeline.annotate(document);
 
 
 
 
-        List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
 
-        for(CoreMap sentence: sentences) {
-            System.out.println(sentence.toString());
+//        List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
+//
+//        for(CoreMap sentence: sentences) {
+//            System.out.println(sentence.toString());
             // traversing the words in the current sentence
             // a CoreLabel is a CoreMap with additional token-specific methods
 //            for (CoreLabel token: sentence.get(CoreAnnotations.TokensAnnotation.class)) {
@@ -72,7 +105,7 @@ public class SentenceExtractor {
 
             // this is the Stanford dependency graph of the current sentence
 //            SemanticGraph dependencies = sentence.get(SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation.class);
-        }
+//        }
 //            System.out.println("coref chains");
 //            for (CorefChain cc : document.get(CorefCoreAnnotations.CorefChainAnnotation.class).values()) {
 //                System.out.println("\t"+cc);

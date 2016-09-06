@@ -49,7 +49,7 @@ public class Mention {
     }
 
     private static String fixEntityId(String kbIdentifier) {
-        return kbIdentifier.replaceFirst("YAGO3_","");
+        return kbIdentifier.replaceFirst("YAGO3:","");
 
     }
 
@@ -61,5 +61,13 @@ public class Mention {
                 ", entityId='" + entityId + '\'' +
                 ", length=" + length +
                 '}';
+    }
+
+    public String getEntityId() {
+        return entityId;
+    }
+
+    public boolean hasEntity() {
+        return entityId!=null;
     }
 }
