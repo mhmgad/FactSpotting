@@ -50,10 +50,11 @@ public class SentenceExtractor {
 
     public static List<CoreMap> getSentences(String text){
 
-        Annotation document = new Annotation(text);
 
+        Annotation document = new Annotation(text);
             // run all Annotators on this text
         getInstance().pipeline.annotate(document);
+
 
         List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
 
