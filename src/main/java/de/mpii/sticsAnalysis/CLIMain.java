@@ -1,10 +1,12 @@
 package de.mpii.sticsAnalysis;
 
+import edu.stanford.nlp.util.CoreMap;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by gadelrab on 9/7/16.
@@ -38,20 +40,24 @@ public class CLIMain {
                 for (int i = 1; i < items.length - 1; i++) {
                     items[i] = "<" + items[i] + ">";
                 }
-            }
+
 
             System.out.println(Arrays.toString(items));
 
             Set<AnnotatedDocument> filteredDocs = annDocs.getDocsWith(items/*, "<Academy_Awards>","<France>"*/);
             System.out.println(filteredDocs.size());
             // filteredDocs.forEach(d-> System.out.println(d.getSentences()));
+                Set<CoreMap> allSentences=new HashSet<>();
             for (String item: items) {
 //                filteredDocs.forEach(d -> System.out.println(d.getSentencesWith(item)));
-                filteredDocs.stream().map(d-> d.getSentencesWith(item )).flatMap(sen->sen.stream()).forEach(sen-> System.out.println("-> "+sen));
-                System.out.println("=============================");
+                List<CoreMap> sentences=filteredDocs.stream().map(d-> d.getSentencesWith(item )).flatMap(l -> l.stream()).collect(Collectors.toList());
+                allSentences.addAll(sentences);
+                sentences.forEach(sen-> System.out.println("-> "+sen));
+                System.out.println("============================= "+sentences.size());
             }
 
-
+                System.out.println("Documents: "+filteredDocs.size()+"\tSentences: "+allSentences.size());
+            }
         }
 
 
