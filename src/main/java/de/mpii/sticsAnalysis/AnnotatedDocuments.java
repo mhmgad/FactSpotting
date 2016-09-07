@@ -38,6 +38,7 @@ public class AnnotatedDocuments {
             docs.add(AnnotatedDocument.fromJSON(line));
         }
 
+        System.out.println("=============== Done! ");
         return docs;
 
 

@@ -12,7 +12,8 @@ import java.util.Set;
 public class CLIMain {
 
     public static void main(String[] args) throws IOException {
-        AnnotatedDocuments annDocs = AnnotatedDocuments.fromJSONFile("Amy_Adams_Academy_Awards.json");
+
+        AnnotatedDocuments annDocs = AnnotatedDocuments.fromJSONFile(args[0]/*"Amy_Adams_Academy_Awards.json"*/);
 
         System.out.println(annDocs.size());
 
