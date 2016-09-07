@@ -70,4 +70,8 @@ public class Mention {
     public boolean hasEntity() {
         return entityId!=null;
     }
+
+    public long getPosition() {
+        return offset;
+    }
 }

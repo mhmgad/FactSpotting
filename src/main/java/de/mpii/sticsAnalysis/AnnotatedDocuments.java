@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by gadelrab on 9/5/16.
@@ -28,7 +29,7 @@ public class AnnotatedDocuments {
 
 
     public static AnnotatedDocuments fromJSONFile(String filePath) throws IOException {
-
+        System.out.println("=============== Load Annotated Documents ");
         AnnotatedDocuments docs=new AnnotatedDocuments();
 
         BufferedReader br = FileUtils.getBufferedUTF8Reader(filePath);
@@ -59,18 +60,22 @@ public class AnnotatedDocuments {
         AnnotatedDocuments annDocs = AnnotatedDocuments.fromJSONFile("Amy_Adams_Academy_Awards.json");
 
         System.out.println(annDocs.size());
-        Set<AnnotatedDocument> filteredDocs = annDocs.getDocsWith("<Amy_Adams>", "<Academy_Awards>","<France>" );
+        Set<AnnotatedDocument> filteredDocs = annDocs.getDocsWith("<Amy_Adams>", "<Academy_Awards>"/*,"<France>"*/ );
         System.out.println(filteredDocs.size());
-        filteredDocs.forEach(d-> System.out.println(d.getMentionsWith("<Amy_Adams>")));
+       // filteredDocs.forEach(d-> System.out.println(d.getSentences()));
+        filteredDocs.stream().map(d-> d.getSentencesWith("<Amy_Adams>" )).flatMap(s->s.stream()).forEach(s-> System.out.println("-> "+s));
+        //filteredDocs.forEach(d-> System.out.println(d.getMentionsWith("<Amy_Adams>")));
 
     }
 
-    private int size() {
+    public int size() {
         return docs.size();
 
     }
 
-    private Set<AnnotatedDocument> getDocsWith(String ...entity) {
+    public Set<AnnotatedDocument> getDocsWith(String... entity) {
+//       Set<AnnotatedDocument> output=Stream.of(entity).map(e->entity2doc.get(e)).reduce((a,b)->Sets.intersection(a,b));
+
         Set<AnnotatedDocument> output=entity2doc.get(entity[0]);
         for (int i = 1; i <entity.length ; i++) {
             output=Sets.intersection(output,entity2doc.get(entity[i]));

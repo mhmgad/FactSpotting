@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 /**
  * Created by gadelrab on 8/31/16.
@@ -61,13 +62,25 @@ public class SentenceExtractor {
         return sentences;
     }
 
+    public static List<List<CoreLabel>> getSentencesAsTokens(String text){
+
+        List<CoreMap> sentences = getSentences( text);
+
+        return getSentencesAsTokens(sentences);
+    }
+
+    private static List<List<CoreLabel>> getSentencesAsTokens(List<CoreMap> sentences) {
+        List<List<CoreLabel>> sentencesAsTokens=sentences.stream().map(s-> s.get(CoreAnnotations.TokensAnnotation.class)).collect(Collectors.toList());
+
+        return sentencesAsTokens;
+    }
 
 
     public static void main(String[] args) throws IOException {
 
         System.out.println("test Extractor");
            // String text="Near the beginning of his career, Einstein thought that Newtonian mechanics was no longer enough to reconcile the laws of classical mechanics with the laws of the electromagnetic field. This led to the development of his special theory of relativity. He realized, however, that the principle of relativity could also be extended to gravitational fields, and with his subsequent theory of gravitation in 1916, he published a paper on general relativity.";
-        String text="Barack Obama was born in Hawaii.  He is the president.  Obama was elected in 2008.";
+        String text=" Gad test \n\n [Barack Obama] was born in [Hawaii].  He is the president.  Obama was elected in 2008.";
 
 
         System.out.println(getSentences(text));
