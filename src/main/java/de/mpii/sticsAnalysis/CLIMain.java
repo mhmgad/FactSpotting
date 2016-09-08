@@ -1,10 +1,9 @@
 package de.mpii.sticsAnalysis;
 
 import edu.stanford.nlp.util.CoreMap;
+import mpi.tools.javatools.util.FileUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -17,6 +16,10 @@ public class CLIMain {
 
         AnnotatedDocuments annDocs = AnnotatedDocuments.fromJSONFile(args[0]/*"Amy_Adams_Academy_Awards.json"*/);
 
+        // writing to file
+        boolean fileOutput=args.length>1&& args.equals("-f");
+
+
         System.out.println(annDocs.size());
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -25,6 +28,7 @@ public class CLIMain {
                 System.out.print("Enter Entities: ");
                 String s = br.readLine();
 
+                // exit
                 if (s.equals("q")) {
                     System.out.println("Exit");
                     System.exit(0);
@@ -47,15 +51,38 @@ public class CLIMain {
                     System.out.println(filteredDocs.size());
                     // filteredDocs.forEach(d-> System.out.println(d.getSentences()));
                     Set<CoreMap> allSentences = new HashSet<>();
+                    BufferedWriter bw=null;
+                    if(fileOutput){
+                        bw=FileUtils.getBufferedUTF8Writer(line.substring(1,line.length()-1).replaceAll(">,<",""));
+                    }
                     for (String item : items) {
 //                filteredDocs.forEach(d -> System.out.println(d.getSentencesWith(item)));
                         List<CoreMap> sentences = filteredDocs.stream().map(d -> d.getSentencesWith(item)).flatMap(l -> l.stream()).collect(Collectors.toList());
                         allSentences.addAll(sentences);
                         sentences.forEach(sen -> System.out.println("-> " + sen));
                         System.out.println("============================= " + sentences.size());
+                        if(fileOutput)
+                        {
+                            for (CoreMap sen:sentences) {
+                                 bw.write(sen.toString());
+                                bw.newLine();
+                            }
+                            // for new document
+                            bw.newLine();
+                        }
                     }
 
-                    System.out.println("Documents: " + filteredDocs.size() + "\tSentences: " + allSentences.size());
+
+                    String stats="Documents: " + filteredDocs.size() + "\tSentences: " + allSentences.size();
+                if (fileOutput){
+                    bw.write(stats);
+                    bw.newLine();
+                    bw.close();
+                }
+                    System.out.println(stats);
+
+
+
                 }
             }
             catch (Exception e){
