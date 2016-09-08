@@ -21,42 +21,45 @@ public class CLIMain {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         while(true) {
+            try {
+                System.out.print("Enter Entities: ");
+                String s = br.readLine();
 
-            System.out.print("Enter Entities: ");
-            String s = br.readLine();
-
-            if(s.equals("q"))
-            {
-                System.out.println("Exit");
-                System.exit(0);
-            }
-
-            String line=s.replaceAll(" ","");
-            String items[]=line.split(">,<");
-            if(items.length>1) {
-                items[0] = items[0] + ">";
-                items[items.length-1] = "<"+items[items.length-1] ;
-
-                for (int i = 1; i < items.length - 1; i++) {
-                    items[i] = "<" + items[i] + ">";
+                if (s.equals("q")) {
+                    System.out.println("Exit");
+                    System.exit(0);
                 }
 
+                String line = s.replaceAll(" ", "");
+                String items[] = line.split(">,<");
+                if (items.length > 1) {
+                    items[0] = items[0] + ">";
+                    items[items.length - 1] = "<" + items[items.length - 1];
 
-            System.out.println(Arrays.toString(items));
+                    for (int i = 1; i < items.length - 1; i++) {
+                        items[i] = "<" + items[i] + ">";
+                    }
 
-            Set<AnnotatedDocument> filteredDocs = annDocs.getDocsWith(items/*, "<Academy_Awards>","<France>"*/);
-            System.out.println(filteredDocs.size());
-            // filteredDocs.forEach(d-> System.out.println(d.getSentences()));
-                Set<CoreMap> allSentences=new HashSet<>();
-            for (String item: items) {
+
+                    System.out.println(Arrays.toString(items));
+
+                    Set<AnnotatedDocument> filteredDocs = annDocs.getDocsWith(items/*, "<Academy_Awards>","<France>"*/);
+                    System.out.println(filteredDocs.size());
+                    // filteredDocs.forEach(d-> System.out.println(d.getSentences()));
+                    Set<CoreMap> allSentences = new HashSet<>();
+                    for (String item : items) {
 //                filteredDocs.forEach(d -> System.out.println(d.getSentencesWith(item)));
-                List<CoreMap> sentences=filteredDocs.stream().map(d-> d.getSentencesWith(item )).flatMap(l -> l.stream()).collect(Collectors.toList());
-                allSentences.addAll(sentences);
-                sentences.forEach(sen-> System.out.println("-> "+sen));
-                System.out.println("============================= "+sentences.size());
-            }
+                        List<CoreMap> sentences = filteredDocs.stream().map(d -> d.getSentencesWith(item)).flatMap(l -> l.stream()).collect(Collectors.toList());
+                        allSentences.addAll(sentences);
+                        sentences.forEach(sen -> System.out.println("-> " + sen));
+                        System.out.println("============================= " + sentences.size());
+                    }
 
-                System.out.println("Documents: "+filteredDocs.size()+"\tSentences: "+allSentences.size());
+                    System.out.println("Documents: " + filteredDocs.size() + "\tSentences: " + allSentences.size());
+                }
+            }
+            catch (Exception e){
+                System.out.println("Exception: "+e.getMessage());
             }
         }
 
