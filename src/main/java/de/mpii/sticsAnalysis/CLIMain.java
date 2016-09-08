@@ -17,16 +17,16 @@ public class CLIMain {
         AnnotatedDocuments annDocs = AnnotatedDocuments.fromJSONFile(args[0]/*"Amy_Adams_Academy_Awards.json"*/);
 
         // writing to file
-        boolean fileOutput=args.length>1&& args[1].equals("-f");
-        String prefix=".";
-        if(fileOutput&& args.length>2)
-            prefix=args[2];
+        boolean fileOutput = args.length > 1 && args[1].equals("-f");
+        String prefix = ".";
+        if (fileOutput && args.length > 2)
+            prefix = args[2];
 
 
         System.out.println(annDocs.size());
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        while(true) {
+        while (true) {
             try {
                 System.out.print("Enter Entities: ");
                 String s = br.readLine();
@@ -48,50 +48,47 @@ public class CLIMain {
                     }
                 }
 
-                    System.out.println(Arrays.toString(items));
+                System.out.println(Arrays.toString(items));
 
-                    Set<AnnotatedDocument> filteredDocs = annDocs.getDocsWith(items/*, "<Academy_Awards>","<France>"*/);
-                    System.out.println(filteredDocs.size());
-                    // filteredDocs.forEach(d-> System.out.println(d.getSentences()));
-                    Set<CoreMap> allSentences = new HashSet<>();
-                    BufferedWriter bw=null;
-                    String outputFilePath=prefix+File.separator+line.substring(1,line.length()-1).replaceAll(">,<","")+".txt";
-                    if(fileOutput){
-                        bw=FileUtils.getBufferedUTF8Writer(outputFilePath);
-                    }
-                    for (String item : items) {
+                Set<AnnotatedDocument> filteredDocs = annDocs.getDocsWith(items/*, "<Academy_Awards>","<France>"*/);
+                System.out.println(filteredDocs.size());
+                // filteredDocs.forEach(d-> System.out.println(d.getSentences()));
+                Set<CoreMap> allSentences = new HashSet<>();
+                BufferedWriter bw = null;
+                String outputFilePath = prefix + File.separator + line.substring(1, line.length() - 1).replaceAll(">,<", "_") + ".txt";
+                if (fileOutput) {
+                    bw = FileUtils.getBufferedUTF8Writer(outputFilePath);
+                }
+
+                for (String item : items) {
 //                filteredDocs.forEach(d -> System.out.println(d.getSentencesWith(item)));
-                        List<CoreMap> sentences = filteredDocs.stream().map(d -> d.getSentencesWith(item)).flatMap(l -> l.stream()).collect(Collectors.toList());
-                        allSentences.addAll(sentences);
-                        sentences.forEach(sen -> System.out.println("-> " + sen));
-                        System.out.println("============================= " + sentences.size());
-                        if(fileOutput)
-                        {
-                            for (CoreMap sen:sentences) {
-                                 bw.write(sen.toString());
-                                bw.newLine();
-                            }
-                            // for new document
+                    List<CoreMap> sentences = filteredDocs.stream().map(d -> d.getSentencesWith(item)).flatMap(l -> l.stream()).collect(Collectors.toList());
+                    allSentences.addAll(sentences);
+//                    sentences.forEach(sen -> System.out.println("-> " + sen));
+//                    System.out.println("============================= " + sentences.size());
+                    if (fileOutput) {
+                        for (CoreMap sen : sentences) {
+                            bw.write(sen.toString());
                             bw.newLine();
                         }
+                        // for new document
+                        bw.newLine();
                     }
+                }
 
 
-                    String stats="Documents: " + filteredDocs.size() + "\tSentences: " + allSentences.size();
-                if (fileOutput){
+                String stats = "Documents: " + filteredDocs.size() + "\tSentences: " + allSentences.size();
+                if (fileOutput) {
                     bw.write(stats);
                     bw.newLine();
                     bw.close();
-                    System.out.println("Written to File "+outputFilePath );
+                    System.out.println("Written to File " + outputFilePath);
                 }
-                    System.out.println(stats);
+                System.out.println(stats);
 
 
-
-
-            }
-            catch (Exception e){
-                System.out.println("Exception: "+e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Exception: " + e.getMessage());
             }
         }
 
