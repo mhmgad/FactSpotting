@@ -35,7 +35,12 @@ public class AnnotatedDocuments {
         BufferedReader br = FileUtils.getBufferedUTF8Reader(filePath);
 
         for(String line=br.readLine();line!=null;line=br.readLine()){
-            docs.add(AnnotatedDocument.fromJSON(line));
+            try {
+                AnnotatedDocument doc = AnnotatedDocument.fromJSON(line);
+                docs.add(doc);
+            }catch (Exception e){
+
+            }
         }
 
         System.out.println("=============== Done! ");
