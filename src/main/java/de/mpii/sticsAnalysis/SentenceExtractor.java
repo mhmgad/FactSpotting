@@ -36,7 +36,9 @@ public class SentenceExtractor {
         System.out.println("New Sentence extractor");
         this.props = new Properties();
         props.setProperty("annotators", "tokenize, ssplit ");//, pos, lemma, ner, parse, dcoref");
+        props.setProperty("ssplit.newlineIsSentenceBreak", "always");
         this.pipeline = new StanfordCoreNLP(props);
+
 //        props.setProperty("annotators", "tokenize, ssplit ");//, pos, lemma, ner, parse, dcoref");
 
     }
