@@ -17,7 +17,10 @@ public class CLIMain {
         AnnotatedDocuments annDocs = AnnotatedDocuments.fromJSONFile(args[0]/*"Amy_Adams_Academy_Awards.json"*/);
 
         // writing to file
-        boolean fileOutput=args.length>1&& args.equals("-f");
+        boolean fileOutput=args.length>1&& args[1].equals("-f");
+        String prefix=".";
+        if(fileOutput&& args.length>2)
+            prefix=args[2];
 
 
         System.out.println(annDocs.size());
@@ -43,7 +46,7 @@ public class CLIMain {
                     for (int i = 1; i < items.length - 1; i++) {
                         items[i] = "<" + items[i] + ">";
                     }
-
+                }
 
                     System.out.println(Arrays.toString(items));
 
@@ -52,8 +55,9 @@ public class CLIMain {
                     // filteredDocs.forEach(d-> System.out.println(d.getSentences()));
                     Set<CoreMap> allSentences = new HashSet<>();
                     BufferedWriter bw=null;
+                    String outputFilePath=prefix+File.separator+line.substring(1,line.length()-1).replaceAll(">,<","")+".txt";
                     if(fileOutput){
-                        bw=FileUtils.getBufferedUTF8Writer(line.substring(1,line.length()-1).replaceAll(">,<",""));
+                        bw=FileUtils.getBufferedUTF8Writer(outputFilePath);
                     }
                     for (String item : items) {
 //                filteredDocs.forEach(d -> System.out.println(d.getSentencesWith(item)));
@@ -78,12 +82,13 @@ public class CLIMain {
                     bw.write(stats);
                     bw.newLine();
                     bw.close();
+                    System.out.println("Written to File "+outputFilePath );
                 }
                     System.out.println(stats);
 
 
 
-                }
+
             }
             catch (Exception e){
                 System.out.println("Exception: "+e.getMessage());
