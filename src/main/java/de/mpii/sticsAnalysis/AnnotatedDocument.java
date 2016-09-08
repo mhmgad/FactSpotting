@@ -36,9 +36,6 @@ public class AnnotatedDocument {
         this.text = text;
         this.mentions = mentions;
 
-        this.sentences = SentenceExtractor.getSentences(text);
-        this.entityId2Sentence= HashMultimap.create();
-        this.createEntityId2SentenceMap();
 
 
     }
@@ -122,6 +119,13 @@ public class AnnotatedDocument {
     }
 
     public Set<CoreMap> getSentencesWith(String ...entity) {
+
+        if(sentences==null){
+            this.sentences = SentenceExtractor.getSentences(text);
+            this.entityId2Sentence= HashMultimap.create();
+            this.createEntityId2SentenceMap();
+        }
+
         Set<CoreMap> output=entityId2Sentence.get(entity[0]);
         for (int i = 1; i <entity.length ; i++) {
             output= Sets.intersection(output,entityId2Sentence.get(entity[i]));
