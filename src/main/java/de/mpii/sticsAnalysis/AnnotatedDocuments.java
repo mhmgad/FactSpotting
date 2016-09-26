@@ -20,6 +20,7 @@ public class AnnotatedDocuments {
 
 
     ArrayList<AnnotatedDocument> docs;
+
     SetMultimap<String,AnnotatedDocument> entity2doc;
 
     public AnnotatedDocuments() {
@@ -27,7 +28,14 @@ public class AnnotatedDocuments {
         this.entity2doc= HashMultimap.create();
     }
 
-
+    /**
+     *
+     * @param filePath
+     * @return
+     * @throws IOException
+     *
+     * Creates AnnotatedDocuments object from stics dump.
+     */
     public static AnnotatedDocuments fromJSONFile(String filePath) throws IOException {
         System.out.println("=============== Load Annotated Documents ");
         AnnotatedDocuments docs=new AnnotatedDocuments();

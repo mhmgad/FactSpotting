@@ -14,9 +14,10 @@ public class CLIMain {
 
     public static void main(String[] args) throws IOException {
 
+        // load document
         AnnotatedDocuments annDocs = AnnotatedDocuments.fromJSONFile(args[0]/*"Amy_Adams_Academy_Awards.json"*/);
 
-        // writing to file
+        // writing to file?
         boolean fileOutput = args.length > 1 && args[1].equals("-f");
         String prefix = ".";
         if (fileOutput && args.length > 2)
@@ -26,6 +27,7 @@ public class CLIMain {
         System.out.println(annDocs.size());
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Entities list should be in format <entity1_id>, <entity2_id>, <entity3_id> ");
         while (true) {
             try {
                 System.out.print("Enter Entities: ");
@@ -49,23 +51,27 @@ public class CLIMain {
                 }
 
                 System.out.println(Arrays.toString(items));
-
+                // get documents with entities
                 Set<AnnotatedDocument> filteredDocs = annDocs.getDocsWith(items/*, "<Academy_Awards>","<France>"*/);
                 System.out.println(filteredDocs.size());
-                // filteredDocs.forEach(d-> System.out.println(d.getSentences()));
+
                 Set<CoreMap> allSentences = new HashSet<>();
+
+
                 BufferedWriter bw = null;
                 String outputFilePath = prefix + File.separator + line.substring(1, line.length() - 1).replaceAll(">,<", "_") + ".txt";
+
+                // initialize writer
                 if (fileOutput) {
                     bw = FileUtils.getBufferedUTF8Writer(outputFilePath);
                 }
 
                 for (String item : items) {
-//                filteredDocs.forEach(d -> System.out.println(d.getSentencesWith(item)));
+
+                    // collect sentences
                     List<CoreMap> sentences = filteredDocs.stream().map(d -> d.getSentencesWith(item)).flatMap(l -> l.stream()).collect(Collectors.toList());
                     allSentences.addAll(sentences);
-//                    sentences.forEach(sen -> System.out.println("-> " + sen));
-//                    System.out.println("============================= " + sentences.size());
+
                     if (fileOutput) {
                         for (CoreMap sen : sentences) {
                             bw.write(sen.toString());
