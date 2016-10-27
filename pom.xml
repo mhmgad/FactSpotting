@@ -48,6 +48,13 @@
                             <mainClass>de.mpii.sticsAnalysis.CLIMain</mainClass>
                             <id>stics_data</id>
                         </program>
+
+
+
+                        <program>
+                            <mainClass>jrbn.programs.WikipediaXMLExtractor</mainClass>
+                            <id>parse_wiki</id>
+                        </program>
                     </programs>
                 </configuration>
             </plugin>
@@ -160,7 +167,15 @@
     	<version>9.2.19.v20160908</version>
 	</dependency>
 
-</dependencies>
+
+        <dependency>
+            <groupId>ajira</groupId>
+            <artifactId>ajira-0.3</artifactId>
+            <version>0.3</version>
+        </dependency>
+
+
+    </dependencies>
 
 
 </project>
