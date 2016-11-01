@@ -1,0 +1,3 @@
+[submodule "external/ambiverse_client"]
+	path = external/ambiverse_client
+	url = https://github.com/ambi-verse/nlu-api-client-java

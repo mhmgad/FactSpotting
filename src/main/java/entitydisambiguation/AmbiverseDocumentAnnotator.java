@@ -10,4 +10,7 @@ public class AmbiverseDocumentAnnotator implements DocumentAnnotator {
     public AnnotatedDocument annotate(Document d) {
         return null;
     }
+
+
+
 }
