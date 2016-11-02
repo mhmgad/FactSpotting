@@ -80,4 +80,11 @@ public class EntityMention {
                 ", confidence=" + confidence +
                 '}';
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        EntityMention em= (EntityMention) obj;
+        return (em.getCharOffset().equals(this.getCharOffset()))&&(em.getCharLength().equals(this.getCharLength()))&&(em.getText().equals(this.getText()));
+    }
 }

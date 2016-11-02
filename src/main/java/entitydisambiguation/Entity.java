@@ -42,4 +42,10 @@ public class Entity {
     public int hashCode() {
         return id.hashCode();
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        return ((Entity) obj).getId().equals(this.getId());
+    }
 }

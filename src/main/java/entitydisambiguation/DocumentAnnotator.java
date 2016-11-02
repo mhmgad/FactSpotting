@@ -8,5 +8,5 @@ import java.io.IOException;
 public interface DocumentAnnotator {
 
 
-    public void annotate(Document d) throws IOException;
+    public void annotate(Document document) throws IOException;
 }
