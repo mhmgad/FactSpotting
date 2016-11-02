@@ -9,6 +9,7 @@ import com.ambiverse.api.AmbiverseApiClient;
 import com.ambiverse.api.Credential;
 import com.ambiverse.api.model.AnalyzeInput;
 import com.ambiverse.api.model.AnalyzeOutput;
+import com.ambiverse.api.model.Match;
 import com.google.api.client.auth.oauth2.BearerToken;
 import com.google.api.client.auth.oauth2.ClientCredentialsTokenRequest;
 import com.google.api.client.auth.oauth2.ClientParametersAuthentication;
@@ -69,6 +70,10 @@ public class AmbiverseDocumentAnnotator implements DocumentAnnotator {
 
         AnalyzeOutput output = client.entityLinking().analyze().process(input).execute();
         System.out.println(output.getMatches());
+
+        for (Match m:output.getMatches()       ) {
+            System.out.println(m);
+        }
 
         return null;
     }
