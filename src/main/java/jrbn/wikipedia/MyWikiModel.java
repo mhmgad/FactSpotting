@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import info.bliki.htmlcleaner.ContentToken;
 import info.bliki.wiki.model.WikiModel;
 import info.bliki.wiki.template.ITemplateFunction;
 
@@ -23,13 +22,13 @@ public class MyWikiModel extends WikiModel {
 		templates.put(templateName, parameterMap);
 	}
 
-	@Override
-	public void appendInternalLink(String topic, String hashSection, String topicDescription, String cssClass,
-			boolean parseRecursive) {
-		// super.appendInternalLink(topic, hashSection, topicDescription,
-		// cssClass, parseRecursive);
-		append(new ContentToken(topicDescription));
-	}
+	// @Override
+	/*
+	 * public void appendInternalLink(String topic, String hashSection, String
+	 * topicDescription, String cssClass, boolean parseRecursive) { //
+	 * super.appendInternalLink(topic, hashSection, topicDescription, //
+	 * cssClass, parseRecursive); append(new ContentToken(topicDescription)); }
+	 */
 
 	@Override
 	public ITemplateFunction addTemplateFunction(String key, ITemplateFunction value) {

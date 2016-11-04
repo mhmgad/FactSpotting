@@ -111,7 +111,7 @@
         <systemPath>${project.basedir}/external/ajira-0.3.jar</systemPath>
     </dependency>
     
-    	<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
 	<dependency>
     	<groupId>org.slf4j</groupId>
     	<artifactId>slf4j-api</artifactId>

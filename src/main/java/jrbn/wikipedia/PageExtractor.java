@@ -25,7 +25,10 @@ public class PageExtractor implements IArticleFilter {
 				isEmpty = htmlContent.isEmpty();
 				if (!isEmpty) {
 					// Remove HTML tags
-					String rawContent = Jsoup.clean(htmlContent, Whitelist.none());
+					Whitelist allowedTags = Whitelist.none();
+					allowedTags.addTags("a");
+					String rawContent = Jsoup.clean(htmlContent, allowedTags);
+
 					// Remove references
 					rawContent = rawContent.replaceAll("\\[[0-9]+\\]", "");
 					// Remove ==References== section
@@ -37,6 +40,31 @@ public class PageExtractor implements IArticleFilter {
 					}
 					// Remove all sections, subsections, etc.
 					rawContent = rawContent.replaceAll("==+[^\\s]+==+", " ");
+
+					// Get links to other pages TODO...
+					for (idx = 0; idx < rawContent.length();) {
+						int startTag = rawContent.indexOf("<a", idx);
+						if (startTag != -1) {
+							// Get the title of the link, points to the topic
+							int endTag = rawContent.indexOf(">", startTag);
+							if (endTag != -1) {
+								String tagContent = rawContent.substring(startTag, endTag);
+
+								int startTitle = htmlContent.indexOf("title=\"", newIdx);
+								if (startTitle != -1) {
+									int endTitle = htmlContent.indexOf("\"", startTitle + 7);
+									if (endTitle != -1) {
+										String titleEntity = htmlContent.substring(startTitle, endTitle);
+										System.out.println(titleEntity);
+									}
+								}
+								idx = newIdx + 1;
+							}
+						} else {
+							idx = rawContent.length();
+						}
+					}
+
 					// Create the Wikipedia object
 					page = new WikipediaPage();
 					page.setText(rawContent);

@@ -3,34 +3,29 @@ package jrbn.programs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jrbn.actions.ParseXMLArticles;
+import jrbn.actions.ExtractSentences;
 import nl.vu.cs.ajira.Ajira;
 import nl.vu.cs.ajira.actions.ActionConf;
 import nl.vu.cs.ajira.actions.ActionFactory;
 import nl.vu.cs.ajira.actions.ActionSequence;
 import nl.vu.cs.ajira.actions.ReadFromFiles;
-import nl.vu.cs.ajira.actions.WriteToFiles;
 import nl.vu.cs.ajira.exceptions.ActionNotConfiguredException;
 import nl.vu.cs.ajira.submissions.Job;
 import nl.vu.cs.ajira.submissions.Submission;
 import nl.vu.cs.ajira.utils.Consts;
 
-public class WikipediaXMLExtractor {
+public class Wiki_ExtractEntities {
 
-	static final Logger log = LoggerFactory.getLogger(WikipediaXMLExtractor.class);
+	static final Logger log = LoggerFactory.getLogger(Wiki_ExtractEntities.class);
 
-	private static Job createJob(String inputDir, String outputDir) throws ActionNotConfiguredException {
+	private static Job createJob(String inputDir) throws ActionNotConfiguredException {
 		Job job = new Job();
 		ActionSequence actions = new ActionSequence();
 		ActionConf action = ActionFactory.getActionConf(ReadFromFiles.class);
 		action.setParamString(ReadFromFiles.S_PATH, inputDir);
 		actions.add(action);
 
-		action = ActionFactory.getActionConf(ParseXMLArticles.class);
-		actions.add(action);
-
-		action = ActionFactory.getActionConf(WriteToFiles.class);
-		action.setParamString(WriteToFiles.S_PATH, outputDir);
+		action = ActionFactory.getActionConf(ExtractSentences.class);
 		actions.add(action);
 
 		job.setActions(actions);
@@ -38,12 +33,13 @@ public class WikipediaXMLExtractor {
 	}
 
 	public static void main(String[] args) {
-		// Read the XML files in input. Scrape away all metatags
-		if (args.length < 2) {
-			System.out.println(
-					"Usage: " + WikipediaXMLExtractor.class.getSimpleName() + " <input directory> <output directory>");
+		// Analyse sentences for each page
+		if (args.length < 1) {
+			System.out.println("Usage: " + Wiki_ExtractEntities.class.getSimpleName() + " <input directory>");
 			System.exit(1);
 		}
+
+		// Load in a global datastructure all facts to check
 
 		// Start up the cluster
 		Ajira ajira = new Ajira();
@@ -56,10 +52,9 @@ public class WikipediaXMLExtractor {
 
 		// With this command we ensure that we submit the job only once
 		if (ajira.amItheServer()) {
-
 			// Configure the job and launch it!
 			try {
-				Job job = createJob(args[0], args[1]);
+				Job job = createJob(args[0]);
 				Submission sub = ajira.waitForCompletion(job);
 				sub.printStatistics();
 				if (sub.getState().equals(Consts.STATE_FAILED)) {
