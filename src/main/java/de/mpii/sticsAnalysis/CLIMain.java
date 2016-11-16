@@ -1,5 +1,8 @@
 package de.mpii.sticsAnalysis;
 
+import de.mpii.containers.AnnotatedDocument;
+import de.mpii.containers.AnnotatedDocuments;
+import de.mpii.containers.Entity;
 import edu.stanford.nlp.util.CoreMap;
 import mpi.tools.javatools.util.FileUtils;
 
@@ -15,7 +18,7 @@ public class CLIMain {
     public static void main(String[] args) throws IOException {
 
         // load document
-        AnnotatedDocuments annDocs = AnnotatedDocuments.fromJSONFile(args[0]/*"Amy_Adams_Academy_Awards.json"*/);
+        AnnotatedDocuments annDocs = SticsDocumentsParser.documentsFromJSON(args[0]/*"Amy_Adams_Academy_Awards.json"*/);
 
         // writing to file?
         boolean fileOutput = args.length > 1 && args[1].equals("-f");
@@ -41,18 +44,19 @@ public class CLIMain {
 
                 String line = s.replaceAll(" ", "");
                 String items[] = line.split(">,<");
+                Entity[] entities=new Entity[items.length];
                 if (items.length > 1) {
                     items[0] = items[0] + ">";
                     items[items.length - 1] = "<" + items[items.length - 1];
 
                     for (int i = 1; i < items.length - 1; i++) {
-                        items[i] = "<" + items[i] + ">";
+                        entities[i] = new Entity("<" + items[i] + ">");
                     }
                 }
 
                 System.out.println(Arrays.toString(items));
                 // get documents with entities
-                Set<AnnotatedDocument> filteredDocs = annDocs.getDocsWith(items/*, "<Academy_Awards>","<France>"*/);
+                Set<AnnotatedDocument> filteredDocs = annDocs.getDocsWith(entities/*, "<Academy_Awards>","<France>"*/);
                 System.out.println(filteredDocs.size());
 
                 Set<CoreMap> allSentences = new HashSet<>();
@@ -69,7 +73,7 @@ public class CLIMain {
                 for (String item : items) {
 
                     // collect sentences
-                    List<CoreMap> sentences = filteredDocs.stream().map(d -> d.getSentencesWith(item)).flatMap(l -> l.stream()).collect(Collectors.toList());
+                    List<CoreMap> sentences = filteredDocs.stream().map(d -> d.getSentencesWith(entities)).flatMap(l -> l.stream()).collect(Collectors.toList());
                     allSentences.addAll(sentences);
 
                     if (fileOutput) {

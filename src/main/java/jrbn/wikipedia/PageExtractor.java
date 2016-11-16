@@ -41,6 +41,8 @@ public class PageExtractor implements IArticleFilter {
 					// Remove all sections, subsections, etc.
 					rawContent = rawContent.replaceAll("==+[^\\s]+==+", " ");
 
+					// Gad (Just temp fix I have no clue what that should do)
+					int newIdx=0;
 					// Get links to other pages TODO...
 					for (idx = 0; idx < rawContent.length();) {
 						int startTag = rawContent.indexOf("<a", idx);

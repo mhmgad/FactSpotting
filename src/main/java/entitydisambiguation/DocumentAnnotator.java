@@ -1,5 +1,8 @@
 package entitydisambiguation;
 
+import de.mpii.containers.AnnotatedDocument;
+import de.mpii.containers.Mentions;
+
 import java.io.IOException;
 
 /**
@@ -8,5 +11,23 @@ import java.io.IOException;
 public interface DocumentAnnotator {
 
 
-    public void annotate(Document document) throws IOException;
+//    protected static DocumentAnnotator documentAnnotator;
+
+
+
+
+    public abstract Mentions annotate(AnnotatedDocument document) throws Exception;
+
+
+//    public static DocumentAnnotator getInstance() throws Exception {
+//        if(documentAnnotator==null)
+//            documentAnnotator=initAnnototor();
+//        return documentAnnotator;
+//    }
+//
+//    protected  static DocumentAnnotator initAnnototor() throws Exception {
+//        throw new Exception("initAnnototor is not Implemented");
+//
+//    }
+
 }

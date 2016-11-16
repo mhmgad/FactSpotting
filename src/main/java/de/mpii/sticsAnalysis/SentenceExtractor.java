@@ -35,7 +35,8 @@ public class SentenceExtractor {
     private SentenceExtractor() {
         System.out.println("New Sentence extractor");
         this.props = new Properties();
-        props.setProperty("annotators", "tokenize, ssplit ");//, pos, lemma, ner, parse, dcoref");
+        //tokenize,ssplit,pos,lemma,ner,parse,mention,coref
+        props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, mention, dcoref");
         props.setProperty("ssplit.newlineIsSentenceBreak", "always");
         this.pipeline = new StanfordCoreNLP(props);
 
@@ -58,11 +59,44 @@ public class SentenceExtractor {
             // run all Annotators on this text
         getInstance().pipeline.annotate(document);
 
-
+        System.out.println(document.keySet());
+        System.out.println("+++++++++++++++");
         List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
+
+        for (CorefChain cc : document.get(CorefCoreAnnotations.CorefChainAnnotation.class).values()) {
+            System.out.println("\t" + cc);
+
+            System.out.println(cc.getMentionMap());
+            for(CorefChain.CorefMention cm:cc.getMentionsInTextualOrder()){
+
+
+                System.out.println(cm+" ("+cm.startIndex+", "+cm.endIndex+")");
+            }
+        }
+        for (CoreMap sentence : document.get(CoreAnnotations.SentencesAnnotation.class)) {
+            System.out.println("---");
+            System.out.println("mentions");
+            System.out.println(sentence.keySet());
+            for (Mention m : sentence.get(CorefCoreAnnotations.CorefMentionsAnnotation.class)) {
+                System.out.println("\t" + m.getPosition()+"("+m.getPattern()+")");
+            }
+        }
 
         return sentences;
     }
+
+//    public static list<> getSentencesOfEntities(String text){
+//        // TODO Not the optimum since we repeat the call .. To be enhanced later!
+//
+//        Annotation document = new Annotation(text);
+//        // run all Annotators on this text
+//        getInstance().pipeline.annotate(document);
+//
+//
+//
+//    }
+
+
 
     public static List<List<CoreLabel>> getSentencesAsTokens(String text){
 
@@ -84,8 +118,13 @@ public class SentenceExtractor {
            // String text="Near the beginning of his career, Einstein thought that Newtonian mechanics was no longer enough to reconcile the laws of classical mechanics with the laws of the electromagnetic field. This led to the development of his special theory of relativity. He realized, however, that the principle of relativity could also be extended to gravitational fields, and with his subsequent theory of gravitation in 1916, he published a paper on general relativity.";
         String text=" Gad test \n\n [Barack Obama] was born in [Hawaii].  He is the president.  Obama was elected in 2008.";
 
+        System.out.println("-----------------");
+        String text2=" I am a scientist, Albert said.";
+
 
         System.out.println(getSentences(text));
+
+
 
 
 // read some text in the text variable
