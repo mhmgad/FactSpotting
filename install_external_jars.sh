@@ -8,11 +8,11 @@ mvn install:install-file -Dfile=./external/ambiverse_client/target/nlu-api-clien
 
 #Ambiverse
 
-git submodule update --init --recursive
-
-pushd external/ambiverse_client
-
-cp resources/client_secrets_template.json resources/client_secrets.json
+#git submodule update --init --recursive
+#
+#pushd external/ambiverse_client
+#
+#cp resources/client_secrets_template.json resources/client_secrets.json
 
 
 #sed -i -e 's/foo/bar/g' filename
