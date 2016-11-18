@@ -2,6 +2,12 @@
 
 Checking the correctness of a fact based on some text corpus. The fact can appear in text in positive or negative context.
 
+## Installing External Libs
+
+run
+
+`sh install_external_jar.sh`
+
 ## running
 
 `mvn compile`
@@ -15,6 +21,10 @@ class 'de.mpii.sticsAnalysis.CLIClass' offers an interface to load a file of sti
 
 to run it use `sh ./assemble/bin/stics_data.sh <stics file uncompressed> <-f: to write results to a file>`
 
+
+## General Text Corpus 
+
+(In progress no running script yet!)
 
 
 
