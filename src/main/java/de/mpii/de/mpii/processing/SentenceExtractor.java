@@ -1,5 +1,6 @@
 package de.mpii.de.mpii.processing;
 
+import de.mpii.containers.Sentence;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 
@@ -45,29 +46,15 @@ public class SentenceExtractor {
     }
 
 
-    public static List<CoreMap> getSentences(String text){
+    public static List<Sentence> getSentences(String text){
 
 
         Annotation document = new Annotation(text);
             // run all Annotators on this text
         getInstance().pipeline.annotate(document);
 
-//        System.out.println(document.keySet());
-//        System.out.println("+++++++++++++++");
-        List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
-
-//        for (CorefChain cc : document.get(CorefCoreAnnotations.CorefChainAnnotation.class).values()) {
-//            System.out.println("\t" + cc);
-//
-//            System.out.println(cc.getMentionMap());
-//            for(CorefChain.CorefMention cm:cc.getMentionsInTextualOrder()){
-//
-//
-//                System.out.println(cm+" ("+cm.startIndex+", "+cm.endIndex+")");
-//            }
-//        }
-
-
+        List<Sentence> sentences = document.get(CoreAnnotations.SentencesAnnotation.class).stream().map(s-> new Sentence(s)).collect(Collectors.toList());
+        sentences.sort(Sentence.charOffsetCompartor);
         return sentences;
     }
 
@@ -84,18 +71,18 @@ public class SentenceExtractor {
 
 
 
-    public static List<List<CoreLabel>> getSentencesAsTokens(String text){
+//    public static List<List<CoreLabel>> getSentencesAsTokens(String text){
+//
+//        List<Sentence> sentences = getSentences( text);
+//
+//        return getSentencesAsTokens(sentences);
+//    }
 
-        List<CoreMap> sentences = getSentences( text);
-
-        return getSentencesAsTokens(sentences);
-    }
-
-    private static List<List<CoreLabel>> getSentencesAsTokens(List<CoreMap> sentences) {
-        List<List<CoreLabel>> sentencesAsTokens=sentences.stream().map(s-> s.get(CoreAnnotations.TokensAnnotation.class)).collect(Collectors.toList());
-
-        return sentencesAsTokens;
-    }
+//    private static List<List<CoreLabel>> getSentencesAsTokens(List<Sentence> sentences) {
+//        List<List<CoreLabel>> sentencesAsTokens=sentences.stream().map(s-> s.getSentence.get(CoreAnnotations.TokensAnnotation.class)).collect(Collectors.toList());
+//
+//        return sentencesAsTokens;
+//    }
 
 
     public static void main(String[] args) throws IOException {

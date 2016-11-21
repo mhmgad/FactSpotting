@@ -31,6 +31,7 @@ public class CoreferenceResolver {
         //tokenize,ssplit,pos,lemma,ner,parse,mention,coref
         props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, mention, dcoref");
         props.setProperty("ssplit.newlineIsSentenceBreak", "always");
+        props.setProperty("dcoref.postprocessing","true");
         this.pipeline = new StanfordCoreNLP(props);
 
 //        props.setProperty("annotators", "tokenize, ssplit ");//, pos, lemma, ner, parse, dcoref");

@@ -10,11 +10,11 @@ import edu.stanford.nlp.hcoref.CorefCoreAnnotations;
 import edu.stanford.nlp.hcoref.data.CorefChain;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
-import edu.stanford.nlp.util.CoreMap;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import edu.stanford.nlp.util.CoreMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
+
+import java.util.*;
 
 /**
  * Created by gadelrab on 8/31/16.
@@ -26,8 +26,8 @@ public class AnnotatedDocument {
     //String title;
     String text;
     Mentions mentions;
-    List<CoreMap> sentences;
-    SetMultimap<Entity,CoreMap> entity2Sentences;
+    List<Sentence> sentences;
+    SetMultimap<Entity, Sentence> entity2Sentences;
 
 
     public AnnotatedDocument(/*String title,*/ String text) {
@@ -48,19 +48,44 @@ public class AnnotatedDocument {
 
     private void createEntity2SentencesMap() {
 
-        for (CoreMap sentence:sentences) {
 
-            List<CoreLabel> tokens=sentence.get(CoreAnnotations.TokensAnnotation.class);
+        List<Mention> sortedMentions=mentions.getInTextualOrder();
+
+        // Assumes sentences already sorted TODO fix
+
+        for (Sentence sentence:sentences) {
+            sortedMentions.stream().filter(m-> m.in(sentence)).forEach(m->{
+                linkMention2Sentence(m, sentence);
+            });
+        }
 
 
-            int startIndex = tokens.get(0).beginPosition();
-            int endIndex = tokens.get(tokens.size() - 1).beginPosition();
+//        for (Sentence sentence:sentences) {
 
-            mentions.stream().filter(m-> m.getEntity()!=null && m.getPosition()>=startIndex && m.getPosition()<=endIndex)
-                    .forEach(m-> {m.setSentence(sentence);entity2Sentences.put(m.getEntity(),sentence);});
+
+
+//            List<CoreLabel> tokens=sentence.getTokens();
+//
+//
+//
+//            int startIndex = tokens.get(0).beginPosition();
+//            int endIndex = tokens.get(tokens.size() - 1).beginPosition();
+//
+//            mentions.stream().filter(m->  m.getEntity()!=null && m.getPosition()>=startIndex && m.getPosition()<=endIndex)
+//                    .forEach(m-> {m.setSentence(sentence);entity2Sentences.put(m.getEntity(),sentence);});
             //System.out.println(startIndex +" "+ endIndex);
 
-        }
+//        }
+    }
+
+
+
+    private void linkMention2Sentence(Mention mention, Sentence sentence) {
+        // to way linking
+        mention.setSentence(sentence);
+        sentence.addMention(mention);
+        if(mention.hasEntity())
+            entity2Sentences.put(mention.getEntity(),sentence);
     }
 
 
@@ -86,17 +111,17 @@ public class AnnotatedDocument {
         return mentions.getMentions(entity);
     }
 
-    public List<CoreMap> getSentences() {
+    public List<Sentence> getSentences() {
         return sentences;
     }
 
-    public Set<CoreMap> getSentencesWith(Entity ...entity) {
+    public Set<Sentence> getSentencesWith(Entity ...entity) {
 
         if(sentences==null){
             this.setSentences(SentenceExtractor.getSentences(text));
         }
 
-        Set<CoreMap> output= entity2Sentences.get(entity[0]);
+        Set<Sentence> output= entity2Sentences.get(entity[0]);
         for (int i = 1; i <entity.length ; i++) {
             output= Sets.intersection(output, entity2Sentences.get(entity[i]));
         }
@@ -129,27 +154,35 @@ public class AnnotatedDocument {
     public void addMention(Mention mention){
         mentions.add(mention);
 
-        if(sentences!=null&&!sentences.isEmpty()&& mention.getEntity()!=null ){
-            for (CoreMap sentence:sentences) {
+//        if(sentences!=null&&!sentences.isEmpty()&& mention.getEntity()!=null ){
+//            for (Sentence sentence:sentences) {
+//
+//                List<CoreLabel> tokens=sentence.get(CoreAnnotations.TokensAnnotation.class);
+//
+//                int startIndex = tokens.get(0).beginPosition();
+//                int endIndex = tokens.get(tokens.size() - 1).beginPosition();
+//
+//                if( mention.getPosition()>=startIndex && mention.getPosition()<=endIndex) {
+//                    mention.setSentence(sentence);
+//                    entity2Sentences.put(mention.getEntity(), sentence);
+//                    break;
+//                }
+//                //System.out.println(startIndex +" "+ endIndex);
+//
+//            }
+//        }
 
-                List<CoreLabel> tokens=sentence.get(CoreAnnotations.TokensAnnotation.class);
-
-                int startIndex = tokens.get(0).beginPosition();
-                int endIndex = tokens.get(tokens.size() - 1).beginPosition();
-
-                if( mention.getPosition()>=startIndex && mention.getPosition()<=endIndex) {
-                    mention.setSentence(sentence);
-                    entity2Sentences.put(mention.getEntity(), sentence);
-                    break;
-                }
-                //System.out.println(startIndex +" "+ endIndex);
-
+        for (Sentence sentence:sentences) {
+            if(mention.in(sentence)){
+                linkMention2Sentence(mention,sentence);
+                break;
             }
         }
 
+
     }
 
-    public void setSentences(List<CoreMap> sentences) {
+    public void setSentences(List<Sentence> sentences) {
         this.sentences = sentences;
         if(mentions!=null)
             this.createEntity2SentencesMap();
@@ -169,26 +202,73 @@ public class AnnotatedDocument {
 
     public void resolveCoreferences(Collection<CorefChain> coreferenceChains) {
 
+        List<Mention> sortedMentions=mentions.getInTextualOrder();
 
         for (CorefChain cc : coreferenceChains) {
             if (cc.getMentionsInTextualOrder().size()<=1)
                 continue;
-            System.out.println("************************" + cc.getRepresentativeMention());
+            //System.out.println("************************" + cc.getRepresentativeMention());
+
+            // list to collect all candidate annotations
+            TObjectIntHashMap<Entity> candidateEntities=new TObjectIntHashMap<>();
+
+            // container for the mentions in the chain
+            List<Mention> chainMentions=new ArrayList<>();
+
+            // now try to match one of the coreferences with the disambiguated mentions
+
             for(CorefChain.CorefMention cm:cc.getMentionsInTextualOrder()){
 
-                System.out.println(cm.mentionSpan+ " ("+cm.startIndex+", "+cm.endIndex+", "+cm.position+", "+cm.corefClusterID+")");
-                CoreMap sentence = sentences.get(cm.sentNum - 1);
-                List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
+                System.out.println(cm.mentionSpan+ " ("+cm.startIndex+", "+cm.endIndex+", "+cm.position+", "+cm.headIndex+", "+cm.corefClusterID+")");
+
+                // get the sentence
+                Sentence sentence = sentences.get(cm.sentNum - 1);
+
+
+
+                List<CoreLabel> tokens = sentence.getTokens();
                 int startCharOffset= tokens.get(cm.startIndex-1).beginPosition();
                 int endIndex=tokens.get(cm.endIndex-2).endPosition();
                 int length= endIndex-startCharOffset;
-                System.out.println(startCharOffset+", "+endIndex +", ("+length+") ("+ Joiner.on(" ").join(tokens.subList(cm.startIndex-1,cm.endIndex-1))+")");
+                //TODO reconstruction is not accurate
+                String mentionText=edu.stanford.nlp.ling.Sentence.listToOriginalTextString(tokens.subList(cm.startIndex-1,cm.endIndex-1)).trim();
+//                String mentionText=Joiner.on(" ").join(tokens.subList(cm.startIndex-1,cm.endIndex-1));
 
-                System.out.println(cm.sentNum+":\t("+sentence+")");
+//                System.out.println(startCharOffset+", "+endIndex +", ("+length+") ("+ mentionText+")");
+
+                Mention candidateMention=new Mention(mentionText,startCharOffset,length,null,sentence,true);
+                chainMentions.add(candidateMention);
+
+                // search if any of the annotated mentions shares the same start
+                int index=Collections.binarySearch(sortedMentions,candidateMention,Mention.charOffsetCompartor);
 
 
+                if(index>0){
+                    candidateEntities.adjustOrPutValue(sortedMentions.get(index).getEntity(),1,1);
+                }
+//                System.out.println(cm.sentNum+":\t("+sentence+")");
+            }
+
+            // if many entities are
+            if(candidateEntities.size()==1){
+                Entity entity=candidateEntities.keySet().iterator().next();
+                chainMentions.stream().forEach(cm->{cm.setEntity(entity); mentions.add(cm); cm.getSentence().addMention(cm); entity2Sentences.put(entity,cm.getSentence());});
+            }
+            else
+            {
+            if(candidateEntities.size()>1)
+                System.out.println("Chain: "+cc.getRepresentativeMention()+"\tConflicts: "+candidateEntities.keySet());
             }
         }
+
+    }
+
+    public void printSentenceMentions() {
+
+        sentences.forEach(s-> {
+            System.out.println("*****************\n"+s+"\n");
+            s.printMentions();
+        });
 
     }
 }

@@ -3,6 +3,7 @@ package de.mpii.sticsAnalysis;
 import de.mpii.containers.AnnotatedDocument;
 import de.mpii.containers.AnnotatedDocuments;
 import de.mpii.containers.Entity;
+import de.mpii.containers.Sentence;
 import edu.stanford.nlp.util.CoreMap;
 import mpi.tools.javatools.util.FileUtils;
 
@@ -59,7 +60,7 @@ public class CLIMain {
                 Set<AnnotatedDocument> filteredDocs = annDocs.getDocsWith(entities/*, "<Academy_Awards>","<France>"*/);
                 System.out.println(filteredDocs.size());
 
-                Set<CoreMap> allSentences = new HashSet<>();
+                Set<Sentence> allSentences = new HashSet<>();
 
 
                 BufferedWriter bw = null;
@@ -73,12 +74,12 @@ public class CLIMain {
                 for (String item : items) {
 
                     // collect sentences
-                    List<CoreMap> sentences = filteredDocs.stream().map(d -> d.getSentencesWith(entities)).flatMap(l -> l.stream()).collect(Collectors.toList());
+                    List<Sentence> sentences = filteredDocs.stream().map(d -> d.getSentencesWith(entities)).flatMap(l -> l.stream()).collect(Collectors.toList());
                     allSentences.addAll(sentences);
 
                     if (fileOutput) {
-                        for (CoreMap sen : sentences) {
-                            bw.write(sen.toString());
+                        for (Sentence sen : sentences) {
+                            bw.write(sen.getSentence().toString());
                             bw.newLine();
                         }
                         // for new document

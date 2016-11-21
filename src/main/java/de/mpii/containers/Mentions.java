@@ -6,14 +6,16 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by gadelrab on 8/31/16.
  */
-public class Mentions extends ArrayList<Mention> {
+public class Mentions extends HashSet<Mention> {
 
     //List<Mention> mentions;
     SetMultimap<Entity,Mention> entity2Mentions;
+
 
 
     public Mentions() {
@@ -24,16 +26,19 @@ public class Mentions extends ArrayList<Mention> {
     public Mentions(List<Mention> mentions) {
         //this.mentions = mentions;
         this.entity2Mentions = HashMultimap.create();
-        mentions.stream().filter(m-> m.hasEntity()).forEach(m-> entity2Mentions.put(m.getEntity(),m));
+        this.addAll(mentions);
+       // mentions.stream().filter(m-> m.hasEntity()).forEach(m-> entity2Mentions.put(m.getEntity(),m));
     }
+
 
 
     @Override
     public boolean add(Mention mention) {
         //mentions.add(mention);
-        if(mention.hasEntity())
+        boolean added=super.add(mention);
+        if(added&& mention.hasEntity())
             entity2Mentions.put(mention.getEntity(),mention);
-        return super.add(mention);
+        return added;
     }
 
     public Set<Entity> getEntities() {
@@ -61,6 +66,13 @@ public class Mentions extends ArrayList<Mention> {
             }
             System.out.println("****************");
         }
+    }
+
+    public List<Mention> getInTextualOrder(){
+//        Collection<Mention> values=entity2Mentions.values();
+
+    return this.stream().sorted(Mention.charOffsetCompartor).collect(Collectors.toList());
+
     }
 
 
