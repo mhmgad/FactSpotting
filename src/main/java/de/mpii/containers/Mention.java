@@ -1,5 +1,6 @@
 package de.mpii.containers;
 
+import edu.stanford.nlp.util.CoreMap;
 import org.json.simple.JSONObject;
 
 /**
@@ -12,6 +13,8 @@ public class Mention {
    Entity entity;
     long charLength;
     private double confidence;
+
+    private CoreMap sentence;
 
      /*
       {
@@ -101,11 +104,16 @@ public class Mention {
     public String toString() {
         return "Mention{" +
                 "mentionText='" + mentionText + '\'' +
-
                 ", entity=" + entity +
                 ", charOffset=" + charOffset +
                 ", charLength=" + charLength +
+                ", endIndex=" + (charOffset+charLength) +
                 ", confidence=" + confidence +
                 '}';
+    }
+
+
+    public void setSentence(CoreMap sentence) {
+        this.sentence = sentence;
     }
 }

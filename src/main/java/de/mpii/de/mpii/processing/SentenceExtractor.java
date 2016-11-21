@@ -1,18 +1,11 @@
-package de.mpii.sticsAnalysis;
+package de.mpii.de.mpii.processing;
 
-import edu.stanford.nlp.hcoref.CorefCoreAnnotations;
-import edu.stanford.nlp.hcoref.data.CorefChain;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import edu.stanford.nlp.hcoref.data.Mention;
 
-import edu.stanford.nlp.semgraph.SemanticGraph;
-import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations;
-import edu.stanford.nlp.trees.Tree;
-import edu.stanford.nlp.trees.TreeCoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
 
 
@@ -36,7 +29,7 @@ public class SentenceExtractor {
         System.out.println("New Sentence extractor");
         this.props = new Properties();
         //tokenize,ssplit,pos,lemma,ner,parse,mention,coref
-        props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, mention, dcoref");
+        props.setProperty("annotators", "tokenize, ssplit");
         props.setProperty("ssplit.newlineIsSentenceBreak", "always");
         this.pipeline = new StanfordCoreNLP(props);
 
@@ -59,28 +52,21 @@ public class SentenceExtractor {
             // run all Annotators on this text
         getInstance().pipeline.annotate(document);
 
-        System.out.println(document.keySet());
-        System.out.println("+++++++++++++++");
+//        System.out.println(document.keySet());
+//        System.out.println("+++++++++++++++");
         List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
 
-        for (CorefChain cc : document.get(CorefCoreAnnotations.CorefChainAnnotation.class).values()) {
-            System.out.println("\t" + cc);
+//        for (CorefChain cc : document.get(CorefCoreAnnotations.CorefChainAnnotation.class).values()) {
+//            System.out.println("\t" + cc);
+//
+//            System.out.println(cc.getMentionMap());
+//            for(CorefChain.CorefMention cm:cc.getMentionsInTextualOrder()){
+//
+//
+//                System.out.println(cm+" ("+cm.startIndex+", "+cm.endIndex+")");
+//            }
+//        }
 
-            System.out.println(cc.getMentionMap());
-            for(CorefChain.CorefMention cm:cc.getMentionsInTextualOrder()){
-
-
-                System.out.println(cm+" ("+cm.startIndex+", "+cm.endIndex+")");
-            }
-        }
-        for (CoreMap sentence : document.get(CoreAnnotations.SentencesAnnotation.class)) {
-            System.out.println("---");
-            System.out.println("mentions");
-            System.out.println(sentence.keySet());
-            for (Mention m : sentence.get(CorefCoreAnnotations.CorefMentionsAnnotation.class)) {
-                System.out.println("\t" + m.getPosition()+"("+m.getPattern()+")");
-            }
-        }
 
         return sentences;
     }
