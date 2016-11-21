@@ -96,7 +96,8 @@ public class AmbiverseDocumentAnnotator implements DocumentAnnotator {
 
         AnnotatedDocument d=new AnnotatedDocument(text);
 
-        helloApi.annotate(d);
+        Mentions mn=helloApi.annotate(d);
+        d.setMentions(mn);
 
         //System.out.println(d.getEntityMentions());
         d.printEntityMentions();
