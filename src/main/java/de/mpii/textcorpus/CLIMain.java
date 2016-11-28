@@ -1,10 +1,9 @@
-package de.mpii.sticsAnalysis;
+package de.mpii.textcorpus;
 
 import de.mpii.containers.AnnotatedDocument;
 import de.mpii.containers.AnnotatedDocuments;
 import de.mpii.containers.Entity;
 import de.mpii.containers.Sentence;
-import edu.stanford.nlp.util.CoreMap;
 import mpi.tools.javatools.util.FileUtils;
 
 import java.io.*;
@@ -18,8 +17,9 @@ public class CLIMain {
 
     public static void main(String[] args) throws IOException {
 
+        SticsDocumentsParser parser=new SticsDocumentsParser();
         // load document
-        AnnotatedDocuments annDocs = SticsDocumentsParser.documentsFromJSON(args[0]/*"Amy_Adams_Academy_Awards.json"*/);
+        AnnotatedDocuments annDocs = parser.documentsFromJSON(args[0]/*"Amy_Adams_Academy_Awards.json"*/);
 
         // writing to file?
         boolean fileOutput = args.length > 1 && args[1].equals("-f");

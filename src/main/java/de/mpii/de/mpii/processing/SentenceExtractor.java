@@ -47,7 +47,7 @@ public class SentenceExtractor {
 
 
     public static List<Sentence> getSentences(String text){
-
+//        System.out.println("Get sentences");
 
         Annotation document = new Annotation(text);
             // run all Annotators on this text

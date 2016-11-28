@@ -3,9 +3,14 @@ package de.mpii.containers;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
+import de.mpii.de.mpii.processing.CoreferenceResolver;
+import de.mpii.de.mpii.processing.SentenceExtractor;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by gadelrab on 9/5/16.
@@ -26,7 +31,11 @@ public class AnnotatedDocuments {
 
     public void add(AnnotatedDocument annotatedDocument) {
         docs.add(annotatedDocument);
-        annotatedDocument.getEntities().forEach(entity-> entity2doc.put(entity,annotatedDocument));
+        if(annotatedDocument.hasEntities()) {
+            annotatedDocument.getEntities().forEach(entity -> entity2doc.put(entity, annotatedDocument));
+        }
+        else
+            System.out.println("No entities");
     }
 
     @Override
@@ -52,4 +61,19 @@ public class AnnotatedDocuments {
         return output;
     }
 
+
+    public List<Sentence> getAllSentencesWithOneOf(Entity ... entity ) {
+        Set<AnnotatedDocument> filteredDocs=getDocsWith(entity);
+        List<Sentence> sentences=filteredDocs.stream().map(d-> d.getSentencesWith(entity)).flatMap(Collection::stream).collect(Collectors.toList());
+        return sentences;
+    }
+
+
+    public void findSentences(){
+        docs.parallelStream().forEach(d->d.setSentences(SentenceExtractor.getSentences(d.getText())));
+    }
+
+    public void resolveCoreferences(){
+        docs.parallelStream().forEach(d->d.resolveCoreferences(CoreferenceResolver.getCoreferenceChains(d.getText())));
+    }
 }

@@ -45,7 +45,7 @@
                     </binFileExtensions>
                     <programs>
                         <program>
-                            <mainClass>de.mpii.sticsAnalysis.CLIMain</mainClass>
+                            <mainClass>de.mpii.textcorpus.CLIMain</mainClass>
                             <id>stics_data</id>
                         </program>
 

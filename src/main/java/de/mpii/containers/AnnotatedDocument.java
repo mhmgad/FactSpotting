@@ -118,12 +118,13 @@ public class AnnotatedDocument {
     public Set<Sentence> getSentencesWith(Entity ...entity) {
 
         if(sentences==null){
+//            System.out.println("compute sentences");
             this.setSentences(SentenceExtractor.getSentences(text));
         }
 
         Set<Sentence> output= entity2Sentences.get(entity[0]);
         for (int i = 1; i <entity.length ; i++) {
-            output= Sets.intersection(output, entity2Sentences.get(entity[i]));
+            output= Sets.union(output, entity2Sentences.get(entity[i]));
         }
         return output;
     }
@@ -186,6 +187,8 @@ public class AnnotatedDocument {
         this.sentences = sentences;
         if(mentions!=null)
             this.createEntity2SentencesMap();
+//        else
+//            System.out.println("No mentions");
 
     }
 
@@ -219,7 +222,7 @@ public class AnnotatedDocument {
 
             for(CorefChain.CorefMention cm:cc.getMentionsInTextualOrder()){
 
-                System.out.println(cm.mentionSpan+ " ("+cm.startIndex+", "+cm.endIndex+", "+cm.position+", "+cm.headIndex+", "+cm.corefClusterID+")");
+//                System.out.println(cm.mentionSpan+ " ("+cm.startIndex+", "+cm.endIndex+", "+cm.position+", "+cm.headIndex+", "+cm.corefClusterID+")");
 
                 // get the sentence
                 Sentence sentence = sentences.get(cm.sentNum - 1);
@@ -270,5 +273,14 @@ public class AnnotatedDocument {
             s.printMentions();
         });
 
+    }
+
+    public int sentencesWithEntities(){
+//        System.out.println(entity2Sentences);
+        return entity2Sentences.size();
+    }
+
+    public boolean hasEntities() {
+        return mentions.hasEntities();
     }
 }

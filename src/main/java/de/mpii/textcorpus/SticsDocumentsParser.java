@@ -1,6 +1,7 @@
-package de.mpii.sticsAnalysis;
+package de.mpii.textcorpus;
 
 import de.mpii.containers.*;
+import de.mpii.de.mpii.processing.SentenceExtractor;
 import mpi.tools.javatools.util.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -8,16 +9,21 @@ import org.json.simple.parser.JSONParser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
  * Created by gadelrab on 11/16/16.
  */
-public class SticsDocumentsParser {
+public class SticsDocumentsParser extends CorpusParser{
 
 
-    public static AnnotatedDocument documentFromJSON(String jsonDoc){
+
+
+
+    public  AnnotatedDocument documentFromJSON(String jsonDoc){
 
         JSONParser parser=new JSONParser();
 
@@ -63,7 +69,7 @@ public class SticsDocumentsParser {
      *
      * Creates AnnotatedDocuments object from stics dump.
      */
-    public static AnnotatedDocuments documentsFromJSON(String filePath) throws IOException {
+    public  AnnotatedDocuments documentsFromJSON(String filePath) throws IOException {
         System.out.println("=============== Load Annotated Documents ");
         AnnotatedDocuments docs=new AnnotatedDocuments();
 
@@ -89,7 +95,7 @@ public class SticsDocumentsParser {
 
 
 
-    public static Mentions mentionsFromJSONArray(JSONArray mentionsJSONArr) {
+    public  Mentions mentionsFromJSONArray(JSONArray mentionsJSONArr) {
 
         Mentions mentions=new Mentions();
 
@@ -103,14 +109,16 @@ public class SticsDocumentsParser {
     }
 
 
-    public static Mention mentionFromJSON(JSONObject mentionJSON) {
+    public  Mention mentionFromJSON(JSONObject mentionJSON) {
 
+//        System.out.println(mentionJSON);
         long length=(Long) mentionJSON.get("length");
         long offset=(Long) mentionJSON.get("offset");
         String mentionText= (String) mentionJSON.get("name");
 
         JSONObject bestEntity= (JSONObject)mentionJSON.get("bestEntity");
-        String entityId= (String) bestEntity.get("kbIdentifier");
+//        System.out.println(bestEntity);
+        String entityId= bestEntity==null? null:(String) bestEntity.get("kbIdentifier");
 
 
         return new Mention( mentionText,  offset,  length,  entityId);
@@ -118,22 +126,46 @@ public class SticsDocumentsParser {
 
 
     public static void main(String[]args) throws IOException {
+        SticsDocumentsParser parser=new SticsDocumentsParser();
 
-        AnnotatedDocuments annDocs = SticsDocumentsParser.documentsFromJSON("Amy_Adams_Academy_Awards.json");
-
+        AnnotatedDocuments annDocs = parser.documentsFromJSON("Amy_Adams_Academy_Awards.json");
+        annDocs.findSentences();
         System.out.println(annDocs.size());
-        Set<AnnotatedDocument> filteredDocs = annDocs.getDocsWith(new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>")/*,"<France>"*/ );
-        System.out.println(filteredDocs.size());
+//        Set<AnnotatedDocument> filteredDocs = annDocs.getDocsWith(new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"),  new Entity("<France>") );
+//        System.out.println(filteredDocs.size());
+//        filteredDocs.forEach(d->d.setSentences(SentenceExtractor.getSentences(d.getText())));
+//        filteredDocs.forEach(d-> System.out.println(d.sentencesWithEntities()));
         // filteredDocs.forEach(d-> System.out.println(d.getSentences()));
-        filteredDocs.stream().map(d-> d.getSentencesWith(new Entity("<Amy_Adams>" ))).flatMap(s->s.stream()).forEach(s-> System.out.println("-> "+s));
+
+        List<Sentence> allSentences=annDocs.getAllSentencesWithOneOf(new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"));
+//        filteredDocs.stream().map(d-> d.getSentencesWith(new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"))).forEach(ss-> {
+//            System.out.println("----------------");
+//            ss.forEach(s->System.out.println("->"+s));
+//
+//        });
+//        allSentences.forEach(s-> System.out.println("-> "+ s));
+        System.out.println("Sentences Size: "+allSentences.size());
+
+        annDocs.resolveCoreferences();
+        List<Sentence> allSentencesCoref=annDocs.getAllSentencesWithOneOf(new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"));
+        System.out.println("After Coref Sentences Size: "+allSentencesCoref.size());
+
+
+//                flatMap(s->s.stream()).forEach(s-> System.out.println("-> "+s));
         //filteredDocs.forEach(d-> System.out.println(d.getMentionsWith("<Amy_Adams>")));
+
+
 
     }
 
 
-
-
-
-
-
+//    @Override
+//    protected Mentions parseMentions(String line) {
+//        return null;
+//    }
+//
+//    @Override
+//    protected AnnotatedDocument parseDocument(String line) {
+//        return null;
+//    }
 }

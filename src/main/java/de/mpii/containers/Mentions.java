@@ -76,4 +76,7 @@ public class Mentions extends HashSet<Mention> {
     }
 
 
+    public boolean hasEntities() {
+        return entity2Mentions!=null && entity2Mentions.size()>0;
+    }
 }
