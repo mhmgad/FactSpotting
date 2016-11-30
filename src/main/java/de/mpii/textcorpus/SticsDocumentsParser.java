@@ -131,10 +131,12 @@ public class SticsDocumentsParser extends CorpusParser{
 
         AnnotatedDocuments annDocs = parser.documentsFromJSON("Amy_Adams_Academy_Awards.json");
         annDocs.findSentences();
-        System.out.println("Documents:" + annDocs.size());
+        System.out.println("All Documents:" + annDocs.size());
 
         //Get all sentences before Coref
         Set<AnnotatedDocument> filteredDocs=annDocs.getDocsWith(new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"));
+        System.out.println("Filtered Documents:" + annDocs.size());
+
         Set<Sentence> allSentences=annDocs.getAllSentencesWithOneOf(filteredDocs,new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"));
         System.out.println("Sentences Size: "+allSentences.size());
 
