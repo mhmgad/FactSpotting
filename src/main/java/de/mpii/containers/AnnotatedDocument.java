@@ -248,7 +248,8 @@ public class AnnotatedDocument {
 
                 if(index>0){
                     Entity entity=sortedMentions.get(index).getEntity();
-                    candidateEntities.adjustOrPutValue(entity,1,1);
+                    if(entity!=null)
+                        candidateEntities.adjustOrPutValue(entity,1,1);
                 }
 //                System.out.println(cm.sentNum+":\t("+sentence+")");
             }
