@@ -1,6 +1,7 @@
 package de.mpii.textcorpus;
 
 import de.mpii.containers.*;
+import de.mpii.de.mpii.processing.CoreferenceResolver;
 import de.mpii.de.mpii.processing.SentenceExtractor;
 import mpi.tools.javatools.util.FileUtils;
 import org.json.simple.JSONArray;
@@ -138,7 +139,8 @@ public class SticsDocumentsParser extends CorpusParser{
         System.out.println("Sentences Size: "+allSentences.size());
 
         // Coref and get all sentences
-        annDocs.resolveCoreferences();
+//        annDocs.resolveCoreferences();
+        filteredDocs.parallelStream().forEach(d-> d.resolveCoreferences(CoreferenceResolver.getCoreferenceChains(d.getText())));
         Set<Sentence> allSentencesCoref=annDocs.getAllSentencesWithOneOf(filteredDocs,new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"));
         System.out.println("After Coref Sentences Size: "+allSentencesCoref.size());
 
