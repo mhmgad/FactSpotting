@@ -46,10 +46,13 @@
                     <programs>
                         <program>
                             <mainClass>de.mpii.textcorpus.CLIMain</mainClass>
-                            <id>stics_data</id>
+                            <id>load_corpus</id>
                         </program>
 
-
+                        <program>
+                            <mainClass>de.mpii.textcorpus.SticsDocumentsParser</mainClass>
+                            <id>stics_data</id>
+                        </program>
 
                         <program>
                             <mainClass>jrbn.programs.WikipediaXMLExtractor</mainClass>
