@@ -253,11 +253,13 @@ public class AnnotatedDocument {
                 }
 //                System.out.println(cm.sentNum+":\t("+sentence+")");
             }
+            int v=candidateEntities.remove(null);
+            if(v>0) System.out.println("Null is inserted");
 
             // if many entities are
             if(candidateEntities.size()==1){
                 Entity entity=candidateEntities.keySet().iterator().next();
-                chainMentions.stream().forEach(cm->{cm.setEntity(entity); mentions.add(cm); cm.getSentence().addMention(cm); entity2Sentences.put(entity,cm.getSentence());});
+                chainMentions.stream().forEach(cm->{cm.setEntity(entity); linkMention2Sentence(cm,cm.getSentence());/*mentions.add(cm); cm.getSentence().addMention(cm); entity2Sentences.put(entity,cm.getSentence());*/});
             }
             else
             {
