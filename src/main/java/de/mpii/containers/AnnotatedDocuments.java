@@ -62,10 +62,15 @@ public class AnnotatedDocuments {
     }
 
 
-    public List<Sentence> getAllSentencesWithOneOf(Entity ... entity ) {
-        Set<AnnotatedDocument> filteredDocs=getDocsWith(entity);
-        List<Sentence> sentences=filteredDocs.stream().map(d-> d.getSentencesWith(entity)).flatMap(Collection::stream).collect(Collectors.toList());
+    public Set<Sentence> getAllSentencesWithOneOf(Set<AnnotatedDocument> filteredDocs, Entity ... entity ) {
+        Set<Sentence> sentences=filteredDocs.stream().map(d-> d.getSentencesWith(entity)).flatMap(Collection::stream).collect(Collectors.toSet());
         return sentences;
+    }
+
+    public Set<Sentence> getAllSentencesWithOneOf(Entity ... entity ) {
+        Set<AnnotatedDocument> filteredDocs=getDocsWith(entity);
+
+        return getAllSentencesWithOneOf(filteredDocs,entity);
     }
 
 

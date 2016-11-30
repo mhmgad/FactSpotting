@@ -130,30 +130,16 @@ public class SticsDocumentsParser extends CorpusParser{
 
         AnnotatedDocuments annDocs = parser.documentsFromJSON("Amy_Adams_Academy_Awards.json");
         annDocs.findSentences();
-        System.out.println(annDocs.size());
-//        Set<AnnotatedDocument> filteredDocs = annDocs.getDocsWith(new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"),  new Entity("<France>") );
-//        System.out.println(filteredDocs.size());
-//        filteredDocs.forEach(d->d.setSentences(SentenceExtractor.getSentences(d.getText())));
-//        filteredDocs.forEach(d-> System.out.println(d.sentencesWithEntities()));
-        // filteredDocs.forEach(d-> System.out.println(d.getSentences()));
+        System.out.println("Documents:" + annDocs.size());
 
-        List<Sentence> allSentences=annDocs.getAllSentencesWithOneOf(new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"));
-//        filteredDocs.stream().map(d-> d.getSentencesWith(new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"))).forEach(ss-> {
-//            System.out.println("----------------");
-//            ss.forEach(s->System.out.println("->"+s));
-//
-//        });
-//        allSentences.forEach(s-> System.out.println("-> "+ s));
+        //Get all sentences before Coref
+        Set<Sentence> allSentences=annDocs.getAllSentencesWithOneOf(new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"));
         System.out.println("Sentences Size: "+allSentences.size());
 
+        // Coref and get all sentences
         annDocs.resolveCoreferences();
-        List<Sentence> allSentencesCoref=annDocs.getAllSentencesWithOneOf(new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"));
+        Set<Sentence> allSentencesCoref=annDocs.getAllSentencesWithOneOf(new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"));
         System.out.println("After Coref Sentences Size: "+allSentencesCoref.size());
-
-
-//                flatMap(s->s.stream()).forEach(s-> System.out.println("-> "+s));
-        //filteredDocs.forEach(d-> System.out.println(d.getMentionsWith("<Amy_Adams>")));
-
 
 
     }
