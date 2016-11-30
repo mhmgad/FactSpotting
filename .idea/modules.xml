@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/RefutationDectection.iml" filepath="$PROJECT_DIR$/RefutationDectection.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/RefutationDectection.iml" filepath="$PROJECT_DIR$/.idea/RefutationDectection.iml" />
     </modules>
   </component>
 </project>

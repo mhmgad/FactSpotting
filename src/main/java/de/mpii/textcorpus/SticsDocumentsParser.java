@@ -133,12 +133,13 @@ public class SticsDocumentsParser extends CorpusParser{
         System.out.println("Documents:" + annDocs.size());
 
         //Get all sentences before Coref
-        Set<Sentence> allSentences=annDocs.getAllSentencesWithOneOf(new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"));
+        Set<AnnotatedDocument> filteredDocs=annDocs.getDocsWith(new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"));
+        Set<Sentence> allSentences=annDocs.getAllSentencesWithOneOf(filteredDocs,new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"));
         System.out.println("Sentences Size: "+allSentences.size());
 
         // Coref and get all sentences
         annDocs.resolveCoreferences();
-        Set<Sentence> allSentencesCoref=annDocs.getAllSentencesWithOneOf(new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"));
+        Set<Sentence> allSentencesCoref=annDocs.getAllSentencesWithOneOf(filteredDocs,new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"));
         System.out.println("After Coref Sentences Size: "+allSentencesCoref.size());
 
 
