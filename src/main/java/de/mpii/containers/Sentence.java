@@ -99,6 +99,15 @@ public class Sentence {
         mentions.stream().forEach(m-> System.out.println(m));
     }
 
+    public String toStringWithAnnotations(){
+        String output="";
+        List<CoreLabel> tokens = getTokens();
+        for (CoreLabel token: getTokens() ) {
+        //TODO
+        }
+        return output;
+    }
+
     @Override
     public String toString() {
         return "Sentence{" +

@@ -62,15 +62,18 @@ public class AnnotatedDocuments {
     }
 
 
-    public Set<Sentence> getAllSentencesWithOneOf(Set<AnnotatedDocument> filteredDocs, Entity ... entity ) {
+    public Set<Sentence> getAllSentencesWithOneOf(Set<AnnotatedDocument> filteredDocs,boolean withCoref , Entity ... entity ) {
+        if(withCoref){
+            filteredDocs.parallelStream().filter(d->!d.isCorefResolved()).forEach(d-> d.resolveCoreferences(CoreferenceResolver.getCoreferenceChains(d.getText())));
+        }
         Set<Sentence> sentences=filteredDocs.stream().map(d-> d.getSentencesWith(entity)).flatMap(Collection::stream).collect(Collectors.toSet());
         return sentences;
     }
 
-    public Set<Sentence> getAllSentencesWithOneOf(Entity ... entity ) {
+    public Set<Sentence> getAllSentencesWithOneOf(boolean withCoref,Entity ... entity ) {
         Set<AnnotatedDocument> filteredDocs=getDocsWith(entity);
 
-        return getAllSentencesWithOneOf(filteredDocs,entity);
+        return getAllSentencesWithOneOf(filteredDocs,withCoref, entity);
     }
 
 

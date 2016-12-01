@@ -28,6 +28,7 @@ public class AnnotatedDocument {
     Mentions mentions;
     List<Sentence> sentences;
     SetMultimap<Entity, Sentence> entity2Sentences;
+    private boolean corefResolved;
 
 
     public AnnotatedDocument(/*String title,*/ String text) {
@@ -205,6 +206,10 @@ public class AnnotatedDocument {
 
     public void resolveCoreferences(Collection<CorefChain> coreferenceChains) {
 
+        if(sentences==null){
+            setSentences(SentenceExtractor.getSentences(getText()));
+        }
+
         List<Mention> sortedMentions=mentions.getInTextualOrder();
 
         for (CorefChain cc : coreferenceChains) {
@@ -268,6 +273,19 @@ public class AnnotatedDocument {
             }
         }
 
+        this.corefResolved=true;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public boolean isCorefResolved() {
+        return corefResolved;
+    }
+
+    public void setCorefResolved(boolean corefResolved) {
+        this.corefResolved = corefResolved;
     }
 
     public void printSentenceMentions() {
