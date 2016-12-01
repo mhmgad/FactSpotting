@@ -12,6 +12,7 @@ import java.util.*;
 public class Sentence {
 
 
+    private static Comparator<? super CoreLabel> tokensPotion= Comparator.comparing(CoreLabel::beginPosition);
     //TODO Should be replaced to work independently from coreNlp
     CoreMap sentence;
 
@@ -99,14 +100,37 @@ public class Sentence {
         mentions.stream().forEach(m-> System.out.println(m));
     }
 
-    public String toStringWithAnnotations(){
+
+    public String toStringWithAnnotations(Entity ... entity){
+
+        List<Mention> sortedMentions=mentions.getMentionsSorted(entity);
+        List<CoreLabel> tokens=getTokens();
+        long[] tokenStarts=tokens.stream().sorted(tokensPotion).mapToLong(CoreLabel::beginPosition).toArray();
+
+        if (sortedMentions.size()==0)
+            return sentence.toString();
         String output="";
-        List<CoreLabel> tokens = getTokens();
-        for (CoreLabel token: getTokens() ) {
-        //TODO
+
+        int previous=0;
+        for (Mention m:sortedMentions) {
+
+
+            int index=Arrays.binarySearch(tokenStarts,m.getCharOffset());
+
+            if(index>=0)
+            {
+                // TODO here
+//                String prev=
+            }
+
+        
+
+
         }
         return output;
     }
+
+
 
     @Override
     public String toString() {
@@ -117,6 +141,17 @@ public class Sentence {
                 '}';
     }
 
+    /**
+     *
+     * @param start included 0 based
+     * @param end excluded
+     * @return
+     */
+
+    public String getSubText(int start,int end){
+        List<CoreLabel> tokens=getTokens().subList(start, end);
+        return edu.stanford.nlp.ling.Sentence.listToOriginalTextString(tokens).trim();
+    }
 
 
 }

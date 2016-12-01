@@ -1,7 +1,6 @@
 package de.mpii.containers;
 
-import edu.stanford.nlp.util.CoreMap;
-import org.json.simple.JSONObject;
+
 
 import java.util.Comparator;
 
@@ -10,12 +9,8 @@ import java.util.Comparator;
  */
 public class Mention {
 
-    public static Comparator<? super Mention> charOffsetCompartor =new Comparator<Mention>() {
-        @Override
-        public int compare(Mention o1, Mention o2) {
-            return Long.compare(o1.getCharOffset(),o2.getCharOffset());
-        }
-    };
+    public static Comparator<? super Mention> charOffsetAndLengthCompartor = Comparator.comparing(de.mpii.containers.Mention::getCharOffset).thenComparing(de.mpii.containers.Mention::getCharLength);
+    public static Comparator<? super Mention> charOffsetCompartor = Comparator.comparing(de.mpii.containers.Mention::getCharOffset);
 
     //TODO text comming from Coref may not be accurate
     String mentionText;

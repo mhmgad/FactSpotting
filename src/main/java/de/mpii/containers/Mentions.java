@@ -2,8 +2,6 @@ package de.mpii.containers;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -71,12 +69,23 @@ public class Mentions extends HashSet<Mention> {
     public List<Mention> getInTextualOrder(){
 //        Collection<Mention> values=entity2Mentions.values();
 
-    return this.stream().sorted(Mention.charOffsetCompartor).collect(Collectors.toList());
+    return this.stream().sorted(Mention.charOffsetAndLengthCompartor).collect(Collectors.toList());
 
     }
 
 
     public boolean hasEntities() {
         return entity2Mentions!=null && entity2Mentions.size()>0;
+    }
+
+    public List<Mention> getMentionsSorted(Entity ...entity) {
+        Set<Mention> mentionsFiltered=new HashSet<>();
+
+        for (Entity e:entity ) {
+            mentionsFiltered.addAll(getMentions(e));
+        }
+
+        return mentionsFiltered.stream().sorted(Mention.charOffsetAndLengthCompartor).collect(Collectors.toList());
+
     }
 }

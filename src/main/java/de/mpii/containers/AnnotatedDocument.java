@@ -1,17 +1,13 @@
 package de.mpii.containers;
 
 
-import com.google.common.base.Joiner;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
 import de.mpii.de.mpii.processing.SentenceExtractor;
-import edu.stanford.nlp.hcoref.CorefCoreAnnotations;
 import edu.stanford.nlp.hcoref.data.CorefChain;
-import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 
-import edu.stanford.nlp.util.CoreMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 
 import java.util.*;
@@ -239,19 +235,27 @@ public class AnnotatedDocument {
                 int endIndex=tokens.get(cm.endIndex-2).endPosition();
                 int length= endIndex-startCharOffset;
                 //TODO reconstruction is not accurate
-                String mentionText=edu.stanford.nlp.ling.Sentence.listToOriginalTextString(tokens.subList(cm.startIndex-1,cm.endIndex-1)).trim();
+//                String mentionText=edu.stanford.nlp.ling.Sentence.listToOriginalTextString(tokens.subList(cm.startIndex-1,cm.endIndex-1)).trim();
+                String mentionText=sentence.getSubText(cm.startIndex-1,cm.endIndex-1);
 //                String mentionText=Joiner.on(" ").join(tokens.subList(cm.startIndex-1,cm.endIndex-1));
 
 //                System.out.println(startCharOffset+", "+endIndex +", ("+length+") ("+ mentionText+")");
 
                 Mention candidateMention=new Mention(mentionText,startCharOffset,length,null,sentence,true);
+                // if the candidate overlaps with other mentions just skip it.
+//                if(overlapping(candidateMention,sortedMentions))
+//                      continue;
+
+
                 chainMentions.add(candidateMention);
 
+
                 // search if any of the annotated mentions shares the same start
-                int index=Collections.binarySearch(sortedMentions,candidateMention,Mention.charOffsetCompartor);
+                int index=Collections.binarySearch(sortedMentions,candidateMention,Mention.charOffsetAndLengthCompartor);
 
 
-                if(index>0){
+                if(index>=0){
+
                     Entity entity=sortedMentions.get(index).getEntity();
                     if(entity!=null)
                         candidateEntities.adjustOrPutValue(entity,1,1);
@@ -275,6 +279,24 @@ public class AnnotatedDocument {
 
         this.corefResolved=true;
     }
+
+//    private boolean overlapping(Mention candidateMention, List<Mention> sortedMentions) {
+//        int index=Collections.binarySearch(sortedMentions,candidateMention,Mention.charOffsetCompartor);
+//
+//        // Identical
+//        if(index>=0)
+//            return candidateMention.equals(sortedMentions.get(index));
+//        else
+//        {
+//            index=-1*(index+1);
+//
+//
+//        }
+//
+//
+//
+//
+//    }
 
     public void setText(String text) {
         this.text = text;
