@@ -153,7 +153,7 @@ public class SticsDocumentsParser extends CorpusParser{
         Set<Sentence> allSentencesCoref=annDocs.getAllSentencesWithOneOf(true,entities);//new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"), new Entity("<France>"));
         System.out.println("After Coref Sentences Size: "+allSentencesCoref.size());
 
-        allSentencesCoref.forEach(s-> System.out.println(s.toStringWithAnnotations(entities)));
+        allSentencesCoref.forEach(s-> System.out.println("-> "+s.toStringWithAnnotations(entities)));
 
 
     }

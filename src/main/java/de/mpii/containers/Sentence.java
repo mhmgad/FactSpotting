@@ -173,6 +173,10 @@ public class Sentence {
 
         }
 
+        if(end>-1){
+            output.add("]]");
+        }
+
 
 
 
