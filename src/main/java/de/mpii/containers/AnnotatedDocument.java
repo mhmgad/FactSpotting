@@ -224,11 +224,8 @@ public class AnnotatedDocument {
             for(CorefChain.CorefMention cm:cc.getMentionsInTextualOrder()){
 
 //                System.out.println(cm.mentionSpan+ " ("+cm.startIndex+", "+cm.endIndex+", "+cm.position+", "+cm.headIndex+", "+cm.corefClusterID+")");
-
                 // get the sentence
                 Sentence sentence = sentences.get(cm.sentNum - 1);
-
-
 
                 List<CoreLabel> tokens = sentence.getTokens();
                 int startCharOffset= tokens.get(cm.startIndex-1).beginPosition();
