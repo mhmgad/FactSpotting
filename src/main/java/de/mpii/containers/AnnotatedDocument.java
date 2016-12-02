@@ -274,7 +274,7 @@ public class AnnotatedDocument {
             }
         }
 
-        this.corefResolved=true;
+        setCorefResolved(true);
     }
 
 //    private boolean overlapping(Mention candidateMention, List<Mention> sortedMentions) {
@@ -299,11 +299,11 @@ public class AnnotatedDocument {
         this.text = text;
     }
 
-    public boolean isCorefResolved() {
+    public synchronized boolean isCorefResolved() {
         return corefResolved;
     }
 
-    public void setCorefResolved(boolean corefResolved) {
+    public synchronized void setCorefResolved(boolean corefResolved) {
         this.corefResolved = corefResolved;
     }
 
