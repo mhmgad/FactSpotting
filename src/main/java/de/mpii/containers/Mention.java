@@ -145,4 +145,8 @@ public class Mention {
 
 
     }
+
+    public long getEndChar() {
+        return getCharOffset()+getCharLength();
+    }
 }
