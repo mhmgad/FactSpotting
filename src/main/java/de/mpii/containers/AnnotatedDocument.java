@@ -29,18 +29,21 @@ public class AnnotatedDocument {
     List<Sentence> sentences;
     SetMultimap<Entity, Sentence> entity2Sentences;
     private boolean corefResolved;
+    private String url;
 
 
-    public AnnotatedDocument(int id, String text) {
+    public AnnotatedDocument(int id, String text,String url) {
 //        this(text,new Mentions());
         this.text = text;
+        this.id=id;
+        this.url=url;
         this.mentions = new Mentions();
         this.entity2Sentences = HashMultimap.create();
     }
 
 
-    public AnnotatedDocument(String text) {
-        this(0,text);
+    public AnnotatedDocument(String text,String url) {
+        this(0,text,url);
 
     }
 
@@ -288,6 +291,7 @@ public class AnnotatedDocument {
         jsonObject.put("mentions", mentions.toJSON());
         jsonObject.put("entities", entitiesJSON);
         jsonObject.put("sentences", sentencesJSON);
+        jsonObject.put("url", url);
 //        jsonObject.put("sentences",sentences.)
         return jsonObject;
     }

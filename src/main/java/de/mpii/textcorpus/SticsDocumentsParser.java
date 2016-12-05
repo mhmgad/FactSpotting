@@ -43,7 +43,10 @@ public class SticsDocumentsParser extends CorpusParser{
 
             Mentions mentions= mentionsFromJSONArray(mentionsJSONArr);
 
-            AnnotatedDocument doc= new AnnotatedDocument(originalText);
+            //URL
+            String url= (String) jsonObject.get("guid");
+
+            AnnotatedDocument doc= new AnnotatedDocument(originalText, url);
             doc.setMentions(mentions);
 
 //            return new AnnotatedDocument(originalText,mentions);

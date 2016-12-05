@@ -51,7 +51,7 @@ public class Pipeline {
 
 
 
-        AnnotatedDocument d=new AnnotatedDocument(text);
+        AnnotatedDocument d=new AnnotatedDocument(text,null);
 
         pipeline.prepareDocument(d);
 
