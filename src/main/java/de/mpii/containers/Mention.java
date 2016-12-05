@@ -2,6 +2,8 @@ package de.mpii.containers;
 
 
 
+import org.json.simple.JSONObject;
+
 import java.util.Comparator;
 
 /**
@@ -148,5 +150,19 @@ public class Mention {
 
     public long getEndChar() {
         return getCharOffset()+getCharLength();
+    }
+
+
+    public JSONObject toJSON(){
+        JSONObject jsonObj=new JSONObject();
+        jsonObj.put("mentionText",mentionText);
+        jsonObj.put("entity",entity==null? null:entity.toJSON());
+        jsonObj.put("charOffset",charOffset);
+        jsonObj.put("charLength",charLength);
+        jsonObj.put("endChar",(charOffset+charLength));
+        jsonObj.put("sentence_number",sentence.getNumber());
+        jsonObj.put("confidence",confidence);
+        jsonObj.put("isCoref",isCoref);
+        return jsonObj;
     }
 }

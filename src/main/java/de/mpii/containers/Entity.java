@@ -1,5 +1,7 @@
 package de.mpii.containers;
 
+import org.json.simple.JSONObject;
+
 /**
  * Created by gadelrab on 11/2/16.
  */
@@ -67,5 +69,10 @@ public class Entity {
     }
 
 
-
+    public JSONObject toJSON() {
+        JSONObject jsonObj=new JSONObject();
+        jsonObj.put("id",id);
+        jsonObj.put("score",score);
+        return jsonObj;
+    }
 }

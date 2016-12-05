@@ -1,9 +1,7 @@
-package entitydisambiguation;
+package de.mpii.de.mpii.processing.entitydisambiguation;
 
 import de.mpii.containers.AnnotatedDocument;
 import de.mpii.containers.Mentions;
-
-import java.io.IOException;
 
 /**
  * Created by gadelrab on 10/27/16.

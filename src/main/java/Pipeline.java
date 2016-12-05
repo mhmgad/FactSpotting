@@ -2,8 +2,8 @@ import de.mpii.containers.AnnotatedDocument;
 import de.mpii.de.mpii.processing.CoreferenceResolver;
 import de.mpii.de.mpii.processing.SentenceExtractor;
 
-import entitydisambiguation.AmbiverseDocumentAnnotator;
-import entitydisambiguation.DocumentAnnotator;
+import de.mpii.de.mpii.processing.entitydisambiguation.AmbiverseDocumentAnnotator;
+import de.mpii.de.mpii.processing.entitydisambiguation.DocumentAnnotator;
 
 /**
  * Created by gadelrab on 11/3/16.
@@ -26,7 +26,7 @@ public class Pipeline {
     public void prepareDocument(AnnotatedDocument doc) throws Exception {
 
         // Annotate
-        doc.setSentences(SentenceExtractor.getSentences(doc.getText()));
+        doc.setSentences(SentenceExtractor.getSentences(doc));
         doc.setMentions(documentAnnotator.annotate(doc));
         doc.resolveCoreferences(CoreferenceResolver.getCoreferenceChains(doc.getText()));
 

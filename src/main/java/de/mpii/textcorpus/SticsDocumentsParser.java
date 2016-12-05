@@ -1,8 +1,6 @@
 package de.mpii.textcorpus;
 
 import de.mpii.containers.*;
-import de.mpii.de.mpii.processing.CoreferenceResolver;
-import de.mpii.de.mpii.processing.SentenceExtractor;
 import mpi.tools.javatools.util.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -10,10 +8,7 @@ import org.json.simple.parser.JSONParser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by gadelrab on 11/16/16.
@@ -76,10 +71,14 @@ public class SticsDocumentsParser extends CorpusParser{
 
         BufferedReader br = FileUtils.getBufferedUTF8Reader(filePath);
 
+        int id=0;
         for(String line=br.readLine();line!=null;line=br.readLine()){
             try {
+                id++;
                 AnnotatedDocument doc = documentFromJSON(line);
+                doc.setId(id);
                 docs.add(doc);
+
             }catch (Exception e){
 
             }
@@ -141,31 +140,29 @@ public class SticsDocumentsParser extends CorpusParser{
         Set<AnnotatedDocument> filteredDocs=annDocs.getDocsWith(entities);//new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"), new Entity("<France>"));
         System.out.println("Filtered Documents:" + filteredDocs.size());
 
+        AnnotatedDocuments filtered=new AnnotatedDocuments(filteredDocs);
+        filtered.dropJSON("Amy_Adams_processed_docs.json");
+
+
         Set<Sentence> allSentences=annDocs.getAllSentencesWithOneOf(false,entities);//new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"), new Entity("<France>"));
         System.out.println("Sentences Size: "+allSentences.size());
+
+        Set<Entity> chosenEntity=new HashSet<Entity>(Arrays.asList(entities));
+
+        allSentences.forEach(s-> System.out.println(s.getDocId()+","+s.getNumber()+" ("+s.matchingMentions(entities)+"/"+s.matchingEntities(chosenEntity)+") -> "+s.toStringWithAnnotations(entities)));
+
+
 
 
 
         // Coref and get all sentences
-//        annDocs.resolveCoreferences();
-//        filteredDocs.stream().forEach(d-> d.resolveCoreferences(CoreferenceResolver.getCoreferenceChains(d.getText())));
 
-        Set<Sentence> allSentencesCoref=annDocs.getAllSentencesWithOneOf(true,entities);//new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"), new Entity("<France>"));
-        System.out.println("After Coref Sentences Size: "+allSentencesCoref.size());
-
-        allSentencesCoref.forEach(s-> System.out.println("-> "+s.toStringWithAnnotations(entities)));
+//        Set<Sentence> allSentencesCoref=annDocs.getAllSentencesWithOneOf(true,entities);//new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"), new Entity("<France>"));
+//        System.out.println("After Coref Sentences Size: "+allSentencesCoref.size());
+//
+//        allSentencesCoref.forEach(s-> System.out.println("-> "+s.toStringWithAnnotations(entities)));
 
 
     }
 
-
-//    @Override
-//    protected Mentions parseMentions(String line) {
-//        return null;
-//    }
-//
-//    @Override
-//    protected AnnotatedDocument parseDocument(String line) {
-//        return null;
-//    }
 }

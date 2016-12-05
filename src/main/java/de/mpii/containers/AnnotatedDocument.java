@@ -9,8 +9,11 @@ import edu.stanford.nlp.hcoref.data.CorefChain;
 import edu.stanford.nlp.ling.CoreLabel;
 
 import gnu.trove.map.hash.TObjectIntHashMap;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by gadelrab on 8/31/16.
@@ -20,6 +23,7 @@ public class AnnotatedDocument {
 
 
     //String title;
+    int id;
     String text;
     Mentions mentions;
     List<Sentence> sentences;
@@ -27,21 +31,19 @@ public class AnnotatedDocument {
     private boolean corefResolved;
 
 
-    public AnnotatedDocument(/*String title,*/ String text) {
+    public AnnotatedDocument(int id, String text) {
 //        this(text,new Mentions());
         this.text = text;
         this.mentions = new Mentions();
         this.entity2Sentences = HashMultimap.create();
     }
 
-//    public AnnotatedDocument(/*String title,*/ String text, Mentions mentions) {
-//       /* this.title = title;*/
-//        this.text = text;
-//        this.mentions = mentions;
-//        this.entity2Sentences = HashMultimap.create();
-//
-//
-//    }
+
+    public AnnotatedDocument(String text) {
+        this(0,text);
+
+    }
+
 
     private void createEntity2SentencesMap() {
 
@@ -56,23 +58,6 @@ public class AnnotatedDocument {
             });
         }
 
-
-//        for (Sentence sentence:sentences) {
-
-
-
-//            List<CoreLabel> tokens=sentence.getTokens();
-//
-//
-//
-//            int startIndex = tokens.get(0).beginPosition();
-//            int endIndex = tokens.get(tokens.size() - 1).beginPosition();
-//
-//            mentions.stream().filter(m->  m.getEntity()!=null && m.getPosition()>=startIndex && m.getPosition()<=endIndex)
-//                    .forEach(m-> {m.setSentence(sentence);entity2Sentences.put(m.getEntity(),sentence);});
-            //System.out.println(startIndex +" "+ endIndex);
-
-//        }
     }
 
 
@@ -116,7 +101,7 @@ public class AnnotatedDocument {
 
         if(sentences==null){
 //            System.out.println("compute sentences");
-            this.setSentences(SentenceExtractor.getSentences(text));
+            this.setSentences(SentenceExtractor.getSentences(this));
         }
 
         Set<Sentence> output= entity2Sentences.get(entity[0]);
@@ -152,24 +137,6 @@ public class AnnotatedDocument {
     public void addMention(Mention mention){
         mentions.add(mention);
 
-//        if(sentences!=null&&!sentences.isEmpty()&& mention.getEntity()!=null ){
-//            for (Sentence sentence:sentences) {
-//
-//                List<CoreLabel> tokens=sentence.get(CoreAnnotations.TokensAnnotation.class);
-//
-//                int startIndex = tokens.get(0).beginPosition();
-//                int endIndex = tokens.get(tokens.size() - 1).beginPosition();
-//
-//                if( mention.getPosition()>=startIndex && mention.getPosition()<=endIndex) {
-//                    mention.setSentence(sentence);
-//                    entity2Sentences.put(mention.getEntity(), sentence);
-//                    break;
-//                }
-//                //System.out.println(startIndex +" "+ endIndex);
-//
-//            }
-//        }
-
         for (Sentence sentence:sentences) {
             if(mention.in(sentence)){
                 linkMention2Sentence(mention,sentence);
@@ -203,7 +170,7 @@ public class AnnotatedDocument {
     public void resolveCoreferences(Collection<CorefChain> coreferenceChains) {
 
         if(sentences==null){
-            setSentences(SentenceExtractor.getSentences(getText()));
+            setSentences(SentenceExtractor.getSentences(this));
         }
 
         List<Mention> sortedMentions=mentions.getInTextualOrder();
@@ -277,23 +244,6 @@ public class AnnotatedDocument {
         setCorefResolved(true);
     }
 
-//    private boolean overlapping(Mention candidateMention, List<Mention> sortedMentions) {
-//        int index=Collections.binarySearch(sortedMentions,candidateMention,Mention.charOffsetCompartor);
-//
-//        // Identical
-//        if(index>=0)
-//            return candidateMention.equals(sortedMentions.get(index));
-//        else
-//        {
-//            index=-1*(index+1);
-//
-//
-//        }
-//
-//
-//
-//
-//    }
 
     public void setText(String text) {
         this.text = text;
@@ -323,5 +273,31 @@ public class AnnotatedDocument {
 
     public boolean hasEntities() {
         return mentions.hasEntities();
+    }
+
+    public JSONObject toJSON(){
+        JSONObject jsonObject=new JSONObject();
+
+        JSONArray entitiesJSON=new JSONArray();
+        entity2Sentences.keySet().stream().map(Entity::toJSON).forEach(e->entitiesJSON.add(e));
+
+        JSONArray sentencesJSON=new JSONArray();
+        sentences.stream().map(Sentence::toJSON).forEach(s->sentencesJSON.add(s));
+
+        jsonObject.put("text",text);
+        jsonObject.put("mentions", mentions.toJSON());
+        jsonObject.put("entities", entitiesJSON);
+        jsonObject.put("sentences", sentencesJSON);
+//        jsonObject.put("sentences",sentences.)
+        return jsonObject;
+    }
+
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 }

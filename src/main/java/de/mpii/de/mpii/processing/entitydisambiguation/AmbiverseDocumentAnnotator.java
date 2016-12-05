@@ -1,4 +1,4 @@
-package entitydisambiguation;
+package de.mpii.de.mpii.processing.entitydisambiguation;
 
 
 import java.io.IOException;

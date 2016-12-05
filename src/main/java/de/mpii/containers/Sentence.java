@@ -5,6 +5,8 @@ import com.google.api.client.repackaged.com.google.common.base.Joiner;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.util.CoreMap;
+import edu.stanford.nlp.util.Sets;
+import org.json.simple.JSONObject;
 
 import java.util.*;
 
@@ -15,18 +17,18 @@ public class Sentence {
 
 
     private static Comparator<? super CoreLabel> tokensPotion= Comparator.comparing(CoreLabel::beginPosition);
+    private final int docId;
+    private int number;
     //TODO Should be replaced to work independently from coreNlp
     CoreMap sentence;
 
     Mentions mentions;
 
 
-    public static Comparator<? super Sentence> charOffsetCompartor =new Comparator<Sentence>() {
-        @Override
-        public int compare(Sentence o1, Sentence o2) {
-            return Long.compare(o1.getStartCharIndex(),o2.getEndCharIndex());
-        }
-    };
+    public static Comparator<? super Sentence> charOffsetCompartor = Comparator.comparing(Sentence::getStartCharIndex);
+
+
+
 
 
     public CoreMap getSentence() {
@@ -64,9 +66,11 @@ public class Sentence {
     long startCharIndex;
     long endCharIndex;
 
-    public Sentence(CoreMap sentence, Mentions mentions) {
+    public Sentence(int docId,int number,CoreMap sentence, Mentions mentions) {
         this.sentence = sentence;
         this.mentions = mentions;
+        this.number=number;
+        this.docId=docId;
         List<CoreLabel> tokens = this.getTokens();
         this.startCharIndex = tokens.get(0).beginPosition();
         this.endCharIndex = tokens.get(tokens.size() - 1).endPosition();
@@ -74,8 +78,8 @@ public class Sentence {
 
 
 
-    public Sentence(CoreMap sentence) {
-        this(sentence,new Mentions());
+    public Sentence(int docId,int number, CoreMap sentence) {
+        this(docId, number,sentence,new Mentions());
     }
 
     public void addMention(Mention mention) {
@@ -103,43 +107,35 @@ public class Sentence {
     }
 
 
-    public String toStringWithAnnotations(Entity ... entity){
+    public String toStringWithAnnotations(Entity... entity) {
 
         // It assumes non intersecting mentions
 
-        List<Mention> sortedMentions=mentions.getMentionsSorted(entity);
-        List<CoreLabel> tokens=getTokens();
-        long[] mentionsStarts=sortedMentions.stream().mapToLong(Mention::getCharOffset).toArray();
+        List<Mention> sortedMentions = mentions.getMentionsSorted(entity);
+        List<CoreLabel> tokens = getTokens();
+        long[] mentionsStarts = sortedMentions.stream().mapToLong(Mention::getCharOffset).toArray();
 
-        if (sortedMentions.size()==0)
+        if (sortedMentions.size() == 0)
             return sentence.toString();
-        List<String> output=new ArrayList<>();
+        List<String> output = new ArrayList<>();
 
         Iterator<CoreLabel> tokenIterator = tokens.iterator();
-//
-//        CoreLabel startP=new CoreLabel();
-//        startP.setOriginalText("[[");
-//
-//        CoreLabel endP=new CoreLabel();
-//        endP.setOriginalText("]]");
 
         CoreLabel currentToken;
-        long end=-1;
+        long end = -1;
         while (tokenIterator.hasNext()) {
-            currentToken=tokenIterator.next();
+            currentToken = tokenIterator.next();
 
 
-            if(end!=-1) { // we are still inside some mention
-                if(currentToken.beginPosition()>end)
-                {
+            if (end != -1) { // we are still inside some mention
+                if (currentToken.beginPosition() > end) {
 
                     output.add("]]");
-                end=-1;}
-            }
-            else {
+                    end = -1;
+                }
+            } else {
 
                 int index = Arrays.binarySearch(mentionsStarts, ((long) currentToken.beginPosition()));
-
 
 
                 if (index >= 0) // matches a start of
@@ -149,50 +145,28 @@ public class Sentence {
                     end = currentMention.getEndChar();
                 }
             }
-//                while(tokenIterator.hasNext()){
-//                    currentToken=tokenIterator.next();
-//
-//                    if(end!=-1&&currentToken.beginPosition()>end){
-//                        output.add( "]]");
-//                        output.add(currentToken.toString());
-//                    }
-//                    else{
-//
-//                        output.add(currentToken.toString());
-//                        break;
-//                    }
-//            }
-
-
-//            else
-//            {
-//                currentToken=tokenIterator.next();
-//            }
 
             output.add(currentToken.originalText());
 
         }
 
-        if(end>-1){
+        if (end > -1) {
             output.add("]]");
         }
-
-
-
-
 
 
         return Joiner.on(" ").join(output);
     }
 
 
-
     @Override
     public String toString() {
         return "Sentence{" +
-                "sentence=" + sentence +
-                "\n, startCharIndex=" + startCharIndex +
-                "\n, endCharIndex=" + endCharIndex +
+                "number=" + number +
+                ", sentence=" + sentence +
+                ", mentions=" + mentions +
+                ", startCharIndex=" + startCharIndex +
+                ", endCharIndex=" + endCharIndex +
                 '}';
     }
 
@@ -208,5 +182,34 @@ public class Sentence {
         return edu.stanford.nlp.ling.Sentence.listToOriginalTextString(tokens).trim();
     }
 
+    public JSONObject toJSON(){
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("number",number);
+        jsonObject.put("sentence",sentence.toString());
+        jsonObject.put("startCharIndex",startCharIndex);
+        jsonObject.put("endCharIndex",endCharIndex);
+        jsonObject.put("mentions", mentions.toJSON());
+        return jsonObject;
+    }
 
+
+    public int getNumber() {
+        return number;
+    }
+
+    public int matchingEntities(Set<Entity> entities) {
+        return Sets.intersection(getEntities(),entities).size();
+    }
+
+    public Set<Entity> getEntities() {
+        return mentions.getEntities();
+    }
+
+    public int matchingMentions(Entity ... entities) {
+        return mentions.getMentionsSorted(entities).size();
+    }
+
+    public int getDocId() {
+        return docId;
+    }
 }

@@ -5,7 +5,13 @@ import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
 import de.mpii.de.mpii.processing.CoreferenceResolver;
 import de.mpii.de.mpii.processing.SentenceExtractor;
+import mpi.tools.javatools.util.FileUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -25,6 +31,11 @@ public class AnnotatedDocuments {
     public AnnotatedDocuments() {
         this.docs = new ArrayList<>();
         this.entity2doc= HashMultimap.create();
+    }
+
+    public AnnotatedDocuments(Collection<AnnotatedDocument> docs) {
+        this();
+        docs.forEach(d-> this.add(d));
     }
 
 
@@ -78,10 +89,26 @@ public class AnnotatedDocuments {
 
 
     public void findSentences(){
-        docs.parallelStream().forEach(d->d.setSentences(SentenceExtractor.getSentences(d.getText())));
+        docs.parallelStream().forEach(d->d.setSentences(SentenceExtractor.getSentences(d)));
     }
 
     public void resolveCoreferences(){
         docs.parallelStream().forEach(d->d.resolveCoreferences(CoreferenceResolver.getCoreferenceChains(d.getText())));
+    }
+
+
+    public JSONArray toJSON(){
+        JSONArray arr=new JSONArray();
+        docs.stream().forEach(j->arr.add(j.toJSON()));
+        return arr;
+    }
+
+    public void dropJSON(String filePath) throws IOException {
+        BufferedWriter br= FileUtils.getBufferedUTF8Writer(filePath);
+        JSONArray arr=toJSON();
+        arr.writeJSONString(br);
+        br.flush();
+        br.close();
+
     }
 }

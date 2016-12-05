@@ -2,6 +2,8 @@ package de.mpii.containers;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -88,4 +90,10 @@ public class Mentions extends HashSet<Mention> {
         return mentionsFiltered.stream().sorted(Mention.charOffsetAndLengthCompartor).collect(Collectors.toList());
 
     }
+    public JSONArray toJSON(){
+        JSONArray mentionsJSON=new JSONArray();
+        this.stream().map(Mention::toJSON).forEach(jo->mentionsJSON.add(jo) );
+        return mentionsJSON;
+    }
+
 }
