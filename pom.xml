@@ -58,6 +58,11 @@
                             <mainClass>jrbn.programs.WikipediaXMLExtractor</mainClass>
                             <id>parse_wiki</id>
                         </program>
+
+                        <program>
+                            <mainClass>eleasticsearch.EleasticSearchRetriever</mainClass>
+                            <id>get_elastic</id>
+                        </program>
                     </programs>
                 </configuration>
             </plugin>
@@ -228,6 +233,32 @@
             <!--<version>1.10.1</version>-->
         <!--</dependency>-->
 
+        <!-- https://mvnrepository.com/artifact/io.searchbox/jest -->
+        <dependency>
+            <groupId>io.searchbox</groupId>
+            <artifactId>jest</artifactId>
+            <version>2.0.4</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.elasticsearch/elasticsearch -->
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>5.1.1</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.elasticsearch.client/rest -->
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>rest</artifactId>
+            <version>5.1.1</version>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.elasticsearch</groupId>-->
+            <!--<artifactId>elasticsearch</artifactId>-->
+            <!--<version>1.7.1</version>-->
+        <!--</dependency>-->
 
     </dependencies>
     <properties>

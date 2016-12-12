@@ -95,7 +95,7 @@ public class WikiDocumentsParser {
 
                 doc.setSentences(SentenceExtractor.getSentences(doc));
                 try {
-//                    doc.setMentions(documentAnnotator.annotate(doc));
+                    doc.setMentions(documentAnnotator.annotate(doc));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -157,6 +157,8 @@ public class WikiDocumentsParser {
 
         WikiDocumentsParser wikiDocumentsParser=new WikiDocumentsParser();
         AnnotatedDocuments docs=wikiDocumentsParser.parseFiles("wiki_00");
+
+        docs.dropJSON("annotated_wiki_pages.json");
 
         System.out.println(docs.size());
 

@@ -51,7 +51,8 @@ public class AmbiverseDocumentAnnotator implements DocumentAnnotator {
     @Override
     public Mentions annotate(AnnotatedDocument doc) throws IOException {
 
-        // Prepare the analysis input, an English text fragment in this case.
+        // Prepare the analysis input, an English text fragment in this case..
+        System.out.println("Document text size: "+doc.getText().length());
         AnalyzeInput input = new AnalyzeInput()
                 .withLanguage("en")     // Optional. If not set, language detection happens automatically.
                 .withText(doc.getText());
@@ -66,7 +67,7 @@ public class AmbiverseDocumentAnnotator implements DocumentAnnotator {
             em.setText(match.getText());                       // Span of text in the input that was linked.
             em.setCharOffset(match.getCharOffset());          // Character offset of the match in the original text.
             em.setCharLength(match.getCharLength());          // Character length of the match.
-            em.setEntity(new de.mpii.containers.Entity(match.getEntity().getId(),match.getEntity().getScore()));         // ID of the linked entity, e.g. "YAGO3:<The_Who>".
+            em.setEntity(match.getEntity().getId()==null? null:new de.mpii.containers.Entity(match.getEntity().getId(),match.getEntity().getScore()));         // ID of the linked entity, e.g. "YAGO3:<The_Who>".
             em.setConfidence(match.getEntity().getScore());    // Confidence score.
             mentions.add(em);
         }

@@ -131,7 +131,7 @@ public class SticsDocumentsParser extends CorpusParser{
     public static void main(String[]args) throws IOException {
         SticsDocumentsParser parser=new SticsDocumentsParser();
 
-        Entity [] entities=new Entity[]{new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"), new Entity("<France>")};
+        Entity [] entities=new Entity[]{new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>")/*, new Entity("<France>")*/};
 
         AnnotatedDocuments annDocs = parser.documentsFromJSON("Amy_Adams_Academy_Awards.json");
         annDocs.findSentences();
