@@ -59,7 +59,7 @@ public class EleasticSearchRetriever {
 //                QueryBuilders.boolQuery()
 //                        .must(QueryBuilders.matchQuery("text",filteringString))
 
-        ).size(20);
+        ).size(1);
         System.out.println("Query: "+searchSourceBuilder.toString());
 
         Search search = new Search.Builder(searchSourceBuilder.toString())
