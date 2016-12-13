@@ -187,7 +187,7 @@ public class CLIMain {
                     final AnnotatedDocuments annDocsWrap=annDocs;
                     docsList.stream().forEach(d->{
                         try {
-                            d.setSentences(SentenceExtractor.getSentences(d));
+//                            d.setSentences(SentenceExtractor.getSentences(d));
                             d.setMentions(documentAnnotator.annotate(d));
                             annDocsWrap.add(d);
 
