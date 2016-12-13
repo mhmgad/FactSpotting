@@ -49,8 +49,6 @@ public class AnnotatedDocument {
 
 
     private void createEntity2SentencesMap() {
-
-
         List<Mention> sortedMentions=mentions.getInTextualOrder();
 
         // Assumes sentences already sorted TODO fix
@@ -66,7 +64,7 @@ public class AnnotatedDocument {
 
 
     private void linkMention2Sentence(Mention mention, Sentence sentence) {
-        // to way linking
+        // 2-way linking
         mention.setSentence(sentence);
         sentence.addMention(mention);
         if(mention.hasEntity())
@@ -281,17 +279,24 @@ public class AnnotatedDocument {
     public JSONObject toJSON(){
         JSONObject jsonObject=new JSONObject();
 
-        JSONArray entitiesJSON=new JSONArray();
-        mentions.getEntities().stream().map(Entity::toJSON).forEach(e->entitiesJSON.add(e));
+
+        if(mentions!=null) {
+            JSONArray entitiesJSON=new JSONArray();
+            mentions.getEntities().stream().map(Entity::toJSON).forEach(e -> entitiesJSON.add(e));
+            jsonObject.put("entities", entitiesJSON);
+
+        }
 //        entity2Sentences.keySet().stream().map(Entity::toJSON).forEach(e->entitiesJSON.add(e));
 
-        JSONArray sentencesJSON=new JSONArray();
-        sentences.stream().map(Sentence::toJSON).forEach(s->sentencesJSON.add(s));
+
+        if(sentences!=null) {
+            JSONArray sentencesJSON=new JSONArray();
+            sentences.stream().map(Sentence::toJSON).forEach(s -> sentencesJSON.add(s));
+            jsonObject.put("sentences", sentencesJSON);
+        }
 
         jsonObject.put("text",text);
-        jsonObject.put("mentions", mentions.toJSON());
-        jsonObject.put("entities", entitiesJSON);
-        jsonObject.put("sentences", sentencesJSON);
+        jsonObject.put("mentions", mentions==null? null:mentions.toJSON());
         jsonObject.put("url", url);
 //        jsonObject.put("sentences",sentences.)
         return jsonObject;
