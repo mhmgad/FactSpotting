@@ -4,6 +4,9 @@ import de.mpii.containers.AnnotatedDocument;
 import de.mpii.containers.AnnotatedDocuments;
 import de.mpii.containers.Entity;
 import de.mpii.containers.Sentence;
+import de.mpii.de.mpii.processing.entitydisambiguation.AmbiverseDocumentAnnotator;
+import de.mpii.de.mpii.processing.entitydisambiguation.DocumentAnnotator;
+import eleasticsearch.EleasticSearchRetriever;
 import mpi.tools.javatools.util.FileUtils;
 
 import java.io.*;
@@ -111,8 +114,27 @@ public class CLIMain {
     public static void main(String[] args) throws IOException {
 
         SticsDocumentsParser parser=new SticsDocumentsParser();
+
+        String sourceName= args[0];
+        boolean fromES=false;
+        EleasticSearchRetriever retriever=null;
+
+
         // load document
-        AnnotatedDocuments annDocs = parser.documentsFromJSON(args[0]/*"Amy_Adams_Academy_Awards.json"*/);
+        AnnotatedDocuments annDocs=new AnnotatedDocuments();
+
+        if(sourceName.startsWith("ES_")) {
+            sourceName = sourceName.substring(3);
+            fromES=true;
+            retriever=new EleasticSearchRetriever(sourceName);
+
+        }else
+        {
+            annDocs =parser.documentsFromJSON(sourceName/*"Amy_Adams_Academy_Awards.json"*/);
+            System.out.println(annDocs.size());
+        }
+
+
 
         // writing to file?
         boolean fileOutput = args.length > 1 && args[1].equals("-f");
@@ -121,9 +143,10 @@ public class CLIMain {
             prefix = args[2];
 
 
-        System.out.println(annDocs.size());
+
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         System.out.print("Entities list should be in format <entity1_id>, <entity2_id>, <entity3_id> ");
         while (true) {
             try {
@@ -149,6 +172,25 @@ public class CLIMain {
                 }
 
                 System.out.println(Arrays.toString(items));
+
+                if(fromES){
+                    // list of the items without the '_' in the name
+                    String[] itemsMod=new String[items.length];
+                    Arrays.stream(items).map(i->i.replace('_',' ')).collect(Collectors.toList()).toArray(itemsMod);
+                    List<AnnotatedDocument> docsList=retriever.getDocuments(itemsMod);
+
+                    DocumentAnnotator documentAnnotator = AmbiverseDocumentAnnotator.getInstance();
+                    final AnnotatedDocuments annDocsWrap=annDocs;
+                    docsList.stream().forEach(d->{
+                        try {
+                            d.setMentions(documentAnnotator.annotate(d));
+                            annDocsWrap.add(d);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
+
                 // get documents with entities
                 Set<AnnotatedDocument> filteredDocs = annDocs.getDocsWith(entities/*, "<Academy_Awards>","<France>"*/);
 

@@ -1,7 +1,6 @@
 package eleasticsearch;
 
 import de.mpii.containers.AnnotatedDocument;
-import de.mpii.containers.AnnotatedDocuments;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestClientFactory;
 import io.searchbox.client.config.HttpClientConfig;
@@ -14,6 +13,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by gadelrab on 12/12/16.
@@ -21,6 +21,7 @@ import java.util.List;
 public class EleasticSearchRetriever {
 
 
+    private  String indexName="wiki";
     JestClientFactory factory = new JestClientFactory();
 
     JestClient client;
@@ -34,10 +35,16 @@ public class EleasticSearchRetriever {
         client = factory.getObject();
     }
 
-    public AnnotatedDocuments getDocuments(String ... filteringString) throws IOException {
+    public EleasticSearchRetriever(String indexName) {
+        this();
+        this.indexName = indexName;
+
+    }
+
+    public List<AnnotatedDocument> getDocuments(String ... filteringString) throws IOException {
 
 
-        AnnotatedDocuments docs=new AnnotatedDocuments();
+//        AnnotatedDocuments docs=new AnnotatedDocuments();
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
@@ -57,17 +64,17 @@ public class EleasticSearchRetriever {
 
         Search search = new Search.Builder(searchSourceBuilder.toString())
                 // multiple index or types can be added.
-                .addIndex("wiki")
+                .addIndex(indexName)
                 .build();
 
         SearchResult response = client.execute(search);
         System.out.println("hitsSize in response: "+response.getTotal());
-        List<SearchResult.Hit<AnnotatedDocument, Void>> doclist = response.getHits(AnnotatedDocument.class);
-        System.out.println("hitsSize: "+doclist.size());
-        AnnotatedDocument fristDoc=doclist.get(0).source;
+        List<SearchResult.Hit<AnnotatedDocument, Void>> responseList = response.getHits(AnnotatedDocument.class);
+        System.out.println("hitsSize: "+responseList.size());
+        AnnotatedDocument fristDoc=responseList.get(0).source;
         System.out.println("first: "+fristDoc.getUrl()+"\n"+fristDoc.getText());
 
-        //List<AnnotatedDocument> articles = doclist.getSourceAsObjectList(AnnotatedDocument.class);
+        List<AnnotatedDocument> docList = responseList.stream().map(d-> d.source).collect(Collectors.toList());
 
 //        SearchResponse response = client.prepareSearch("index1", "index2")
 //                .setTypes("type1", "type2")
@@ -78,12 +85,12 @@ public class EleasticSearchRetriever {
 //                .get();
 
 
-        return null;
+        return docList;
     }
 
     public static void main(String[] args) throws IOException {
 
-        EleasticSearchRetriever f=new EleasticSearchRetriever();
+        EleasticSearchRetriever f=new EleasticSearchRetriever("wiki");
 
         System.out.println(f.getDocuments("obama"));
         System.out.println(f.getDocuments("Barak Obama"));
