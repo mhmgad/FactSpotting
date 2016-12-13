@@ -32,13 +32,19 @@ public class AnnotatedDocument {
     private String url;
 
 
+    public AnnotatedDocument() {
+        this.mentions = new Mentions();
+        this.entity2Sentences = HashMultimap.create();
+
+    }
+
     public AnnotatedDocument(int id, String text,String url) {
 //        this(text,new Mentions());
+        this();
         this.text = text;
         this.id=id;
         this.url=url;
-        this.mentions = new Mentions();
-        this.entity2Sentences = HashMultimap.create();
+
     }
 
 
