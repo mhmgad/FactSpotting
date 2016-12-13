@@ -52,7 +52,8 @@ public class EleasticSearchRetriever {
 //                QueryBuilders.boolQuery()
 //                        .must(QueryBuilders.matchQuery("text",filteringString))
 
-        );
+        ).size(50);
+        System.out.println("Query: "+searchSourceBuilder.toString());
 
         Search search = new Search.Builder(searchSourceBuilder.toString())
                 // multiple index or types can be added.
@@ -63,7 +64,9 @@ public class EleasticSearchRetriever {
         System.out.println("hitsSize in response: "+response.getTotal());
         List<SearchResult.Hit<AnnotatedDocument, Void>> doclist = response.getHits(AnnotatedDocument.class);
         System.out.println("hitsSize: "+doclist.size());
-        System.out.println("first: "+doclist.get(0).source.getText());
+        AnnotatedDocument fristDoc=doclist.get(0).source;
+        System.out.println("first: "+fristDoc.getUrl()+"\n"+fristDoc.getText());
+
         //List<AnnotatedDocument> articles = doclist.getSourceAsObjectList(AnnotatedDocument.class);
 
 //        SearchResponse response = client.prepareSearch("index1", "index2")

@@ -304,4 +304,8 @@ public class AnnotatedDocument {
     public int getId() {
         return id;
     }
+
+    public String getUrl() {
+        return url;
+    }
 }
