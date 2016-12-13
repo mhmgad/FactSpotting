@@ -162,15 +162,17 @@ public class CLIMain {
                 String line = s.replaceAll(" ", "");
                 String items[] = line.split(">,<");
                 Entity[] entities=new Entity[items.length];
-                if (items.length > 1) {
-                    items[0] = items[0] + ">";
+                Arrays.stream(items).map(i->new Entity(Entity.toProperId(i))).collect(Collectors.toList()).toArray(entities);
+
+//                if (items.length > 1) {
+//                    items[0] = items[0] + ">";
 //                    items[items.length - 1] = "<" + items[items.length - 1];
 //
 //                    for (int i = 1; i < items.length - 1; i++) {
 //                        entities[i] = new Entity(Entity.toProperId(items[i] ));
 //                    }
-                    Arrays.stream(items).map(i->Entity.toProperId(i)).collect(Collectors.toList()).toArray(entities);
-                }
+
+//                }
 
                 System.out.println(Arrays.toString(items)+"\n"+Arrays.toString(entities));
 
