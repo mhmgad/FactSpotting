@@ -81,6 +81,7 @@ public class Entity {
      * @return
      */
     public String getIdAsTitle(){
-        return id.substring(1,id.length()-1).replace('_',' ');
+        String fixedId=id.substring(1,id.length()-1).replace('_',' ');
+        return fixedId;
     }
 }
