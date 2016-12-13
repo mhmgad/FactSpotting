@@ -175,8 +175,8 @@ public class CLIMain {
 
                 if(fromES){
                     // list of the items without the '_' in the name
-                    String[] itemsMod=new String[items.length];
-                    Arrays.stream(items).map(i->i.replace('_',' ')).collect(Collectors.toList()).toArray(itemsMod);
+                    String[] itemsMod=new String[entities.length];
+                    Arrays.stream(entities).map(e->e.getIdAsTitle()).collect(Collectors.toList()).toArray(itemsMod);
                     List<AnnotatedDocument> docsList=retriever.getDocuments(itemsMod);
 
                     DocumentAnnotator documentAnnotator = AmbiverseDocumentAnnotator.getInstance();
@@ -203,7 +203,7 @@ public class CLIMain {
 
                 BufferedWriter bw = null;
                 String outputFilePath = prefix + File.separator + line.substring(1, line.length() - 1).replaceAll(">,<", "_") + ".txt";
-                String outputDocumentsFilePath = prefix + File.separator + line.substring(1, line.length() - 1).replaceAll(">,<", "_") + ".json";
+                String outputDocumentsFilePath = prefix + File.separator + line.substring(1, line.length() - 1).replaceAll(">,<", "_") + "_docs.json";
 
 
                 // initialize writer
@@ -236,7 +236,8 @@ public class CLIMain {
 
 
             } catch (Exception e) {
-                System.out.println("Exception: " + e.getMessage());
+                e.printStackTrace();
+//                System.out.println("Exception: " + e.getMessage());
             }
         }
 

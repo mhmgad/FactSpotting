@@ -75,4 +75,12 @@ public class Entity {
         jsonObj.put("score",score);
         return jsonObj;
     }
+
+    /**
+     * returns the possible wikipedia title
+     * @return
+     */
+    public String getIdAsTitle(){
+        return getId().substring(1,id.length()-1).replace('_',' ');
+    }
 }
