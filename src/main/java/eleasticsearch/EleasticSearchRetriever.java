@@ -8,6 +8,7 @@ import io.searchbox.client.config.HttpClientConfig;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
@@ -33,17 +34,24 @@ public class EleasticSearchRetriever {
         client = factory.getObject();
     }
 
-    public AnnotatedDocuments getDocuments(String filteringString) throws IOException {
+    public AnnotatedDocuments getDocuments(String ... filteringString) throws IOException {
 
 
         AnnotatedDocuments docs=new AnnotatedDocuments();
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
+        BoolQueryBuilder query = QueryBuilders.boolQuery();
+        for (String s:filteringString) {
+
+            query.must(QueryBuilders.matchQuery("text",s));
+        }
+
         searchSourceBuilder.query(
-                QueryBuilders.boolQuery()
-                        .must(QueryBuilders.matchQuery("text",filteringString))
-//                        .should(QueryBuilders.matchQuery("field2", "7654321"))
+                query
+//                QueryBuilders.boolQuery()
+//                        .must(QueryBuilders.matchQuery("text",filteringString))
+
         );
 
         Search search = new Search.Builder(searchSourceBuilder.toString())
@@ -55,6 +63,7 @@ public class EleasticSearchRetriever {
         System.out.println("hitsSize in response: "+response.getTotal());
         List<SearchResult.Hit<AnnotatedDocument, Void>> doclist = response.getHits(AnnotatedDocument.class);
         System.out.println("hitsSize: "+doclist.size());
+        System.out.println("first: "+doclist.get(0));
         //List<AnnotatedDocument> articles = doclist.getSourceAsObjectList(AnnotatedDocument.class);
 
 //        SearchResponse response = client.prepareSearch("index1", "index2")
@@ -74,9 +83,12 @@ public class EleasticSearchRetriever {
         EleasticSearchRetriever f=new EleasticSearchRetriever();
 
         System.out.println(f.getDocuments("obama"));
-        System.out.println(f.getDocuments("Obama"));
         System.out.println(f.getDocuments("Barak Obama"));
+        System.out.println(f.getDocuments("Barak", "Obama"));
+
         System.out.println(f.getDocuments("Oscars"));
+        System.out.println(f.getDocuments("Leonardo DiCaprio"));
+        System.out.println(f.getDocuments("Oscars","Leonardo DiCaprio"));
 
     }
 
