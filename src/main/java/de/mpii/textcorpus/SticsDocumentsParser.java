@@ -144,7 +144,7 @@ public class SticsDocumentsParser extends CorpusParser{
         System.out.println("Filtered Documents:" + filteredDocs.size());
 
         AnnotatedDocuments filtered=new AnnotatedDocuments(filteredDocs);
-        filtered.dropJSON("Amy_Adams_processed_docs.json");
+        filtered.dumpJSON("Amy_Adams_processed_docs.json");
 
 
         Set<Sentence> allSentences=annDocs.getAllSentencesWithOneOf(false,entities);//new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"), new Entity("<France>"));

@@ -203,10 +203,13 @@ public class CLIMain {
 
                 BufferedWriter bw = null;
                 String outputFilePath = prefix + File.separator + line.substring(1, line.length() - 1).replaceAll(">,<", "_") + ".txt";
+                String outputDocumentsFilePath = prefix + File.separator + line.substring(1, line.length() - 1).replaceAll(">,<", "_") + ".json";
+
 
                 // initialize writer
                 if (fileOutput) {
                     bw = FileUtils.getBufferedUTF8Writer(outputFilePath);
+                    annDocs.dumpJSON(outputDocumentsFilePath);
                 }
 
 

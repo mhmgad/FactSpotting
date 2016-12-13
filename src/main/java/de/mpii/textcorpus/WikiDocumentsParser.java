@@ -15,10 +15,7 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.*;
-import java.io.*;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
 
 
 /**
@@ -158,7 +155,7 @@ public class WikiDocumentsParser {
         WikiDocumentsParser wikiDocumentsParser=new WikiDocumentsParser();
         AnnotatedDocuments docs=wikiDocumentsParser.parseFiles("wiki_00");
 
-        docs.dropJSON("annotated_wiki_pages.json");
+        docs.dumpJSON("annotated_wiki_pages.json");
 
         System.out.println(docs.size());
 

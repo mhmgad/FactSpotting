@@ -103,7 +103,7 @@ public class AnnotatedDocuments {
         return arr;
     }
 
-    public void dropJSON(String filePath) throws IOException {
+    public void dumpJSON(String filePath) throws IOException {
         BufferedWriter br= FileUtils.getBufferedUTF8Writer(filePath);
         JSONArray arr=toJSON();
         arr.writeJSONString(br);
