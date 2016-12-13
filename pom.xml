@@ -8,37 +8,9 @@
     <artifactId>factchecking</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <profiles>
-        <profile>
-            <id>java8-doclint-disabled</id>
-            <activation>
-                <jdk>[1.8,)</jdk>
-            </activation>
-            <properties>
-                <javadoc.opts>-Xdoclint:none</javadoc.opts>
-            </properties>
-        </profile>
-    </profiles>
 
     <build>
         <plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.9</version>
-            <executions>
-                <execution>
-                    <id>attach-javadocs</id>
-                    <goals>
-                        <goal>jar</goal>
-                    </goals>
-                    <configuration>
-                        <additionalparam>${javadoc.opts}</additionalparam>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -98,15 +70,7 @@
         </plugins>
     </build>
 
-    <!--&lt;!&ndash;JavaDoc profile&ndash;&gt;-->
-    <!--<profiles>-->
-        <!--<profile>-->
-            <!--<id>doclint-java8-disable</id>-->
-            <!--<activation>-->
-                <!--<jdk>[1.8,)</jdk>-->
-            <!--</activation>-->
-        <!--</profile>-->
-    <!--</profiles>-->
+
 
     <!--<dependencyManagement>-->
         <dependencies>
@@ -263,12 +227,6 @@
             </dependency>
 
 
-            <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
-            <!--<dependency>-->
-            <!--<groupId>org.jsoup</groupId>-->
-            <!--<artifactId>jsoup</artifactId>-->
-            <!--<version>1.10.1</version>-->
-            <!--</dependency>-->
 
             <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
             <dependency>
@@ -295,11 +253,7 @@
                 <artifactId>rest</artifactId>
                 <version>5.1.1</version>
             </dependency>
-            <!--<dependency>-->
-            <!--<groupId>org.elasticsearch</groupId>-->
-            <!--<artifactId>elasticsearch</artifactId>-->
-            <!--<version>1.7.1</version>-->
-            <!--</dependency>-->
+
 
             <!-- https://mvnrepository.com/artifact/io.searchbox/jest -->
             <dependency>
@@ -308,6 +262,19 @@
                 <version>2.0.0</version>
             </dependency>
 
+
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>4.4.1</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>2.7</version>
+            </dependency>
 
         </dependencies>
     <!--</dependencyManagement>-->
