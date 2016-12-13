@@ -40,7 +40,7 @@ public class Entity {
     public String toString() {
         return "Entity{" +
                 "id='" + id + '\'' +
-                ", score=" + score +
+//                ", score=" + score +
                 '}';
     }
 
@@ -83,5 +83,15 @@ public class Entity {
     public String getIdAsTitle(){
         String fixedId=id.substring(1,id.length()-1).replace('_',' ');
         return fixedId;
+    }
+
+    public static String toProperId(String item) {
+        String properId=item;
+        if(!properId.startsWith("<"))
+            properId="<"+properId;
+        if(!properId.endsWith(">"))
+            properId=properId+">";
+
+        return properId;
     }
 }
