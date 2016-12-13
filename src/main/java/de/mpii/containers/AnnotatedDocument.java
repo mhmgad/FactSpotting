@@ -282,7 +282,8 @@ public class AnnotatedDocument {
         JSONObject jsonObject=new JSONObject();
 
         JSONArray entitiesJSON=new JSONArray();
-        entity2Sentences.keySet().stream().map(Entity::toJSON).forEach(e->entitiesJSON.add(e));
+        mentions.getEntities().stream().map(Entity::toJSON).forEach(e->entitiesJSON.add(e));
+//        entity2Sentences.keySet().stream().map(Entity::toJSON).forEach(e->entitiesJSON.add(e));
 
         JSONArray sentencesJSON=new JSONArray();
         sentences.stream().map(Sentence::toJSON).forEach(s->sentencesJSON.add(s));

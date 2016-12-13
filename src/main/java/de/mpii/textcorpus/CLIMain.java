@@ -4,6 +4,7 @@ import de.mpii.containers.AnnotatedDocument;
 import de.mpii.containers.AnnotatedDocuments;
 import de.mpii.containers.Entity;
 import de.mpii.containers.Sentence;
+import de.mpii.de.mpii.processing.SentenceExtractor;
 import de.mpii.de.mpii.processing.entitydisambiguation.AmbiverseDocumentAnnotator;
 import de.mpii.de.mpii.processing.entitydisambiguation.DocumentAnnotator;
 import eleasticsearch.EleasticSearchRetriever;
@@ -186,8 +187,10 @@ public class CLIMain {
                     final AnnotatedDocuments annDocsWrap=annDocs;
                     docsList.stream().forEach(d->{
                         try {
+                            d.setSentences(SentenceExtractor.getSentences(d));
                             d.setMentions(documentAnnotator.annotate(d));
                             annDocsWrap.add(d);
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
