@@ -123,7 +123,8 @@ public class CLIMain {
                 // initialize writer
                 if (fileOutput) {
                     bw = FileUtils.getBufferedUTF8Writer(outputFilePath);
-                    annDocs.dumpJSON(outputDocumentsFilePath);
+                    AnnotatedDocuments filteredAnnDocs=new AnnotatedDocuments(filteredDocs);
+                    filteredAnnDocs.dumpJSON(outputDocumentsFilePath);
                 }
 
 
