@@ -309,6 +309,8 @@ public class AnnotatedDocument {
         jsonObject.put("title",title);
         jsonObject.put("mentions", mentions==null? null:mentions.toJSON());
         jsonObject.put("url", url);
+        jsonObject.put("id", id);
+
 //        jsonObject.put("sentences",sentences.)
         return jsonObject;
     }
