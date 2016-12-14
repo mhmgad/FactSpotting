@@ -129,7 +129,7 @@ public class WikiDocumentsParser {
 //            System.out.println(root.getTextContent());
             String content=dString.substring(dString.indexOf('\n')+1);
             System.out.println(content.length());
-            int id=Integer.parseInt(root.getAttribute("id"));
+            String id=root.getAttribute("id");
             String url=root.getAttribute("url");
 
 

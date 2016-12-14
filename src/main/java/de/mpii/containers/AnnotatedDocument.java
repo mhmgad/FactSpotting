@@ -25,7 +25,7 @@ public class AnnotatedDocument {
 
     //String title;
     @JestId
-    int id;
+    String id;
 
     String text;
     String title;
@@ -42,7 +42,7 @@ public class AnnotatedDocument {
 
     }
 
-    public AnnotatedDocument(int id, String text,String url) {
+    public AnnotatedDocument(String id, String text,String url) {
 //        this(text,new Mentions());
         this();
         this.text = text;
@@ -53,7 +53,7 @@ public class AnnotatedDocument {
 
 
     public AnnotatedDocument(String text,String url) {
-        this(0,text,url);
+        this("0",text,url);
 
     }
 
@@ -314,11 +314,11 @@ public class AnnotatedDocument {
     }
 
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

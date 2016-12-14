@@ -17,7 +17,7 @@ public class Sentence {
 
 
     private static Comparator<? super CoreLabel> tokensPotion= Comparator.comparing(CoreLabel::beginPosition);
-    private final int docId;
+    private final String docId;
     private int number;
     //TODO Should be replaced to work independently from coreNlp
     CoreMap sentence;
@@ -66,7 +66,7 @@ public class Sentence {
     long startCharIndex;
     long endCharIndex;
 
-    public Sentence(int docId,int number,CoreMap sentence, Mentions mentions) {
+    public Sentence(String docId,int number,CoreMap sentence, Mentions mentions) {
         this.sentence = sentence;
         this.mentions = mentions;
         this.number=number;
@@ -78,7 +78,7 @@ public class Sentence {
 
 
 
-    public Sentence(int docId,int number, CoreMap sentence) {
+    public Sentence(String docId,int number, CoreMap sentence) {
         this(docId, number,sentence,new Mentions());
     }
 
@@ -213,7 +213,7 @@ public class Sentence {
         return mentions.getMentionsSorted(entities).size();
     }
 
-    public int getDocId() {
+    public String getDocId() {
         return docId;
     }
 

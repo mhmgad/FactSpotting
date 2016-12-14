@@ -79,7 +79,7 @@ public class SticsDocumentsParser extends CorpusParser{
             try {
                 id++;
                 AnnotatedDocument doc = documentFromJSON(line);
-                doc.setId(id);
+                doc.setId(""+id);
                 docs.add(doc);
 
             }catch (Exception e){
