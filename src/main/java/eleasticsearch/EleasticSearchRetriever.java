@@ -41,7 +41,7 @@ public class EleasticSearchRetriever {
 
     }
 
-    public List<AnnotatedDocument> getDocuments(String ... filteringString) throws IOException {
+    public List<AnnotatedDocument> getDocuments(int resultSize,String ... filteringString) throws IOException {
 
 
 //        AnnotatedDocuments docs=new AnnotatedDocuments();
@@ -59,7 +59,7 @@ public class EleasticSearchRetriever {
 //                QueryBuilders.boolQuery()
 //                        .must(QueryBuilders.matchQuery("text",filteringString))
 
-        ).size(1);
+        ).size(resultSize);
         System.out.println("Query: "+searchSourceBuilder.toString());
 
         Search search = new Search.Builder(searchSourceBuilder.toString())
@@ -92,13 +92,13 @@ public class EleasticSearchRetriever {
 
         EleasticSearchRetriever f=new EleasticSearchRetriever("wiki");
 
-        System.out.println(f.getDocuments("obama"));
-        System.out.println(f.getDocuments("Barak Obama"));
-        System.out.println(f.getDocuments("Barak", "Obama"));
+        System.out.println(f.getDocuments(1,"obama"));
+        System.out.println(f.getDocuments(2,"Barak Obama"));
+        System.out.println(f.getDocuments(3,"Barak", "Obama"));
 
-        System.out.println(f.getDocuments("Oscars"));
-        System.out.println(f.getDocuments("Leonardo DiCaprio"));
-        System.out.println(f.getDocuments("Oscars","Leonardo DiCaprio"));
+        System.out.println(f.getDocuments(4,"Oscars"));
+        System.out.println(f.getDocuments(5,"Leonardo DiCaprio"));
+        System.out.println(f.getDocuments(6,"Oscars","Leonardo DiCaprio"));
 
     }
 
