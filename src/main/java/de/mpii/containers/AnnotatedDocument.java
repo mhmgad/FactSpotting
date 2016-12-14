@@ -9,6 +9,7 @@ import edu.stanford.nlp.hcoref.data.CorefChain;
 import edu.stanford.nlp.ling.CoreLabel;
 
 import gnu.trove.map.hash.TObjectIntHashMap;
+import io.searchbox.annotations.JestId;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -23,7 +24,9 @@ public class AnnotatedDocument {
 
 
     //String title;
+    @JestId
     int id;
+
     String text;
     String title;
     Mentions mentions;
