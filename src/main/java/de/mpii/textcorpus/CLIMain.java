@@ -90,7 +90,7 @@ public class CLIMain {
                     String[] itemsMod=new String[entities.length];
                     Arrays.stream(entities).map(e->e.getIdAsTitle()).collect(Collectors.toList()).toArray(itemsMod);
                     List<AnnotatedDocument> docsList=retriever.getDocuments(10,itemsMod);
-
+                    annDocs=new AnnotatedDocuments();
                     DocumentAnnotator documentAnnotator = AmbiverseDocumentAnnotator.getInstance();
                     final AnnotatedDocuments annDocsWrap=annDocs;
                     docsList.stream().forEach(d->{
