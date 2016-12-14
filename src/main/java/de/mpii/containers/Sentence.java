@@ -197,6 +197,10 @@ public class Sentence {
         return number;
     }
 
+    public int matchingEntities(Entity ... entities) {
+        return matchingEntities(new HashSet<>(Arrays.asList(entities)));
+    }
+
     public int matchingEntities(Set<Entity> entities) {
         return Sets.intersection(getEntities(),entities).size();
     }
@@ -212,4 +216,10 @@ public class Sentence {
     public int getDocId() {
         return docId;
     }
+
+    public String toStringWithDetails(Entity ... entities){
+        String sentenceWithMentions=toStringWithAnnotations(entities);
+        return "D:"+getDocId()+" ,S:"+getNumber()+" (M:"+matchingMentions(entities)+"/E:"+matchingEntities(entities)+")\t->\t"+sentenceWithMentions;
+    }
+
 }

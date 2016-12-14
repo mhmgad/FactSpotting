@@ -95,10 +95,10 @@ public class CLIMain {
                     final AnnotatedDocuments annDocsWrap=annDocs;
                     docsList.stream().forEach(d->{
                         try {
+                            System.out.println(d.getTitle());
                             d.setSentences(SentenceExtractor.getSentences(d));
                             d.setMentions(documentAnnotator.annotate(d));
                             annDocsWrap.add(d);
-
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -131,7 +131,7 @@ public class CLIMain {
 
                 if (fileOutput) {
                     for (Sentence sen : allSentences) {
-                        bw.write(sen.getSentence().toString());
+                        bw.write(sen.toStringWithDetails(entities));
                         bw.newLine();
                     }
                     // for new document

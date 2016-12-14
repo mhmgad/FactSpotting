@@ -25,6 +25,7 @@ public class AnnotatedDocument {
     //String title;
     int id;
     String text;
+    String title;
     Mentions mentions;
     List<Sentence> sentences;
     SetMultimap<Entity, Sentence> entity2Sentences;
@@ -319,5 +320,17 @@ public class AnnotatedDocument {
 
     public String getUrl() {
         return url;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

@@ -150,9 +150,9 @@ public class SticsDocumentsParser extends CorpusParser{
         Set<Sentence> allSentences=annDocs.getAllSentencesWithOneOf(false,entities);//new Entity("<Amy_Adams>"), new Entity("<Academy_Awards>"), new Entity("<France>"));
         System.out.println("Sentences Size: "+allSentences.size());
 
-        Set<Entity> chosenEntity=new HashSet<Entity>(Arrays.asList(entities));
+//        Set<Entity> chosenEntity=new HashSet<Entity>(Arrays.asList(entities));
 
-        allSentences.forEach(s-> System.out.println(s.getDocId()+","+s.getNumber()+" ("+s.matchingMentions(entities)+"/"+s.matchingEntities(chosenEntity)+") -> "+s.toStringWithAnnotations(entities)));
+        allSentences.forEach(s-> System.out.println(s.toStringWithDetails(entities)));
 
 
 
