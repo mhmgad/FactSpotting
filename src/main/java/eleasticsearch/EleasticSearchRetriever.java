@@ -71,8 +71,8 @@ public class EleasticSearchRetriever {
         System.out.println("hitsSize in response: "+response.getTotal());
         List<SearchResult.Hit<AnnotatedDocument, Void>> responseList = response.getHits(AnnotatedDocument.class);
         System.out.println("hitsSize: "+responseList.size());
-        AnnotatedDocument fristDoc=responseList.get(0).source;
-        System.out.println("first: "+fristDoc.getUrl());//+"\n"+fristDoc.getText());
+//        AnnotatedDocument fristDoc=responseList.get(0).source;
+//        System.out.println("first: "+fristDoc.getUrl());//+"\n"+fristDoc.getText());
 
         List<AnnotatedDocument> docList = responseList.stream().map(d-> d.source).collect(Collectors.toList());
 
