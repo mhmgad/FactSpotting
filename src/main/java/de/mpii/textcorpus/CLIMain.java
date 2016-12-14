@@ -19,28 +19,34 @@ import java.util.stream.Collectors;
  */
 public class CLIMain {
 
+    EleasticSearchRetriever retriever=null;
+    SticsDocumentsParser parser=new SticsDocumentsParser();
+    AnnotatedDocuments annDocs=new AnnotatedDocuments();
+
+
 
     public static void main(String[] args) throws IOException {
 
-        SticsDocumentsParser parser=new SticsDocumentsParser();
+        CLIMain engine=new CLIMain();
+
 
         String sourceName= args[0];
         boolean fromES=false;
-        EleasticSearchRetriever retriever=null;
+
 
 
         // load document
-        AnnotatedDocuments annDocs=new AnnotatedDocuments();
+
 
         if(sourceName.startsWith("ES_")) {
             sourceName = sourceName.substring(3);
             fromES=true;
-            retriever=new EleasticSearchRetriever(sourceName);
+            engine.retriever=new EleasticSearchRetriever(sourceName);
 
         }else
         {
-            annDocs =parser.documentsFromJSON(sourceName/*"Amy_Adams_Academy_Awards.json"*/);
-            System.out.println(annDocs.size());
+            engine.annDocs =engine.parser.documentsFromJSON(sourceName/*"Amy_Adams_Academy_Awards.json"*/);
+            System.out.println(engine.annDocs.size());
         }
 
 
@@ -67,87 +73,12 @@ public class CLIMain {
                     System.out.println("Exit");
                     System.exit(0);
                 }
-
-                String line = s.replaceAll(" ", "");
-                String items[] = line.split(">,<");
-                Entity[] entities=new Entity[items.length];
-                Arrays.stream(items).map(i->new Entity(Entity.toProperId(i))).collect(Collectors.toList()).toArray(entities);
-
-//                if (items.length > 1) {
-//                    items[0] = items[0] + ">";
-//                    items[items.length - 1] = "<" + items[items.length - 1];
-//
-//                    for (int i = 1; i < items.length - 1; i++) {
-//                        entities[i] = new Entity(Entity.toProperId(items[i] ));
-//                    }
-
-//                }
-
-                System.out.println(Arrays.toString(items)+"\n"+Arrays.toString(entities));
-
-                if(fromES){
-                    // list of the items without the '_' in the name
-                    String[] itemsMod=new String[entities.length];
-                    Arrays.stream(entities).map(e->e.getIdAsTitle()).collect(Collectors.toList()).toArray(itemsMod);
-                    List<AnnotatedDocument> docsList=retriever.getDocuments(10,itemsMod);
-                    annDocs=new AnnotatedDocuments();
-                    DocumentAnnotator documentAnnotator = AmbiverseDocumentAnnotator.getInstance();
-                    final AnnotatedDocuments annDocsWrap=annDocs;
-                    docsList.stream().forEach(d->{
-                        try {
-                            System.out.println(d.getTitle());
-                            d.setSentences(SentenceExtractor.getSentences(d));
-                            d.setMentions(documentAnnotator.annotate(d));
-                            annDocsWrap.add(d);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    });
-                }
-
-                // get documents with entities
-                Set<AnnotatedDocument> filteredDocs = annDocs.getDocsWith(entities/*, "<Academy_Awards>","<France>"*/);
-
                 System.out.print("With coref (t|f)?: ");
                 String withCorefS = br.readLine();
 
                 boolean withCoref=(withCorefS.startsWith("t"));
 
-
-
-                BufferedWriter bw = null;
-                String outputFilePath = prefix + File.separator + line.substring(1, line.length() - 1).replaceAll(">,<", "_") + ".txt";
-                String outputDocumentsFilePath = prefix + File.separator + line.substring(1, line.length() - 1).replaceAll(">,<", "_") + "_docs.json";
-
-
-                // initialize writer
-                if (fileOutput) {
-                    bw = FileUtils.getBufferedUTF8Writer(outputFilePath);
-                    AnnotatedDocuments filteredAnnDocs=new AnnotatedDocuments(filteredDocs);
-                    filteredAnnDocs.dumpJSON(outputDocumentsFilePath);
-                }
-
-
-                Set<Sentence> allSentences=annDocs.getAllSentencesWithOneOf(filteredDocs,withCoref,entities);
-
-                if (fileOutput) {
-                    for (Sentence sen : allSentences) {
-                        bw.write(sen.toStringWithDetails(entities));
-                        bw.newLine();
-                    }
-                    // for new document
-                    bw.newLine();
-                }
-
-
-                String stats = "Documents: " + filteredDocs.size() + "\tSentences: " + allSentences.size();
-                if (fileOutput) {
-                    bw.write(stats);
-                    bw.newLine();
-                    bw.close();
-                    System.out.println("Written to File " + outputFilePath);
-                }
-                System.out.println(stats);
+                engine.process(fromES, fileOutput, prefix, withCoref, s);
 
 
             } catch (Exception e) {
@@ -156,6 +87,77 @@ public class CLIMain {
             }
         }
 
+
+    }
+
+    private  void process(boolean fromES, boolean fileOutput, String outputPrefix, boolean withCoref,String query) throws Exception {
+        String line = query.replaceAll(" ", "");
+        String items[] = line.split(">,<");
+        Entity[] entities=new Entity[items.length];
+        Arrays.stream(items).map(i->new Entity(Entity.toProperId(i))).collect(Collectors.toList()).toArray(entities);
+
+
+        System.out.println(Arrays.toString(items)+"\n"+Arrays.toString(entities)+"\twithCoref:"+withCoref);
+
+        if(fromES){
+            // list of the items without the '_' in the name
+            String[] itemsMod=new String[entities.length];
+            Arrays.stream(entities).map(Entity::getIdAsTitle).collect(Collectors.toList()).toArray(itemsMod);
+            List<AnnotatedDocument> docsList=retriever.getDocuments(10,itemsMod);
+            annDocs=new AnnotatedDocuments();
+            DocumentAnnotator documentAnnotator = AmbiverseDocumentAnnotator.getInstance();
+            final AnnotatedDocuments annDocsWrap=annDocs;
+            docsList.forEach(d -> {
+                try {
+                    System.out.println(d.getTitle());
+                    d.setSentences(SentenceExtractor.getSentences(d));
+                    d.setMentions(documentAnnotator.annotate(d));
+                    annDocsWrap.add(d);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        // get documents with entities
+        Set<AnnotatedDocument> filteredDocs = annDocs.getDocsWith(entities/*, "<Academy_Awards>","<France>"*/);
+
+
+
+
+        BufferedWriter bw = null;
+        String outputFilePath = outputPrefix + File.separator + line.substring(1, line.length() - 1).replaceAll(">,<", "_") + ".txt";
+        String outputDocumentsFilePath = outputPrefix + File.separator + line.substring(1, line.length() - 1).replaceAll(">,<", "_") + "_docs.json";
+
+
+        // initialize writer
+        if (fileOutput) {
+            bw = FileUtils.getBufferedUTF8Writer(outputFilePath);
+            AnnotatedDocuments filteredAnnDocs=new AnnotatedDocuments(filteredDocs);
+            filteredAnnDocs.dumpJSON(outputDocumentsFilePath);
+        }
+
+
+        Set<Sentence> allSentences=annDocs.getAllSentencesWithOneOf(filteredDocs,withCoref,entities);
+
+        if (fileOutput) {
+            for (Sentence sen : allSentences) {
+                bw.write(sen.toStringWithDetails(entities));
+                bw.newLine();
+            }
+            // for new document
+            bw.newLine();
+        }
+
+
+        String stats = "Documents: " + filteredDocs.size() + "\tSentences: " + allSentences.size();
+        if (fileOutput) {
+            bw.write(stats);
+            bw.newLine();
+            bw.close();
+            System.out.println("Written to File " + outputFilePath);
+        }
+        System.out.println(stats);
 
     }
 }
