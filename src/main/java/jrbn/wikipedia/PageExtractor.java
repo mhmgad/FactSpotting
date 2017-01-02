@@ -52,7 +52,8 @@ public class PageExtractor implements IArticleFilter {
 							if (endTag != -1) {
 								String tagContent = rawContent.substring(startTag, endTag);
 
-								int startTitle = htmlContent.indexOf("title=\"", newIdx);
+								int startTitle = htmlContent.indexOf("title=\"", startTag);
+//								int startTitle = htmlContent.indexOf("title=\"", newIdx);
 								if (startTitle != -1) {
 									int endTitle = htmlContent.indexOf("\"", startTitle + 7);
 									if (endTitle != -1) {
@@ -60,11 +61,13 @@ public class PageExtractor implements IArticleFilter {
 										System.out.println(titleEntity);
 									}
 								}
+								newIdx=endTag;
 								idx = newIdx + 1;
 							}
 						} else {
 							idx = rawContent.length();
 						}
+
 					}
 
 					// Create the Wikipedia object
