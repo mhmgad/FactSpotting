@@ -64,6 +64,11 @@
                             <mainClass>eleasticsearch.EleasticSearchRetriever</mainClass>
                             <id>get_elastic</id>
                         </program>
+
+                        <program>
+                            <mainClass>jrbn.programs.WikipediaXMLExtractor</mainClass>
+                            <id>extract_wiki</id>
+                        </program>
                     </programs>
                 </configuration>
             </plugin>
