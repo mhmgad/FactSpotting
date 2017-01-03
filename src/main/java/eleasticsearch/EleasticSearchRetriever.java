@@ -88,17 +88,64 @@ public class EleasticSearchRetriever {
         return docList;
     }
 
+
+    public List<AnnotatedDocument> getByTitle(int resultSize, String title, String ... filteringString) throws IOException{
+
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        BoolQueryBuilder titleQuery = QueryBuilders.boolQuery();
+        titleQuery.must(QueryBuilders.matchQuery("title",title));
+
+        BoolQueryBuilder bodyQuery = QueryBuilders.boolQuery();
+
+        for (String s:filteringString) {
+
+            bodyQuery.should(QueryBuilders.matchQuery("text",s));
+        }
+
+        BoolQueryBuilder query = QueryBuilders.boolQuery().must(titleQuery).must(bodyQuery);
+        searchSourceBuilder.query(
+                query
+        ).size(resultSize);
+
+        System.out.println("Query: "+searchSourceBuilder.toString());
+
+        Search search = new Search.Builder(searchSourceBuilder.toString())
+                // multiple index or types can be added.
+                .addIndex(indexName)
+                .build();
+
+        SearchResult response = client.execute(search);
+        System.out.println("hitsSize in response: "+response.getTotal());
+        List<SearchResult.Hit<AnnotatedDocument, Void>> responseList = response.getHits(AnnotatedDocument.class);
+        System.out.println("hitsSize: "+responseList.size());
+
+
+        List<AnnotatedDocument> docList = responseList.stream().map(d-> d.source).collect(Collectors.toList());
+
+
+        return docList;
+    }
+
+
+
     public static void main(String[] args) throws IOException {
 
-        EleasticSearchRetriever f=new EleasticSearchRetriever("wiki");
+        EleasticSearchRetriever f=new EleasticSearchRetriever("wiki_sent");
 
-        System.out.println(f.getDocuments(1,"obama"));
-        System.out.println(f.getDocuments(2,"Barak Obama"));
-        System.out.println(f.getDocuments(3,"Barak", "Obama"));
+        System.out.println(f.getDocuments(20,"o","born in"));
 
-        System.out.println(f.getDocuments(4,"Oscars"));
-        System.out.println(f.getDocuments(5,"Leonardo DiCaprio"));
-        System.out.println(f.getDocuments(6,"Oscars","Leonardo DiCaprio"));
+
+//        EleasticSearchRetriever f=new EleasticSearchRetriever("wiki");
+//
+//        System.out.println(f.getDocuments(1,"obama"));
+//        System.out.println(f.getDocuments(2,"Barak Obama"));
+//        System.out.println(f.getDocuments(3,"Barak", "Obama"));
+//
+//        System.out.println(f.getDocuments(4,"Oscars"));
+//        System.out.println(f.getDocuments(5,"Leonardo DiCaprio"));
+//        System.out.println(f.getDocuments(6,"Oscars","Leonardo DiCaprio"));
 
     }
 
