@@ -69,6 +69,12 @@
                             <mainClass>jrbn.programs.WikipediaXMLExtractor</mainClass>
                             <id>extract_wiki</id>
                         </program>
+
+
+                        <program>
+                            <mainClass>ExperimentWasBornIn</mainClass>
+                            <id>exper_born</id>
+                        </program>
                     </programs>
                 </configuration>
             </plugin>

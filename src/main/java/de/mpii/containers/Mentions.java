@@ -47,7 +47,11 @@ public class Mentions extends HashSet<Mention> {
 
     public Set<Mention> getMentions(Entity entity) {
         return entity2Mentions.get(entity);
-            }
+    }
+
+    public Set<Mention> getMentions() {
+        return new HashSet<>(entity2Mentions.values()) ;
+    }
 
     @Override
     public String toString() {
@@ -80,12 +84,16 @@ public class Mentions extends HashSet<Mention> {
         return entity2Mentions!=null && entity2Mentions.size()>0;
     }
 
-    public List<Mention> getMentionsSorted(Entity ...entity) {
+    public List<Mention> getMentionsSorted(Entity ...entities) {
         Set<Mention> mentionsFiltered=new HashSet<>();
 
-        for (Entity e:entity ) {
+        // if there is no entity get all
+        if(entities.length>0){
+        for (Entity e:entities ) {
             mentionsFiltered.addAll(getMentions(e));
-        }
+        }}
+        else
+            mentionsFiltered=getMentions();
 
         return mentionsFiltered.stream().sorted(Mention.charOffsetAndLengthCompartor).collect(Collectors.toList());
 

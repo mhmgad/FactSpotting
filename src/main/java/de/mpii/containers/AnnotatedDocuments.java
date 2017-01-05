@@ -27,6 +27,7 @@ public class AnnotatedDocuments {
     ArrayList<AnnotatedDocument> docs;
 
     SetMultimap<Entity,AnnotatedDocument> entity2doc;
+//    private Set<Entity> entities;
 
     public AnnotatedDocuments() {
         this.docs = new ArrayList<>();
@@ -104,8 +105,8 @@ public class AnnotatedDocuments {
     }
 
     public void dumpJSON(String filePath) throws IOException {
-        BufferedWriter br= FileUtils.getBufferedUTF8Writer(filePath);
-        JSONArray arr=toJSON();
+        BufferedWriter br = FileUtils.getBufferedUTF8Writer(filePath);
+        JSONArray arr = toJSON();
         arr.writeJSONString(br);
         br.flush();
         br.close();
@@ -113,4 +114,11 @@ public class AnnotatedDocuments {
     }
 
 
+    public ArrayList<AnnotatedDocument> getDocs() {
+        return docs;
+    }
+
+    public Set<Entity> getEntities() {
+        return entity2doc.keySet();
+    }
 }

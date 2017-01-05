@@ -1,6 +1,7 @@
 package eleasticsearch;
 
 import de.mpii.containers.AnnotatedDocument;
+import de.mpii.containers.SentAnnotatedDocument;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestClientFactory;
 import io.searchbox.client.config.HttpClientConfig;
@@ -8,6 +9,7 @@ import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
@@ -89,19 +91,19 @@ public class EleasticSearchRetriever {
     }
 
 
-    public List<AnnotatedDocument> getByTitle(int resultSize, String title, String ... filteringString) throws IOException{
+    public List<SentAnnotatedDocument> getByTitle(int resultSize, String title, String ... filteringString) throws IOException{
 
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
         BoolQueryBuilder titleQuery = QueryBuilders.boolQuery();
-        titleQuery.must(QueryBuilders.matchQuery("title",title));
+        titleQuery.must(QueryBuilders.matchQuery("title",title).operator(Operator.AND).minimumShouldMatch("75%"));
 
         BoolQueryBuilder bodyQuery = QueryBuilders.boolQuery();
 
         for (String s:filteringString) {
 
-            bodyQuery.should(QueryBuilders.matchQuery("text",s));
+            bodyQuery.should(QueryBuilders.matchQuery("sent",s).operator(Operator.AND));
         }
 
         BoolQueryBuilder query = QueryBuilders.boolQuery().must(titleQuery).must(bodyQuery);
@@ -109,7 +111,7 @@ public class EleasticSearchRetriever {
                 query
         ).size(resultSize);
 
-        System.out.println("Query: "+searchSourceBuilder.toString());
+//        System.out.println("Query: "+searchSourceBuilder.toString());
 
         Search search = new Search.Builder(searchSourceBuilder.toString())
                 // multiple index or types can be added.
@@ -118,11 +120,11 @@ public class EleasticSearchRetriever {
 
         SearchResult response = client.execute(search);
         System.out.println("hitsSize in response: "+response.getTotal());
-        List<SearchResult.Hit<AnnotatedDocument, Void>> responseList = response.getHits(AnnotatedDocument.class);
+        List<SearchResult.Hit<SentAnnotatedDocument, Void>> responseList = response.getHits(SentAnnotatedDocument.class);
         System.out.println("hitsSize: "+responseList.size());
 
 
-        List<AnnotatedDocument> docList = responseList.stream().map(d-> d.source).collect(Collectors.toList());
+        List<SentAnnotatedDocument> docList = responseList.stream().map(d-> d.source).collect(Collectors.toList());
 
 
         return docList;
@@ -134,7 +136,7 @@ public class EleasticSearchRetriever {
 
         EleasticSearchRetriever f=new EleasticSearchRetriever("wiki_sent");
 
-        System.out.println(f.getDocuments(20,"o","born in"));
+        System.out.println(f.getByTitle(5,"albert einstein","born in"));
 
 
 //        EleasticSearchRetriever f=new EleasticSearchRetriever("wiki");

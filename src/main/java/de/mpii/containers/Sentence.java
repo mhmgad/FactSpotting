@@ -142,11 +142,16 @@ public class Sentence {
                 {
                     Mention currentMention = sortedMentions.get(index);
                     output.add("[[");
+                    output.add(currentMention.getEntity().getId());
+                    output.add("|");
+
                     end = currentMention.getEndChar();
                 }
             }
 
             output.add(currentToken.originalText());
+
+
 
         }
 

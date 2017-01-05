@@ -81,8 +81,7 @@ public class Entity {
      * @return
      */
     public String getIdAsTitle(){
-        String fixedId=id.substring(1,id.length()-1).replace('_',' ');
-        return fixedId;
+       return Entity.getIdAsTitle(id);
     }
 
     public static String toProperId(String item) {
@@ -93,5 +92,11 @@ public class Entity {
             properId=properId+">";
 
         return properId;
+    }
+
+    public static String getIdAsTitle(String id) {
+        String fixedId=id.substring(1,id.length()-1).replace('_',' ');
+        return fixedId;
+
     }
 }

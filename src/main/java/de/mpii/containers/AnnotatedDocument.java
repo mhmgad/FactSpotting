@@ -89,12 +89,15 @@ public class AnnotatedDocument {
     @Override
     public String toString() {
         return "AnnotatedDocument{" +
-                "text='" + text + '\'' +
-                ", mentions=" + mentions +
-                ", sentences=" + sentences +
+                "id='" + getId() + '\'' +
+                ", text='" + getText() + '\'' +
+                ", title='" + getTitle() + '\'' +
+                ", mentions=" + getMentions() +
+                ", sentences=" + getSentences() +
+                ", corefResolved=" + isCorefResolved() +
+                ", url='" + getUrl() + '\'' +
                 '}';
     }
-
 
     public Mentions getMentions() {
         return mentions;
@@ -305,11 +308,11 @@ public class AnnotatedDocument {
             jsonObject.put("sentences", sentencesJSON);
         }
 
-        jsonObject.put("text",text);
-        jsonObject.put("title",title);
-        jsonObject.put("mentions", mentions==null? null:mentions.toJSON());
-        jsonObject.put("url", url);
-        jsonObject.put("id", id);
+        jsonObject.put("text",getText());
+        jsonObject.put("title",getTitle());
+        jsonObject.put("mentions", getMentions()==null? null:getMentions().toJSON());
+        jsonObject.put("url", getUrl());
+        jsonObject.put("id", getId());
 
 //        jsonObject.put("sentences",sentences.)
         return jsonObject;
