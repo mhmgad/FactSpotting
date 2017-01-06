@@ -15,6 +15,11 @@ public class SentAnnotatedDocument extends  AnnotatedDocument{
 
     }
 
+    @Override
+    public String getId() {
+        return title;
+    }
+
     public void setSent(String sent) {
         this.sent = sent;
         this.text = sent;

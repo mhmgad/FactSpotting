@@ -73,7 +73,7 @@
 
                         <program>
                             <mainClass>ExperimentWasBornIn</mainClass>
-                            <id>exper_born</id>
+                            <id>exper_cli</id>
                         </program>
                     </programs>
                 </configuration>

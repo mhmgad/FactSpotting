@@ -12,8 +12,11 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.luaj.vm2.ast.Str;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -91,13 +94,16 @@ public class EleasticSearchRetriever {
     }
 
 
-    public List<SentAnnotatedDocument> getByTitle(int resultSize, String title, String ... filteringString) throws IOException{
+    public List<SentAnnotatedDocument> getByTitle(int resultSize, List<String> pages, List<String> filteringString) throws IOException{
 
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
         BoolQueryBuilder titleQuery = QueryBuilders.boolQuery();
-        titleQuery.must(QueryBuilders.matchQuery("title",title).operator(Operator.AND).minimumShouldMatch("75%"));
+
+        for (String pageTitle:pages) {
+            titleQuery.should(QueryBuilders.matchQuery("title", pageTitle).operator(Operator.AND).minimumShouldMatch("75%"));
+        }
 
         BoolQueryBuilder bodyQuery = QueryBuilders.boolQuery();
 
@@ -136,8 +142,7 @@ public class EleasticSearchRetriever {
 
         EleasticSearchRetriever f=new EleasticSearchRetriever("wiki_sent");
 
-        System.out.println(f.getByTitle(5,"albert einstein","born in"));
-
+        System.out.println(f.getByTitle(5,Arrays.asList("albert einstein"), Arrays.asList("born in")));
 
 //        EleasticSearchRetriever f=new EleasticSearchRetriever("wiki");
 //

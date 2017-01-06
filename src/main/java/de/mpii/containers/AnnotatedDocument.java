@@ -342,4 +342,9 @@ public class AnnotatedDocument {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    public boolean hasEntities(Set<Entity> entitiesToCheck) {
+        return Sets.intersection(entitiesToCheck,entity2Sentences.keySet()).size()>0;
+
+    }
 }
