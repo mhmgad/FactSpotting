@@ -1,5 +1,6 @@
 
 import de.mpii.containers.*;
+import de.mpii.de.mpii.processing.CoreferenceResolver;
 import de.mpii.de.mpii.processing.SentenceExtractor;
 import de.mpii.de.mpii.processing.entitydisambiguation.AmbiverseDocumentAnnotator;
 import de.mpii.de.mpii.processing.entitydisambiguation.DocumentAnnotator;
@@ -31,6 +32,9 @@ public class ExperimentWasBornIn {
     private Option outputFileOp;
     private Option relationOp;
     private Option bothOp;
+
+    public enum PageMode {SUBJECT_ONLY,OBJECT_ONLY,BOTH,AUTO};
+
 
     public ExperimentWasBornIn() {
         options= new Options();
@@ -70,7 +74,7 @@ public class ExperimentWasBornIn {
         options.addOption(relationOp);
 
 
-        bothOp =new Option("b",false,"Both subject and object pages");
+        bothOp = Option.builder("c").longOpt("check-pages").hasArg().desc("Determine the pages to be checked <S:Subject | O: Object | A: automatic(Not implemented)>").argName("relationName").required().build();
         options.addOption(bothOp);
 
     }
@@ -80,6 +84,7 @@ public class ExperimentWasBornIn {
     public void run(CommandLine cmd) throws Exception{
 
         int esResultSize=5;
+
 
         if(cmd.hasOption(esResultSizeOp.getOpt())){
             esResultSize = Integer.valueOf(cmd.getOptionValue(esResultSizeOp.getOpt()));
@@ -100,8 +105,9 @@ public class ExperimentWasBornIn {
 
         }
 
-
-        boolean bothSides = cmd.hasOption(bothOp.getOpt());
+        if(cmd.hasOption(bothOp.getOpt())) {
+            PageMode bothSides = cmd.getOptionValue(inputRelationsFileOp.getOpt(),"SO");
+        }
 
 
         process(esResultSize,bothSides,inputFile,relation,relationParaphrases,outputFilePath);
@@ -187,6 +193,7 @@ public class ExperimentWasBornIn {
                     System.out.println(d.getTitle());
                     d.setSentences(SentenceExtractor.getSentences(d));
                     d.setMentions(documentAnnotator.annotate(d));
+//                    d.resolveCoreferences(CoreferenceResolver.getCoreferenceChains(d.getText()));
                     annDocsWrap.add(d);
                 } catch (Exception e) {
                     e.printStackTrace();
