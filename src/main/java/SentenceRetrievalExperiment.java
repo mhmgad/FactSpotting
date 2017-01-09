@@ -167,16 +167,19 @@ public class SentenceRetrievalExperiment {
             List<String> pagesToCheck=new ArrayList<>();
             Set<Entity> entitiesToCheck=new HashSet<>();
 
+
+            Entity entity = new Entity(parts[0]);
+            entitiesToCheck.add(entity);
+
+            Entity object = new Entity(parts[2]);
+            entitiesToCheck.add(object);
+
+
             if(pageMode!=PageMode.OBJECT_ONLY) {
-                Entity entity = new Entity(parts[0]);
-                entitiesToCheck.add(entity);
                 pagesToCheck.add(entity.getIdAsTitle());
             }
-
             if(pageMode!=PageMode.SUBJECT_ONLY) {
-                Entity object = new Entity(parts[2]);
                 pagesToCheck.add(object.getIdAsTitle());
-                entitiesToCheck.add(object);
             }
 
             List<SentAnnotatedDocument> docsList=ret.getByTitle(esResultSize,pagesToCheck,relationParaphrases);
@@ -185,8 +188,8 @@ public class SentenceRetrievalExperiment {
             AnnotatedDocuments annDocs = new AnnotatedDocuments();
 
             // To remain within ambiverse qouta
-            if(factCount%50==0)
-                Thread.sleep(50000);
+            if(factCount%20==0)
+                Thread.sleep(60000);
 
             final AnnotatedDocuments annDocsWrap=annDocs;
             docsList.forEach(d -> {
@@ -241,7 +244,9 @@ public class SentenceRetrievalExperiment {
 
         }
 
-        bw.write("Sentences found for "+evidencesFound+" facts (full: "+fullEvidenceFoundCount+") out of "+ factCount);
+        bw.write("Sentences found for "+evidencesFound+" facts (fully found: "+fullEvidenceFoundCount+") out of "+ factCount);
+        bw.newLine();
+
         bw.flush();
         bw.close();
     }

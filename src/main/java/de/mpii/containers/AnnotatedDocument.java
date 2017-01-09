@@ -344,7 +344,8 @@ public class AnnotatedDocument {
     }
 
     public boolean hasEntities(Set<Entity> entitiesToCheck) {
-        return Sets.intersection(entitiesToCheck,entity2Sentences.keySet()).size()>0;
+        return entity2Sentences.keySet().containsAll(entitiesToCheck);
+        //return Sets.intersection(entitiesToCheck,).size()>0;
 
     }
 }
