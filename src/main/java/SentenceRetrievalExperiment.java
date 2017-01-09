@@ -1,6 +1,5 @@
 
 import de.mpii.containers.*;
-import de.mpii.de.mpii.processing.CoreferenceResolver;
 import de.mpii.de.mpii.processing.SentenceExtractor;
 import de.mpii.de.mpii.processing.entitydisambiguation.AmbiverseDocumentAnnotator;
 import de.mpii.de.mpii.processing.entitydisambiguation.DocumentAnnotator;
@@ -18,7 +17,7 @@ import java.util.Set;
 /**
  * Created by gadelrab on 1/3/17.
  */
-public class ExperimentWasBornIn {
+public class SentenceRetrievalExperiment {
 
     private Options helpOptions;
     private DefaultParser parser;
@@ -36,7 +35,7 @@ public class ExperimentWasBornIn {
     public enum PageMode {SUBJECT_ONLY,OBJECT_ONLY,BOTH,AUTO};
 
 
-    public ExperimentWasBornIn() {
+    public SentenceRetrievalExperiment() {
         options= new Options();
         helpOptions = new Options();
         parser = new DefaultParser();
@@ -84,6 +83,7 @@ public class ExperimentWasBornIn {
     public void run(CommandLine cmd) throws Exception{
 
         int esResultSize=5;
+        PageMode pageMode= PageMode.BOTH;
 
 
         if(cmd.hasOption(esResultSizeOp.getOpt())){
@@ -105,36 +105,37 @@ public class ExperimentWasBornIn {
 
         }
 
+
         if(cmd.hasOption(bothOp.getOpt())) {
-            PageMode bothSides = cmd.getOptionValue(inputRelationsFileOp.getOpt(),"SO");
+            pageMode = getPageMode(cmd.getOptionValue(inputRelationsFileOp.getOpt(),"SO"));
         }
 
 
-        process(esResultSize,bothSides,inputFile,relation,relationParaphrases,outputFilePath);
+        process(esResultSize,pageMode,inputFile,relation,relationParaphrases,outputFilePath);
 
 
 
     }
 
+    private PageMode getPageMode(String stringOptions) {
 
+        PageMode pageMode=PageMode.BOTH;
+        if(stringOptions.equalsIgnoreCase("S"))
+            pageMode=PageMode.SUBJECT_ONLY;
+        else  if(stringOptions.equalsIgnoreCase("O"))
+            pageMode=PageMode.OBJECT_ONLY;
+        return pageMode;
+    }
 
 
     private CommandLine parse(String[] args) throws ParseException {
-//        CommandLine cmdHelp=parser.parse(helpOptions,args);
-//        if(cmdHelp.hasOption(helpOp.getOpt())){
-//            HelpFormatter formatter = new HelpFormatter();
-//            formatter.printHelp( "mine_rules.sh", options );
-//            System.exit(0);
-//        }
-
-
         return parser.parse(options,args);
     }
 
 
     public static void main(String[] args) throws Exception {
 
-        ExperimentWasBornIn instance=new ExperimentWasBornIn();
+        SentenceRetrievalExperiment instance=new SentenceRetrievalExperiment();
         instance.defineOptions();
         instance.run(instance.parse(args));
 
@@ -145,7 +146,7 @@ public class ExperimentWasBornIn {
 
     }
 
-    private void process(int esResultSize, boolean bothSides , String inputFile, String relation, List<String> relationParaphrases, String outputFilePath) throws Exception {
+    private void process(int esResultSize, PageMode pageMode , String inputFile, String relation, List<String> relationParaphrases, String outputFilePath) throws Exception {
 
         EleasticSearchRetriever ret=new EleasticSearchRetriever("wiki_sent");
 
@@ -166,13 +167,13 @@ public class ExperimentWasBornIn {
             List<String> pagesToCheck=new ArrayList<>();
             Set<Entity> entitiesToCheck=new HashSet<>();
 
-            Entity entity=new Entity(parts[0]);
+            if(pageMode!=PageMode.OBJECT_ONLY) {
+                Entity entity = new Entity(parts[0]);
+                entitiesToCheck.add(entity);
+                pagesToCheck.add(entity.getIdAsTitle());
+            }
 
-
-            entitiesToCheck.add(entity);
-            pagesToCheck.add(entity.getIdAsTitle());
-
-            if(bothSides) {
+            if(pageMode!=PageMode.SUBJECT_ONLY) {
                 Entity object = new Entity(parts[2]);
                 pagesToCheck.add(object.getIdAsTitle());
                 entitiesToCheck.add(object);
@@ -213,16 +214,7 @@ public class ExperimentWasBornIn {
             System.out.println("target Entities:" + pagesToCheck);
             System.out.println("Entities in Docs: "+annDocs.getEntities());
 
-            Set<AnnotatedDocument> docsFiltered=annDocs.getDocsWith(entity);
-            System.out.println("Filtered Docs: "+docsFiltered.size());
 
-//            Set<Sentence> allSentences=annDocs.getAllSentencesWithOneOf(docsFiltered,false,entity);
-
-
-//            for (Sentence sen : allSentences) {
-//                bw.write(sen.toStringWithDetails(entity));
-//                bw.newLine();
-//            }
             bw.write(line+"\t"+fullEvidenceFound);
             bw.newLine();
             bw.newLine();
@@ -249,7 +241,7 @@ public class ExperimentWasBornIn {
 
         }
 
-        bw.write("Sentences Found for "+evidencesFound+" facts (full: "+fullEvidenceFoundCount+") out of "+ factCount);
+        bw.write("Sentences found for "+evidencesFound+" facts (full: "+fullEvidenceFoundCount+") out of "+ factCount);
         bw.flush();
         bw.close();
     }

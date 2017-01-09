@@ -52,6 +52,7 @@ public class PageExtractor implements IArticleFilter {
 							if (endTag != -1) {
 								String tagContent = rawContent.substring(startTag, endTag);
 
+								// Gad (Just temp fix I have no clue what that should do)
 								int startTitle = htmlContent.indexOf("title=\"", startTag);
 //								int startTitle = htmlContent.indexOf("title=\"", newIdx);
 								if (startTitle != -1) {
@@ -61,6 +62,7 @@ public class PageExtractor implements IArticleFilter {
 										System.out.println(titleEntity);
 									}
 								}
+								// Gad (Just temp fix I have no clue what that should do)
 								newIdx=endTag;
 								idx = newIdx + 1;
 							}
