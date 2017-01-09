@@ -72,7 +72,7 @@
 
 
                         <program>
-                            <mainClass>ExperimentWasBornIn</mainClass>
+                            <mainClass>SentenceRetrievalExperiment</mainClass>
                             <id>exper_cli</id>
                         </program>
                     </programs>
