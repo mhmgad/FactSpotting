@@ -94,22 +94,22 @@ public class EleasticSearchRetriever {
     }
 
 
-    public List<SentAnnotatedDocument> getByTitle(int resultSize, List<String> pages, List<String> filteringString) throws IOException{
+    public List<SentAnnotatedDocument> getByTitle(int resultSize, List<String> pages, List<String> filteringString) throws IOException {
 
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
         BoolQueryBuilder titleQuery = QueryBuilders.boolQuery();
 
-        for (String pageTitle:pages) {
+        for (String pageTitle : pages) {
             titleQuery.should(QueryBuilders.matchQuery("title", pageTitle).operator(Operator.AND).minimumShouldMatch("75%"));
         }
 
         BoolQueryBuilder bodyQuery = QueryBuilders.boolQuery();
 
-        for (String s:filteringString) {
+        for (String s : filteringString) {
 
-            bodyQuery.should(QueryBuilders.matchQuery("sent",s).operator(Operator.AND));
+            bodyQuery.should(QueryBuilders.matchQuery("sent", s).operator(Operator.AND));
         }
 
         BoolQueryBuilder query = QueryBuilders.boolQuery().must(titleQuery).must(bodyQuery);
@@ -125,13 +125,17 @@ public class EleasticSearchRetriever {
                 .build();
 
         SearchResult response = client.execute(search);
-        System.out.println("hitsSize in response: "+response.getTotal());
+        System.out.println("hitsSize in response: " + response.getTotal());
         List<SearchResult.Hit<SentAnnotatedDocument, Void>> responseList = response.getHits(SentAnnotatedDocument.class);
-        System.out.println("hitsSize: "+responseList.size());
+
+        List<SentAnnotatedDocument> docList = new ArrayList<>();
+
+        if (responseList != null){
+            System.out.println("hitsSize: " + responseList.size());
 
 
-        List<SentAnnotatedDocument> docList = responseList.stream().map(d-> d.source).collect(Collectors.toList());
-
+            docList = responseList.stream().map(d -> d.source).collect(Collectors.toList());
+        }
 
         return docList;
     }
