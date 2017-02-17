@@ -1,0 +1,13 @@
+<Albert_Einstein>	<wasBornIn>	<Ulm>
+<Abraham_Esau>	<wasBornIn>	<Berlin>
+<Abraham_J._Williams>	<wasBornIn>	<Jefferson_City>
+<Adalbert_Seitz>	<wasBornIn>	<Dortmund>
+<Adel_Fellous>	<wasBornIn>	<Tours>
+<Alireza_Sheikhattar>	<wasBornIn>	<Tehran>
+<Alirio_Ugarte_Pelayo>	<wasBornIn>	<Maturín>
+<Ali_Sabri>	<wasBornIn>	<Cairo>
+<Balakumaran>	<wasBornIn>	<Delhi>
+<Barry_Miller_(politician)>	<wasBornIn>	<Houston>
+<Bert_Weeks>	<wasBornIn>	<Toronto>
+<Carlos_Mendieta>	<wasBornIn>	<Havana>
+<Abbās_al-Aqqād>	<wasBornIn>	<Aswan>
