@@ -1,9 +1,8 @@
-package de.mpii.containers;
+package de.mpii.datastructures;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import java.util.*;
 import java.util.stream.Collectors;

@@ -1,9 +1,9 @@
 package de.mpii.textcorpus;
 
-import de.mpii.containers.AnnotatedDocument;
-import de.mpii.containers.AnnotatedDocuments;
-import de.mpii.containers.Entity;
-import de.mpii.containers.Sentence;
+import de.mpii.datastructures.AnnotatedDocument;
+import de.mpii.datastructures.AnnotatedDocuments;
+import de.mpii.datastructures.Entity;
+import de.mpii.datastructures.Sentence;
 import de.mpii.de.mpii.processing.SentenceExtractor;
 import de.mpii.de.mpii.processing.entitydisambiguation.AmbiverseDocumentAnnotator;
 import de.mpii.de.mpii.processing.entitydisambiguation.DocumentAnnotator;

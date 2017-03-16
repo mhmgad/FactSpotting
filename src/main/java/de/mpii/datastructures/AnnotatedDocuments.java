@@ -1,4 +1,4 @@
-package de.mpii.containers;
+package de.mpii.datastructures;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
@@ -7,14 +7,11 @@ import de.mpii.de.mpii.processing.CoreferenceResolver;
 import de.mpii.de.mpii.processing.SentenceExtractor;
 import mpi.tools.javatools.util.FileUtils;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -70,6 +67,7 @@ public class AnnotatedDocuments {
         for (int i = 1; i <entity.length ; i++) {
             output=Sets.intersection(output,entity2doc.get(entity[i]));
         }
+
         return output;
     }
 

@@ -1,5 +1,5 @@
 
-import de.mpii.containers.*;
+import de.mpii.datastructures.*;
 import de.mpii.de.mpii.processing.SentenceExtractor;
 import de.mpii.de.mpii.processing.entitydisambiguation.AmbiverseDocumentAnnotator;
 import de.mpii.de.mpii.processing.entitydisambiguation.DocumentAnnotator;
@@ -9,10 +9,8 @@ import org.apache.commons.cli.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Created by gadelrab on 1/3/17.
@@ -221,26 +219,26 @@ public class SentenceRetrievalExperiment {
             bw.write(line+"\t"+fullEvidenceFound);
             bw.newLine();
             bw.newLine();
-            for (AnnotatedDocument doc:docsList) {
+            docsList.stream().sorted(Comparator.comparing(AnnotatedDocument::getOrder)).forEach(doc->
+            /*for (AnnotatedDocument doc:docsList)*/ {
                 for (Sentence sent: doc.getSentences()) {
                     System.out.println(sent.toStringWithDetails());
 
 
+                    try {
+                        bw.write(sent.toStringWithDetails());
+                        bw.newLine();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
-                    bw.write(sent.toStringWithDetails());
-                    bw.newLine();
 
                 }
-            }
+            });
 
             // for new document
             bw.write("--------------------");
             bw.newLine();
-
-
-
-
-
 
         }
 

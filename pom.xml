@@ -36,8 +36,8 @@
                 </executions>
                 <configuration>
                     <!-- Extra JVM arguments that will be included in the bin scripts -->
-                    <extraJvmArguments>-Xms10G</extraJvmArguments>
-                    <extraJvmArguments>-Xmx400G</extraJvmArguments>
+                    <extraJvmArguments>-Xms1G</extraJvmArguments>
+                    <extraJvmArguments>-Xmx2G</extraJvmArguments>
                     <!-- set alternative assemble directory -->
                     <assembleDirectory>assemble</assembleDirectory>
                     <!--<generateRepository>false</generateRepository>-->
@@ -74,6 +74,12 @@
                         <program>
                             <mainClass>SentenceRetrievalExperiment</mainClass>
                             <id>exper_cli</id>
+
+
+                        </program>
+                        <program>
+                            <mainClass>de.mpii.factspotting.text.ElasticSearchFactSpotter</mainClass>
+                            <id>spot_elastic</id>
                         </program>
                     </programs>
                 </configuration>

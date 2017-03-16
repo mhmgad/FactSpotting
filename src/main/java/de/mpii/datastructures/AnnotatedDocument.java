@@ -1,4 +1,4 @@
-package de.mpii.containers;
+package de.mpii.datastructures;
 
 
 import com.google.common.collect.HashMultimap;
@@ -9,51 +9,49 @@ import edu.stanford.nlp.hcoref.data.CorefChain;
 import edu.stanford.nlp.ling.CoreLabel;
 
 import gnu.trove.map.hash.TObjectIntHashMap;
-import io.searchbox.annotations.JestId;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by gadelrab on 8/31/16.
  */
-public class AnnotatedDocument {
+public class AnnotatedDocument extends Document{
 
 
 
-    //String title;
-    @JestId
-    String id;
-
-    String text;
-    String title;
     Mentions mentions;
     List<Sentence> sentences;
     SetMultimap<Entity, Sentence> entity2Sentences;
+
+
+
+
+
     private boolean corefResolved;
-    private String url;
 
 
     public AnnotatedDocument() {
-        this.mentions = new Mentions();
-        this.entity2Sentences = HashMultimap.create();
+        this( "0",null ,null,null);
 
     }
 
-    public AnnotatedDocument(String id, String text,String url) {
+
+
+
+    public AnnotatedDocument(String id,String title ,String text,String url) {
 //        this(text,new Mentions());
-        this();
-        this.text = text;
-        this.id=id;
-        this.url=url;
+        super(id,title,text,url);
+        this.mentions = new Mentions();
+        this.entity2Sentences = HashMultimap.create();
+
 
     }
 
 
     public AnnotatedDocument(String text,String url) {
-        this("0",text,url);
+        this("0","",text,url);
 
     }
 
@@ -96,6 +94,7 @@ public class AnnotatedDocument {
                 ", sentences=" + getSentences() +
                 ", corefResolved=" + isCorefResolved() +
                 ", url='" + getUrl() + '\'' +
+                ", order="+ getOrder() +
                 '}';
     }
 
@@ -137,9 +136,6 @@ public class AnnotatedDocument {
     }
 
 
-    public String getText() {
-        return text;
-    }
 
 
     public void setMentions(Mentions mentions) {
@@ -259,9 +255,6 @@ public class AnnotatedDocument {
     }
 
 
-    public void setText(String text) {
-        this.text = text;
-    }
 
     public synchronized boolean isCorefResolved() {
         return corefResolved;
@@ -319,29 +312,7 @@ public class AnnotatedDocument {
     }
 
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 
     public boolean hasEntities(Set<Entity> entitiesToCheck) {
         return entity2Sentences.keySet().containsAll(entitiesToCheck);

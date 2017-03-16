@@ -1,13 +1,5 @@
 package de.mpii.textcorpus;
 
-import de.mpii.containers.AnnotatedDocument;
-import de.mpii.containers.AnnotatedDocuments;
-import de.mpii.containers.Mentions;
-import mpi.tools.javatools.util.FileUtils;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-
 /**
  * Created by gadelrab on 11/28/16.
  */

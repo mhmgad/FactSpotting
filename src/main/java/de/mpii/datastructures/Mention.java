@@ -1,4 +1,4 @@
-package de.mpii.containers;
+package de.mpii.datastructures;
 
 
 
@@ -11,8 +11,8 @@ import java.util.Comparator;
  */
 public class Mention {
 
-    public static Comparator<? super Mention> charOffsetAndLengthCompartor = Comparator.comparing(de.mpii.containers.Mention::getCharOffset).thenComparing(de.mpii.containers.Mention::getCharLength);
-    public static Comparator<? super Mention> charOffsetCompartor = Comparator.comparing(de.mpii.containers.Mention::getCharOffset);
+    public static Comparator<? super Mention> charOffsetAndLengthCompartor = Comparator.comparing(de.mpii.datastructures.Mention::getCharOffset).thenComparing(de.mpii.datastructures.Mention::getCharLength);
+    public static Comparator<? super Mention> charOffsetCompartor = Comparator.comparing(de.mpii.datastructures.Mention::getCharOffset);
 
     //TODO text comming from Coref may not be accurate
     String mentionText;

@@ -1,4 +1,4 @@
-package de.mpii.containers;
+package de.mpii.datastructures;
 
 import org.json.simple.JSONObject;
 

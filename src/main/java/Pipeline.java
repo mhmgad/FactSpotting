@@ -1,4 +1,4 @@
-import de.mpii.containers.AnnotatedDocument;
+import de.mpii.datastructures.AnnotatedDocument;
 import de.mpii.de.mpii.processing.CoreferenceResolver;
 import de.mpii.de.mpii.processing.SentenceExtractor;
 

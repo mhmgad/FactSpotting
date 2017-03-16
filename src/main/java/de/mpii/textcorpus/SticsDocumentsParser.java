@@ -1,6 +1,6 @@
 package de.mpii.textcorpus;
 
-import de.mpii.containers.*;
+import de.mpii.datastructures.*;
 import mpi.tools.javatools.util.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

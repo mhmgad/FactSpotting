@@ -12,9 +12,9 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
-import de.mpii.containers.AnnotatedDocument;
-import de.mpii.containers.Mention;
-import de.mpii.containers.Mentions;
+import de.mpii.datastructures.AnnotatedDocument;
+import de.mpii.datastructures.Mention;
+import de.mpii.datastructures.Mentions;
 
 
 public class AmbiverseDocumentAnnotator implements DocumentAnnotator {
@@ -67,7 +67,7 @@ public class AmbiverseDocumentAnnotator implements DocumentAnnotator {
             em.setText(match.getText());                       // Span of text in the input that was linked.
             em.setCharOffset(match.getCharOffset());          // Character offset of the match in the original text.
             em.setCharLength(match.getCharLength());          // Character length of the match.
-            em.setEntity(match.getEntity().getId()==null? null:new de.mpii.containers.Entity(match.getEntity().getId(),match.getEntity().getScore()));         // ID of the linked entity, e.g. "YAGO3:<The_Who>".
+            em.setEntity(match.getEntity().getId()==null? null:new de.mpii.datastructures.Entity(match.getEntity().getId(),match.getEntity().getScore()));         // ID of the linked entity, e.g. "YAGO3:<The_Who>".
             em.setConfidence(match.getEntity().getScore());    // Confidence score.
             mentions.add(em);
         }

@@ -1,17 +1,12 @@
 package de.mpii.de.mpii.processing;
 
-import de.mpii.containers.AnnotatedDocument;
-import de.mpii.containers.Sentence;
+import de.mpii.datastructures.AnnotatedDocument;
+import de.mpii.datastructures.Sentence;
 import edu.stanford.nlp.ling.CoreAnnotations;
-import edu.stanford.nlp.ling.CoreLabel;
 
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 
-import edu.stanford.nlp.util.CoreMap;
-
-
-import java.io.IOException;
 
 import java.util.List;
 import java.util.Properties;

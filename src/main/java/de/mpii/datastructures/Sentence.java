@@ -1,6 +1,5 @@
-package de.mpii.containers;
+package de.mpii.datastructures;
 
-import ch.qos.logback.core.joran.spi.ElementSelector;
 import com.google.api.client.repackaged.com.google.common.base.Joiner;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;

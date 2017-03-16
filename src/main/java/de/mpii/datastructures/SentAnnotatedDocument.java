@@ -1,12 +1,12 @@
-package de.mpii.containers;
+package de.mpii.datastructures;
 
 /**
  * Created by gadelrab on 1/3/17.
  */
 public class SentAnnotatedDocument extends  AnnotatedDocument{
 
-
     String sent;
+
 
 
     @Override
@@ -17,11 +17,11 @@ public class SentAnnotatedDocument extends  AnnotatedDocument{
 
     @Override
     public String getId() {
-        return title;
+        return getTitle();
     }
 
     public void setSent(String sent) {
         this.sent = sent;
-        this.text = sent;
+        super.setText(sent);
     }
 }

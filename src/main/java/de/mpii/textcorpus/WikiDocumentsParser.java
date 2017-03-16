@@ -1,8 +1,8 @@
 package de.mpii.textcorpus;
 
 
-import de.mpii.containers.AnnotatedDocument;
-import de.mpii.containers.AnnotatedDocuments;
+import de.mpii.datastructures.AnnotatedDocument;
+import de.mpii.datastructures.AnnotatedDocuments;
 import de.mpii.de.mpii.processing.SentenceExtractor;
 import de.mpii.de.mpii.processing.entitydisambiguation.AmbiverseDocumentAnnotator;
 import de.mpii.de.mpii.processing.entitydisambiguation.DocumentAnnotator;
@@ -134,7 +134,7 @@ public class WikiDocumentsParser {
 
 
 
-            AnnotatedDocument doc=new AnnotatedDocument(id,content,url);
+            AnnotatedDocument doc=new AnnotatedDocument(id,null,content,url);
 
             return doc;
 
