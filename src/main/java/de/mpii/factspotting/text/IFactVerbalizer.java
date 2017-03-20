@@ -7,8 +7,8 @@ import java.util.List;
 /**
  * Created by gadelrab on 3/16/17.
  */
-public interface IFactVerbalizer {
+public interface IFactVerbalizer<T extends IFact> {
 
-    public List<String> getVerbalizations(IFact fact);
+    public List<String> getVerbalizations(T fact);
 
 }
