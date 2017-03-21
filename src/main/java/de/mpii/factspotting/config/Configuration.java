@@ -30,7 +30,7 @@ public class Configuration {
     private static final String VERBALIZER ="verbalizer";
     private static final String TEXT_CORPORA = "textCorpora";
     private static final String DOCUMENT_FIELDS_TO_SEARCH = "fieldsToSearch";
-    private static final java.lang.String MATCHING_THRESHOLD = "matchingThreshold";
+    private static final java.lang.String MATCHING_THRESHOLD = "matchingThresholdPercentage";
 
     /**
      * instance of the configuration
@@ -204,7 +204,7 @@ public class Configuration {
                 conf.setPerItemParaphrases(Integer.parseInt(prop.getProperty(PER_ITEM_PARAPHRASES,"50")));
                 conf.setVerbalizerType(VerbalizerFactory.VerbalizerType.valueOf( prop.getProperty(VERBALIZER,"DEFAULT")));
                 conf.setEvidencePerFactSize(Integer.parseInt(prop.getProperty(EVIDENCE_PER_FACT_SIZE,"5")));
-                conf.setMatchingThreshold(prop.getProperty(MATCHING_THRESHOLD,"0.1"));
+                conf.setMatchingThreshold(prop.getProperty(MATCHING_THRESHOLD,"10%"));
                 conf.setSpottingMethod(SpottingMethod.valueOf(prop.getProperty(SPOTTING,"NONE")));
 
 //                System.out.println(conf);

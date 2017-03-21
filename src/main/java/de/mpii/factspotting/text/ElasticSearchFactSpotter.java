@@ -39,17 +39,17 @@ public class ElasticSearchFactSpotter implements IFactSpotter<BinaryFact> {
 //    }
 
     public ElasticSearchFactSpotter(){
-        this(Configuration.getInstance().getTextCorpora(),Configuration.getInstance().getFieldsToSearch(),Configuration.getInstance().getEvidencePerFactSize(), VerbalizerFactory.getInstance());
+        this(Configuration.getInstance().getTextCorpora(),Configuration.getInstance().getFieldsToSearch(),Configuration.getInstance().getEvidencePerFactSize(), Configuration.getInstance().getMatchingThreshold(),VerbalizerFactory.getInstance());
     }
 
 
-    public ElasticSearchFactSpotter(List<String> indexName,List<String>fieldsToSearch,int resultSize,IFactVerbalizer verbalizer) {
-       this(Joiner.on(",").join(indexName),fieldsToSearch,resultSize,verbalizer);
+    public ElasticSearchFactSpotter(List<String> indexName,List<String>fieldsToSearch,int resultSize,String matchingThreshold,IFactVerbalizer verbalizer) {
+       this(Joiner.on(",").join(indexName),fieldsToSearch,resultSize,matchingThreshold,verbalizer);
     }
 
-    public ElasticSearchFactSpotter(String indexName,List<String>fieldsToSearch,int resultSize,IFactVerbalizer verbalizer) {
+    public ElasticSearchFactSpotter(String indexName,List<String>fieldsToSearch,int resultSize,String matchingThreshold,IFactVerbalizer verbalizer) {
         //TODO only one index is supported now
-        this.esR = new EleasticSearchRetriever(indexName,resultSize);
+        this.esR = new EleasticSearchRetriever(indexName,resultSize,matchingThreshold);
         this.fieldsToSearch=fieldsToSearch;
         this.verbalizer=verbalizer;
     }

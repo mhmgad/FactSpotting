@@ -15,5 +15,5 @@ argumentsDictionaries=/home/gadelrab/ideaProjects/RuleBasedFactChecking/FactChec
 #only 1 corpus is supported now
 textCorpora=wiki_sent
 fieldsToSearch=sent
-matchingThreshold=0.6
+matchingThresholdPercentage=66%
 

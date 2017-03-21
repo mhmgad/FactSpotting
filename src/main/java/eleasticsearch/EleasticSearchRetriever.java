@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class EleasticSearchRetriever {
 
 
-
+    private  String matchingThreshold;
     private  int resultSize=5;
     private  String indexName="wiki";
     JestClientFactory factory = new JestClientFactory();
@@ -44,10 +44,17 @@ public class EleasticSearchRetriever {
         client = factory.getObject();
     }
 
-    public EleasticSearchRetriever(String indexName,int resultSize) {
+    public EleasticSearchRetriever(String indexName,int resultSize,String matchingThreshold) {
         this();
         this.indexName = indexName;
         this.resultSize=resultSize;
+        this.matchingThreshold=matchingThreshold;
+    }
+
+
+    public EleasticSearchRetriever(String indexName,int resultSize) {
+        this(indexName,resultSize,"10%");
+
     }
 
     public EleasticSearchRetriever(String indexName) {
@@ -170,7 +177,7 @@ public class EleasticSearchRetriever {
 
             for (String queryString : queriesStrings) {
 
-                combined.should(QueryBuilders.matchQuery(field, queryString).minimumShouldMatch("0.6"));
+                combined.should(QueryBuilders.matchQuery(field, queryString).minimumShouldMatch(this.matchingThreshold));
             }
         }
 
