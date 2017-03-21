@@ -1,0 +1,4 @@
+wasBornIn	born in
+wasBornIn	born at
+wasBornIn	birthplace
+wasBornIn	place of birth

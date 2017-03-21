@@ -7,4 +7,8 @@ public interface IFact {
 
 
 
+    public String toSearchableString();
+
+
+
 }

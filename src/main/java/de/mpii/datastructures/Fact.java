@@ -40,6 +40,7 @@ public class Fact implements IFact {
         this.predicate = predicate;
     }
 
+    @Override
     public String toSearchableString(){
         return getPredicate() +" " +Joiner.on(' ').join(arguments);
     }

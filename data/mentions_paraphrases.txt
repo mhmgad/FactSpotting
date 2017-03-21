@@ -1,0 +1,6 @@
+Albert_Einstein	albert
+Albert_Einstein	einstein
+Albert_Einstein	einstein, albert
+Albert_Einstein	einstein's
+Ulm	ulm
+Ulm	ulm city

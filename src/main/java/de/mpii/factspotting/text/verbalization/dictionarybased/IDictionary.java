@@ -1,4 +1,6 @@
-package de.mpii.factspotting.text;
+package de.mpii.factspotting.text.verbalization.dictionarybased;
+
+import de.mpii.factspotting.text.verbalization.IParaphrase;
 
 import java.util.Collection;
 

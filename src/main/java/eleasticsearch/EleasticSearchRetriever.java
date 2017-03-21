@@ -38,6 +38,8 @@ public class EleasticSearchRetriever {
         factory.setHttpClientConfig(new HttpClientConfig
                 .Builder("http://localhost:9200")
                 .multiThreaded(true)
+                .connTimeout(3000000)
+                .readTimeout(300000)
                 .build());
         client = factory.getObject();
     }
@@ -69,7 +71,6 @@ public class EleasticSearchRetriever {
                 query
 //                QueryBuilders.boolQuery()
 //                        .must(QueryBuilders.matchQuery("text",filteringString))
-
         ).size(resultSize);
         System.out.println("Query: "+searchSourceBuilder.toString());
 
@@ -169,7 +170,7 @@ public class EleasticSearchRetriever {
 
             for (String queryString : queriesStrings) {
 
-                combined.should(QueryBuilders.matchQuery(field, queryString));
+                combined.should(QueryBuilders.matchQuery(field, queryString).minimumShouldMatch("0.6"));
             }
         }
 

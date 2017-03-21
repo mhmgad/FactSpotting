@@ -1,4 +1,4 @@
-package de.mpii.factspotting.text;
+package de.mpii.factspotting.text.verbalization;
 
 import de.mpii.datastructures.IFact;
 
@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface IFactVerbalizer<T extends IFact> {
 
-    public List<String> getVerbalizations(T fact);
+    public List<IParaphrase> getVerbalizations(T fact);
 
 }
