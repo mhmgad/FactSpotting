@@ -1,5 +1,6 @@
 package de.mpii.factspotting.config;
 
+import de.mpii.factspotting.FactSpotterFactory;
 import de.mpii.factspotting.text.verbalization.VerbalizerFactory;
 
 import javax.inject.Singleton;
@@ -19,7 +20,7 @@ public class Configuration {
 
 
 
-    public enum SpottingMethod{ELASTIC, NONE};
+
 
     private static final java.lang.String EVIDENCE_PER_FACT_SIZE ="evidencePerFactSize" ;
     private static final String PREDICATES_DICTS ="predicatesDictionaries";
@@ -89,7 +90,7 @@ public class Configuration {
     /**
      * Method used in spottng the fact
      */
-    private SpottingMethod spottingMethod;
+    private FactSpotterFactory.SpottingMethod spottingMethod;
 
     public String getMatchingThreshold() {
         return matchingThreshold;
@@ -205,7 +206,7 @@ public class Configuration {
                 conf.setVerbalizerType(VerbalizerFactory.VerbalizerType.valueOf( prop.getProperty(VERBALIZER,"DEFAULT")));
                 conf.setEvidencePerFactSize(Integer.parseInt(prop.getProperty(EVIDENCE_PER_FACT_SIZE,"5")));
                 conf.setMatchingThreshold(prop.getProperty(MATCHING_THRESHOLD,"10%"));
-                conf.setSpottingMethod(SpottingMethod.valueOf(prop.getProperty(SPOTTING,"NONE")));
+                conf.setSpottingMethod(FactSpotterFactory.SpottingMethod.valueOf(prop.getProperty(SPOTTING,"NONE")));
 
 //                System.out.println(conf);
 
@@ -250,7 +251,7 @@ public class Configuration {
     }
 
 
-    public void setSpottingMethod(SpottingMethod spottingMethod) {
+    public void setSpottingMethod(FactSpotterFactory.SpottingMethod spottingMethod) {
         this.spottingMethod = spottingMethod;
     }
 }

@@ -4,6 +4,7 @@ import com.google.common.base.Joiner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by gadelrab on 3/14/17.
@@ -51,5 +52,13 @@ public class Fact implements IFact {
 
     public String getArgument(int index){
         return arguments.get(index);
+    }
+
+    public String getIRISRepresenation(){
+        return getPredicate()+"("+Joiner.on(",").join(arguments.stream().map(arg-> '\''+arg+'\'').collect(Collectors.toList()))+").";
+    }
+
+    public String asIRISQuery(){
+        return "?- "+getIRISRepresenation();
     }
 }
