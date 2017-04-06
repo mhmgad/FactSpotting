@@ -4,6 +4,7 @@ import com.google.common.base.Joiner;
 import de.mpii.datastructures.BinaryFact;
 import de.mpii.datastructures.Document;
 import de.mpii.datastructures.Fact;
+import de.mpii.datastructures.IFact;
 import de.mpii.factspotting.IFactSpotter;
 import de.mpii.factspotting.ISpottedEvidence;
 import de.mpii.factspotting.config.Configuration;
@@ -21,13 +22,13 @@ import java.util.stream.Collectors;
 /**
  * Created by gadelrab on 3/14/17.
  */
-public class ElasticSearchFactSpotter implements IFactSpotter<BinaryFact> {
+public class ElasticSearchFactSpotter implements IFactSpotter<Fact> {
 
 
 
     private  List<String> fieldsToSearch;
     EleasticSearchRetriever esR;
-    IFactVerbalizer verbalizer;
+    IFactVerbalizer<Fact> verbalizer;
 
 
 //    public ElasticSearchFactSpotter(List<String> indexName) {
@@ -58,7 +59,7 @@ public class ElasticSearchFactSpotter implements IFactSpotter<BinaryFact> {
 
 
     @Override
-    public ISpottedEvidence spot(BinaryFact fact) {
+    public ISpottedEvidence spot(Fact fact) {
 
         List<String> searchQueries=generateSearchQueries(fact);
         List<Document> docs=new LinkedList<>();

@@ -167,7 +167,13 @@ public class EleasticSearchRetriever {
         return docList;
     }
 
-
+    /**
+     * Send query to elasticsearch using some fileds and queries to search for any of them
+     * @param fieldsToSearch
+     * @param queriesStrings
+     * @return
+     * @throws IOException
+     */
     public List<Document> searchFields(List<String> fieldsToSearch, List<String> queriesStrings) throws IOException {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder combined = QueryBuilders.boolQuery();
@@ -177,7 +183,8 @@ public class EleasticSearchRetriever {
 
             for (String queryString : queriesStrings) {
 
-                combined.should(QueryBuilders.matchQuery(field, queryString).minimumShouldMatch(this.matchingThreshold));
+//                combined.should(QueryBuilders.matchQuery(field, queryString).operator(Operator.AND).minimumShouldMatch(this.matchingThreshold));
+                combined.should(QueryBuilders.matchPhraseQuery(field, queryString));
             }
         }
 

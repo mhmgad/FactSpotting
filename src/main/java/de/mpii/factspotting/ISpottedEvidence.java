@@ -1,5 +1,7 @@
 package de.mpii.factspotting;
 
+import java.util.List;
+
 /**
  * Created by gadelrab on 3/16/17.
  */
@@ -11,4 +13,6 @@ public interface ISpottedEvidence {
      * @return
      */
     public boolean isSupporting();
+
+    public List<String> getEntities();
 }

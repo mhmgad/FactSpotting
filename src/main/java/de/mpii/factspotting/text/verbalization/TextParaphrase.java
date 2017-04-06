@@ -1,5 +1,11 @@
 package de.mpii.factspotting.text.verbalization;
 
+import com.google.common.base.Joiner;
+import org.elasticsearch.common.inject.internal.Join;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Created by gadelrab on 3/17/17.
  */
@@ -84,5 +90,11 @@ public class TextParaphrase implements IParaphrase<TextParaphrase>{
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (isPattern ? 1 : 0);
         return result;
+    }
+
+    public IParaphrase getParaphrase(List<TextParaphrase> args) {
+        if(args.size()==2)
+            return getParaphrase(args.get(0),args.get(1));
+        else return new TextParaphrase(this.getSearchableString()+" "+ Joiner.on(' ').join(args.stream().map(TextParaphrase::getSearchableString).collect(Collectors.toList())),this.getScore()*(args.stream().mapToDouble(TextParaphrase::getScore).reduce(1,(a, b) -> a * b)));
     }
 }

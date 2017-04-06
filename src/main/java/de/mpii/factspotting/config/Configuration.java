@@ -31,7 +31,7 @@ public class Configuration {
     private static final String VERBALIZER ="verbalizer";
     private static final String TEXT_CORPORA = "textCorpora";
     private static final String DOCUMENT_FIELDS_TO_SEARCH = "fieldsToSearch";
-    private static final java.lang.String MATCHING_THRESHOLD = "matchingThresholdPercentage";
+    private static final String MATCHING_THRESHOLD = "matchingThresholdPercentage";
 
     /**
      * instance of the configuration
