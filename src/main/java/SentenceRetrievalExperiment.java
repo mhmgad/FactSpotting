@@ -17,7 +17,7 @@ import java.util.*;
  */
 public class SentenceRetrievalExperiment {
 
-    private Options helpOptions;
+//    private Options helpOptions;
     private DefaultParser parser;
     private Options options;
 
@@ -35,7 +35,7 @@ public class SentenceRetrievalExperiment {
 
     public SentenceRetrievalExperiment() {
         options= new Options();
-        helpOptions = new Options();
+//        helpOptions = new Options();
         parser = new DefaultParser();
 
 
@@ -47,7 +47,7 @@ public class SentenceRetrievalExperiment {
         //help option
         helpOp =new Option("h",false,"Show Help");
         helpOp.setLongOpt("help");
-        helpOptions.addOption(helpOp);
+        options.addOption(helpOp);
 
         //input file
         inputFileOp=Option.builder("i").longOpt("input").hasArg().desc("Input file inform of RDF").argName("file").required().build();
@@ -94,12 +94,12 @@ public class SentenceRetrievalExperiment {
 
         //Relation
         String relation=cmd.getOptionValue(relationOp.getOpt());
-        String relationPraphrasesFile=cmd.getOptionValue(inputRelationsFileOp.getOpt(),null);
+        String relationParaphrasesFile=cmd.getOptionValue(inputRelationsFileOp.getOpt(),null);
 
         List<String> relationParaphrases=new ArrayList<>();
         relationParaphrases.add(relation);
-        if(relationPraphrasesFile!=null) {
-            relationParaphrases.addAll(FileUtils.getFileContentasList(relationPraphrasesFile));
+        if(relationParaphrasesFile!=null) {
+            relationParaphrases.addAll(FileUtils.getFileContentasList(relationParaphrasesFile));
 
         }
 
