@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by gadelrab on 3/17/17.
@@ -232,7 +233,8 @@ public class Configuration {
     private static List<String> asList(String property){
         List<String> files=new LinkedList<>();
         if(!property.trim().isEmpty())
-            files=Arrays.asList(property.split(","));
+            files=Arrays.asList(property.split(",")).stream().map(sf->sf.trim()).collect(Collectors.toList());
+
         return files;
     }
 
