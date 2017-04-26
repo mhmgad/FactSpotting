@@ -65,10 +65,19 @@ public class  LexcialDictionary implements IDictionary<TextParaphrase> {
     @Override
     public Collection<TextParaphrase> getParaphrases(String key, int topk) {
         List<TextParaphrase> paraphs = predicate2patterns.get(key).stream().limit(topk).collect(Collectors.toList());
-        paraphs.add(new TextParaphrase(key,0));
+        String cleanName= getCleanName(key);
+        paraphs.add(new TextParaphrase(cleanName,0));
         return paraphs ;
     }
 
+    private String getCleanName(String key) {
+        if(key.startsWith("<"))
+            key=key.replace("<","");
+        if(key.endsWith(">"))
+            key=key.replace(">","");
+        key=key.replace(":"," ").replace("_"," ");
+        return key;
+    }
 
 
     public static LexcialDictionary fromFiles(List<String> predicatesDictionariesFiles) {

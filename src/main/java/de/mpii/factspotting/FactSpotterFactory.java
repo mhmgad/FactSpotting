@@ -1,5 +1,6 @@
 package de.mpii.factspotting;
 
+
 import de.mpii.factspotting.text.ElasticSearchFactSpotter;
 
 /**

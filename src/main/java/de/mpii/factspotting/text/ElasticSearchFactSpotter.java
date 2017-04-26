@@ -4,7 +4,6 @@ import com.google.common.base.Joiner;
 import de.mpii.datastructures.BinaryFact;
 import de.mpii.datastructures.Document;
 import de.mpii.datastructures.Fact;
-import de.mpii.datastructures.IFact;
 import de.mpii.factspotting.IFactSpotter;
 import de.mpii.factspotting.ISpottedEvidence;
 import de.mpii.factspotting.config.Configuration;

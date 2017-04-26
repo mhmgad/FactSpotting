@@ -7,19 +7,13 @@ import javax.inject.Singleton;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Created by gadelrab on 3/17/17.
  */
 @Singleton
 public class Configuration {
-
-
-
 
 
     private static final java.lang.String EVIDENCE_PER_FACT_SIZE ="evidencePerFactSize" ;
@@ -37,6 +31,15 @@ public class Configuration {
      * instance of the configuration
      */
     private static Configuration config;
+    private static boolean confFileAlreadySet=false;
+    /**
+     * configuration filepath
+     */
+    private static String configurationFile="factchecking.properties";
+    /**
+     * indicates whether a file is in JAR or not. once filepath is changed this variable is turned to true.
+     */
+    private static boolean externalConfFile=false;
 
     /**
      * list of file names containing paraphrases for the predicates
@@ -120,6 +123,8 @@ public class Configuration {
         return argumentsMentionsFiles;
     }
 
+
+
     public void setArgumentsMentionsFiles(List<String> argumentsMentionsFiles) {
         this.argumentsMentionsFiles = argumentsMentionsFiles;
     }
@@ -197,10 +202,10 @@ public class Configuration {
                 prop.load(input);
 
                 //get the property value
-                conf.setPredicatesDictionariesFiles(Arrays.asList(prop.getProperty(PREDICATES_DICTS,"").split(",")));
-                conf.setArgumentsMentionsFiles(Arrays.asList(prop.getProperty(ARGUMENTS_DICTS,"").split(",")));
+                conf.setPredicatesDictionariesFiles(asList(prop.getProperty(PREDICATES_DICTS,"")));
+                conf.setArgumentsMentionsFiles(asList(prop.getProperty(ARGUMENTS_DICTS,"")));
                 conf.setTextCorpora(Arrays.asList(prop.getProperty(TEXT_CORPORA,"wiki").split(",")));
-                conf.setFieldsToSearch(Arrays.asList(prop.getProperty(DOCUMENT_FIELDS_TO_SEARCH,"doc,title").split(",")));
+                conf.setFieldsToSearch(Arrays.asList(prop.getProperty(DOCUMENT_FIELDS_TO_SEARCH,"text,title").split(",")));
                 conf.setTotalParaphrases(Integer.parseInt(prop.getProperty(TOTAL_PARAPHRASES,"50")));
                 conf.setPerItemParaphrases(Integer.parseInt(prop.getProperty(PER_ITEM_PARAPHRASES,"50")));
                 conf.setVerbalizerType(VerbalizerFactory.VerbalizerType.valueOf( prop.getProperty(VERBALIZER,"DEFAULT")));
@@ -224,20 +229,40 @@ public class Configuration {
             return conf;
 
         }
+    private static List<String> asList(String property){
+        List<String> files=new LinkedList<>();
+        if(!property.trim().isEmpty())
+            files=Arrays.asList(property.split(","));
+        return files;
+    }
 
-        public static Configuration fromFile(String filename){
-            return fromFile(filename,true);
+
+    public static Configuration fromFile(String filename){
+            return fromFile(filename,!externalConfFile);
         }
 
 
 
         public  synchronized static Configuration getInstance(){
             if (config==null) {
-                config = Configuration.fromFile("factchecking.properities");
+                config = Configuration.fromFile(configurationFile);
             }
 
             return config;
         }
+
+
+    public synchronized static boolean setConfigurationFile(String file){
+        if(file==null||confFileAlreadySet)
+            return false;
+        else
+        {
+            configurationFile=file;
+            confFileAlreadySet=true;
+            externalConfFile=true;
+            return true;
+        }
+    }
 
     @Override
     public String toString() {
