@@ -13,7 +13,23 @@ run
 `mvn compile`
 `mvn package`
 
-## Stics Corpus
+
+## Elasticsearch Remote Access
+
+This is a problem with elasticsearch 5.x, when one binds an address different than localhost to the server, it is switched to production mode which may not work easily due to some checks. 
+Therefore, the easiest way is to tunnel the connection to the hosting server and forword the port requests. This can be achieved by calling
+
+`ssh -f <server> -L <serverPort>:localhost:<localPort> -N`
+
+for instant if it is hosted on `himalia`
+
+`ssh -f himalia.mpi-inf.mpg.de -L 9200:localhost:9200 -N `
+
+
+
+
+
+## Stics Corpus (Old-deprecated)
 
 package 'de.mpii.sticsAnalysis' parses stics news corpus 
 
@@ -22,9 +38,11 @@ class 'de.mpii.sticsAnalysis.CLIClass' offers an interface to load a file of sti
 to run it use `sh ./assemble/bin/stics_data.sh <stics file uncompressed> <-f: to write results to a file>`
 
 
-## General Text Corpus 
 
-(In progress no running script yet!)
+
+
+
+
 
 
 

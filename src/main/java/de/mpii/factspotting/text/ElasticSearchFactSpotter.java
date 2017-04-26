@@ -63,7 +63,7 @@ public class ElasticSearchFactSpotter implements IFactSpotter<Fact> {
         List<String> searchQueries=generateSearchQueries(fact);
         List<Document> docs=new LinkedList<>();
         try {
-            docs=esR.searchFields(fieldsToSearch,searchQueries);
+            docs=esR.searchFieldsFullSentences(fieldsToSearch,searchQueries);
         } catch (IOException e) {
             e.printStackTrace();
         }
