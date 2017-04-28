@@ -16,4 +16,9 @@ public class NullEvidence implements ISpottedEvidence{
     public List<String> getEntities() {
         return new ArrayList<>();
     }
+
+    @Override
+    public String readable() {
+        return "NULL";
+    }
 }

@@ -24,7 +24,9 @@ import java.util.stream.Collectors;
 public class ElasticSearchFactSpotter implements IFactSpotter<Fact> {
 
 
+    private QueryStyle queryStyle;
 
+    public enum QueryStyle {STRING_QUERY, SPLIT_QUERY};
     private  List<String> fieldsToSearch;
     EleasticSearchRetriever esR;
     IFactVerbalizer<Fact> verbalizer;
@@ -39,19 +41,20 @@ public class ElasticSearchFactSpotter implements IFactSpotter<Fact> {
 //    }
 
     public ElasticSearchFactSpotter(){
-        this(Configuration.getInstance().getTextCorpora(),Configuration.getInstance().getFieldsToSearch(),Configuration.getInstance().getEvidencePerFactSize(), Configuration.getInstance().getMatchingThreshold(),VerbalizerFactory.getInstance());
+        this(Configuration.getInstance().getTextCorpora(),Configuration.getInstance().getFieldsToSearch(),Configuration.getInstance().getEvidencePerFactSize(), Configuration.getInstance().getMatchingThreshold(),VerbalizerFactory.getInstance(),Configuration.getInstance().getElasticQueryStyle());
     }
 
 
-    public ElasticSearchFactSpotter(List<String> indexName,List<String>fieldsToSearch,int resultSize,String matchingThreshold,IFactVerbalizer verbalizer) {
-       this(Joiner.on(",").join(indexName),fieldsToSearch,resultSize,matchingThreshold,verbalizer);
+    public ElasticSearchFactSpotter(List<String> indexName,List<String>fieldsToSearch,int resultSize,String matchingThreshold,IFactVerbalizer verbalizer,ElasticSearchFactSpotter.QueryStyle queryStyle) {
+       this(Joiner.on(",").join(indexName),fieldsToSearch,resultSize,matchingThreshold,verbalizer,queryStyle);
     }
 
-    public ElasticSearchFactSpotter(String indexName,List<String>fieldsToSearch,int resultSize,String matchingThreshold,IFactVerbalizer verbalizer) {
+    public ElasticSearchFactSpotter(String indexName,List<String>fieldsToSearch,int resultSize,String matchingThreshold,IFactVerbalizer verbalizer,ElasticSearchFactSpotter.QueryStyle queryStyle) {
         //TODO only one index is supported now
         this.esR = new EleasticSearchRetriever(indexName,resultSize,matchingThreshold);
         this.fieldsToSearch=fieldsToSearch;
         this.verbalizer=verbalizer;
+        this.queryStyle=queryStyle;
     }
 
 
@@ -63,7 +66,14 @@ public class ElasticSearchFactSpotter implements IFactSpotter<Fact> {
         List<String> searchQueries=generateSearchQueries(fact);
         List<Document> docs=new LinkedList<>();
         try {
-            docs=esR.searchFieldsFullSentences(fieldsToSearch,searchQueries);
+            switch (queryStyle) {
+                case STRING_QUERY:
+                    docs = esR.searchFieldsFullSentences(fieldsToSearch, searchQueries);
+                    break;
+                case SPLIT_QUERY:
+                    docs = esR.searchFieldsSeparately(fieldsToSearch, searchQueries.stream().map(q->Arrays.asList(q.split("\t"))).collect(Collectors.toList()));
+                    break;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

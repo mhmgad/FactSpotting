@@ -1,6 +1,7 @@
 package de.mpii.factspotting.config;
 
 import de.mpii.factspotting.FactSpotterFactory;
+import de.mpii.factspotting.text.ElasticSearchFactSpotter;
 import de.mpii.factspotting.text.verbalization.VerbalizerFactory;
 
 import javax.inject.Singleton;
@@ -27,6 +28,8 @@ public class Configuration {
     private static final String TEXT_CORPORA = "textCorpora";
     private static final String DOCUMENT_FIELDS_TO_SEARCH = "fieldsToSearch";
     private static final String MATCHING_THRESHOLD = "matchingThresholdPercentage";
+    private static final String ELASTIC_QUERY_STYLE = "elastic.queryStyle";
+
 
     /**
      * instance of the configuration
@@ -95,6 +98,12 @@ public class Configuration {
      * Method used in spottng the fact
      */
     private FactSpotterFactory.SpottingMethod spottingMethod;
+
+    /**
+     * Elastic search query Style either single string or split
+     */
+    private ElasticSearchFactSpotter.QueryStyle elasticQueryStyle;
+
 
     public String getMatchingThreshold() {
         return matchingThreshold;
@@ -213,6 +222,7 @@ public class Configuration {
                 conf.setEvidencePerFactSize(Integer.parseInt(prop.getProperty(EVIDENCE_PER_FACT_SIZE,"5")));
                 conf.setMatchingThreshold(prop.getProperty(MATCHING_THRESHOLD,"10%"));
                 conf.setSpottingMethod(FactSpotterFactory.SpottingMethod.valueOf(prop.getProperty(SPOTTING,"NONE")));
+                conf.setElasticQueryStyle(ElasticSearchFactSpotter.QueryStyle.valueOf(prop.getProperty(ELASTIC_QUERY_STYLE, ElasticSearchFactSpotter.QueryStyle.STRING_QUERY.toString())));
 
 //                System.out.println(conf);
 
@@ -280,6 +290,14 @@ public class Configuration {
 
     public void setSpottingMethod(FactSpotterFactory.SpottingMethod spottingMethod) {
         this.spottingMethod = spottingMethod;
+    }
+
+    public void setElasticQueryStyle(ElasticSearchFactSpotter.QueryStyle elasticMatchingMethod) {
+        this.elasticQueryStyle = elasticMatchingMethod;
+    }
+
+    public ElasticSearchFactSpotter.QueryStyle getElasticQueryStyle() {
+        return elasticQueryStyle;
     }
 }
 

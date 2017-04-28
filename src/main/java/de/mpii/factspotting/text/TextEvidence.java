@@ -1,11 +1,13 @@
 package de.mpii.factspotting.text;
 
+import com.google.common.base.Joiner;
 import de.mpii.datastructures.Document;
 import de.mpii.factspotting.ISpottedEvidence;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by gadelrab on 3/16/17.
@@ -31,9 +33,14 @@ public class TextEvidence implements ISpottedEvidence{
     }
 
     @Override
+    public String readable() {
+        return "["+Joiner.on(",").join(documents.stream().map(d->"\""+d.getText()+"\"").collect(Collectors.toList()))+"]";
+    }
+
+    @Override
     public String toString() {
         return "TextEvidence{" +
-                "documents=" + documents+
+                "documents=" + documents.stream().map(d->d.getText()).collect(Collectors.toList())+
                 ", isSupporting=" + isSupporting()+
                 '}';
     }

@@ -11,7 +11,7 @@ public class SentAnnotatedDocument extends  AnnotatedDocument{
 
     @Override
     public String getText() {
-        return sent;
+        return (sent!=null)? sent:super.getText();
 
     }
 

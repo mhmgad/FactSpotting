@@ -15,4 +15,6 @@ public interface ISpottedEvidence {
     public boolean isSupporting();
 
     public List<String> getEntities();
+
+    public String readable();
 }

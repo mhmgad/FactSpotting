@@ -7,6 +7,8 @@ import de.mpii.factspotting.text.verbalization.IFactVerbalizer;
 import de.mpii.factspotting.text.verbalization.IParaphrase;
 import de.mpii.factspotting.text.verbalization.TextParaphrase;
 import org.apache.commons.collections4.list.TreeList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
  * Created by gadelrab on 3/16/17.
  */
 public class DictionaryBasedVerbalizer implements IFactVerbalizer<Fact> {
+    Logger logger= LoggerFactory.getLogger(DictionaryBasedVerbalizer.class);
 
     IDictionary<TextParaphrase> predicatesDictionary;
     IDictionary<TextParaphrase> argumentMentions;
@@ -57,11 +60,11 @@ public class DictionaryBasedVerbalizer implements IFactVerbalizer<Fact> {
         Collection<TextParaphrase> predicateParaphrases=predicatesDictionary.getParaphrases(fact.getPredicate());
 
 
-        System.out.println(predicateParaphrases);
+        logger.debug(predicateParaphrases.toString());
         // get paraphrases of the mentions
         List<Collection<TextParaphrase>> argumentsParaphrases= fact.getArguments().stream().map(arg-> argumentMentions.getParaphrases(arg)).collect(Collectors.toList());
 
-        argumentsParaphrases.forEach(l-> System.out.println(l));
+        argumentsParaphrases.forEach(l-> logger.debug(l.toString()));
         //combinations
 
         ArrayList<Set<TextParaphrase>> combinationsSets = new ArrayList<>();

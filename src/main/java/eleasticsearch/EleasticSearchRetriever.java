@@ -243,13 +243,19 @@ public class EleasticSearchRetriever {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder combined = QueryBuilders.boolQuery();
 
-            for (List<String> queryString : queriesStrings) {
+        for (List<String> queryString : queriesStrings) {
+            BoolQueryBuilder paraphraseQuery = QueryBuilders.boolQuery();
+            for (String queryItem:queryString) {
                 BoolQueryBuilder subQuery = QueryBuilders.boolQuery();
-                for (String field:fieldsToSearch) {
+
+                for (String field : fieldsToSearch) {
 //                combined.should(QueryBuilders.matchQuery(field, queryString).operator(Operator.AND).minimumShouldMatch(this.matchingThreshold));
-                    subQuery.should(QueryBuilders.matchPhraseQuery(field, queryString));
+                    subQuery.should(QueryBuilders.matchPhraseQuery(field, queryItem).slop(2));
+                }
+                paraphraseQuery.must(subQuery);
             }
-                combined.must(subQuery);
+            combined.should(paraphraseQuery);
+
         }
 
 
