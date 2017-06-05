@@ -68,7 +68,7 @@ public class ElasticSearchFactSpotter implements IFactSpotter<Fact> {
         try {
             switch (queryStyle) {
                 case STRING_QUERY:
-                    docs = esR.searchFieldsFullSentences(fieldsToSearch, searchQueries);
+                    docs = esR.searchFieldsFullSentences(fieldsToSearch, searchQueries.stream().map(q->q.replaceAll("\t"," ")).collect(Collectors.toList()));
                     break;
                 case SPLIT_QUERY:
                     docs = esR.searchFieldsSeparately(fieldsToSearch, searchQueries.stream().map(q->Arrays.asList(q.split("\t"))).collect(Collectors.toList()));
