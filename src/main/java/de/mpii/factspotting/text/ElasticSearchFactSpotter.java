@@ -91,7 +91,7 @@ public class ElasticSearchFactSpotter implements IFactSpotter<Fact> {
 
         List<IParaphrase> verbalizatios=verbalizer.getVerbalizations(fact);
 
-        System.out.println(verbalizatios);
+        //System.out.println(verbalizatios);
 
         List<String> stringsList = verbalizatios.stream().sorted().map(v -> v.getSearchableString()).collect(Collectors.toList());
 
