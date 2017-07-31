@@ -1,15 +1,13 @@
 package de.mpii.de.mpii.processing;
 
-import edu.stanford.nlp.hcoref.CorefCoreAnnotations;
-import edu.stanford.nlp.hcoref.data.CorefChain;
-import edu.stanford.nlp.ling.CoreAnnotations;
+
+import edu.stanford.nlp.coref.CorefCoreAnnotations;
+import edu.stanford.nlp.coref.data.CorefChain;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import edu.stanford.nlp.util.ArrayCoreMap;
-import edu.stanford.nlp.util.CoreMap;
+
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Properties;
 
 /**

@@ -2,10 +2,12 @@ package de.mpii.factspotting.text;
 
 import com.google.common.base.Joiner;
 import de.mpii.datastructures.Document;
+import de.mpii.de.mpii.processing.NEExtractor;
 import de.mpii.factspotting.ISpottedEvidence;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +31,14 @@ public class TextEvidence implements ISpottedEvidence{
     @Override
     public List<String> getEntities() {
         //TODO get entities in the txt using AIDA or stanford
-        return new ArrayList<>();
+        List<String> entities=new LinkedList<>();
+        NEExtractor extractor = NEExtractor.getInstance();
+        for (Document d:documents){
+            entities.addAll(extractor.getEntities(d.getText()));
+        }
+
+
+        return entities;
     }
 
     @Override

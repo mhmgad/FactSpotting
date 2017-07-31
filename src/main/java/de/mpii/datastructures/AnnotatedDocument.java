@@ -5,7 +5,8 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
 import de.mpii.de.mpii.processing.SentenceExtractor;
-import edu.stanford.nlp.hcoref.data.CorefChain;
+
+import edu.stanford.nlp.coref.data.CorefChain;
 import edu.stanford.nlp.ling.CoreLabel;
 
 import gnu.trove.map.hash.TObjectIntHashMap;

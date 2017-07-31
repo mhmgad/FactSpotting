@@ -8,6 +8,7 @@ import edu.stanford.nlp.util.Sets;
 import org.json.simple.JSONObject;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by gadelrab on 11/21/16.
@@ -183,7 +184,9 @@ public class Sentence {
 
     public String getSubText(int start,int end){
         List<CoreLabel> tokens=getTokens().subList(start, end);
-        return edu.stanford.nlp.ling.Sentence.listToOriginalTextString(tokens).trim();
+        //return edu.stanford.nlp.simple.Sentence.listToOriginalTextString(tokens).trim();
+        return Joiner.on(' ').join(tokens.stream().map(CoreLabel::originalText).collect(Collectors.toList())).trim();
+
     }
 
     public JSONObject toJSON(){
