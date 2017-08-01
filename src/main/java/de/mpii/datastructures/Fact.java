@@ -43,7 +43,7 @@ public class Fact implements IFact {
 
     @Override
     public String toSearchableString(){
-        return getPredicate() +"\t" +Joiner.on('\t').join(arguments);
+        return getPredicate() +"\t" +Joiner.on('\t').join(arguments).trim();
     }
 
     public void addArgument(String arg) {

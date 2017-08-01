@@ -268,6 +268,7 @@ public class EleasticSearchRetriever {
 
 
         loggger.debug("Query: "+searchSourceBuilder.toString());
+//        System.out.println(searchSourceBuilder.toString());
 
         Search search = new Search.Builder(searchSourceBuilder.toString())
                 // multiple index or types can be added.

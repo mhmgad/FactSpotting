@@ -222,7 +222,7 @@ public class Configuration {
                 conf.setEvidencePerFactSize(Integer.parseInt(prop.getProperty(EVIDENCE_PER_FACT_SIZE,"5")));
                 conf.setMatchingThreshold(prop.getProperty(MATCHING_THRESHOLD,"10%"));
                 conf.setSpottingMethod(FactSpotterFactory.SpottingMethod.valueOf(prop.getProperty(SPOTTING,"NONE")));
-                conf.setElasticQueryStyle(ElasticSearchFactSpotter.QueryStyle.valueOf(prop.getProperty(ELASTIC_QUERY_STYLE, ElasticSearchFactSpotter.QueryStyle.STRING_QUERY.toString())));
+                conf.setElasticQueryStyle(ElasticSearchFactSpotter.QueryStyle.valueOf(prop.getProperty(ELASTIC_QUERY_STYLE, ElasticSearchFactSpotter.QueryStyle.SPLIT_QUERY.toString())));
 
 //                System.out.println(conf);
 

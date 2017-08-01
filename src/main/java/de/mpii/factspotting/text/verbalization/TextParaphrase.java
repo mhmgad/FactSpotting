@@ -95,6 +95,6 @@ public class TextParaphrase implements IParaphrase<TextParaphrase>{
     public IParaphrase getParaphrase(List<TextParaphrase> args) {
         if(args.size()==2)
             return getParaphrase(args.get(0),args.get(1));
-        else return new TextParaphrase(this.getSearchableString()+"\t"+ Joiner.on('\t').join(args.stream().map(TextParaphrase::getSearchableString).collect(Collectors.toList())),this.getScore()*(args.stream().mapToDouble(TextParaphrase::getScore).reduce(1,(a, b) -> a * b)));
+        else return new TextParaphrase(this.getSearchableString()+"\t"+ Joiner.on('\t').join(args.stream().map(TextParaphrase::getSearchableString).collect(Collectors.toList())).trim(),this.getScore()*(args.stream().mapToDouble(TextParaphrase::getScore).reduce(1,(a, b) -> a * b)));
     }
 }

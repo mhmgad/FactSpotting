@@ -25,6 +25,6 @@ public class BinaryFact  extends Fact{
     }
 
     public String toSearchableString(){
-        return getSubject()+"\t"+getPredicate() +"\t" +getObject();
+        return (getSubject()+"\t"+getPredicate() +"\t" +getObject()).trim();
     }
 }

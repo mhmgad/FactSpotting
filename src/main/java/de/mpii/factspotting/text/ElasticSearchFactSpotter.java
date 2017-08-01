@@ -91,7 +91,7 @@ public class ElasticSearchFactSpotter implements IFactSpotter<Fact> {
 
         List<IParaphrase> verbalizatios=verbalizer.getVerbalizations(fact);
 
-        //System.out.println(verbalizatios);
+//        System.out.println(verbalizatios);
 
         List<String> stringsList = verbalizatios.stream().sorted().map(v -> v.getSearchableString()).collect(Collectors.toList());
 
@@ -105,7 +105,10 @@ public class ElasticSearchFactSpotter implements IFactSpotter<Fact> {
     }
 
     public static void main(String[] args) {
-        BinaryFact f=new BinaryFact("Albert_Einstein","wasBornIn","Ulm");
+//        BinaryFact f=new BinaryFact("Albert_Einstein","wasBornIn","Ulm");
+//        BinaryFact f=new BinaryFact("Albert_Einstein","wasBornIn","");
+
+        Fact f=new Fact("wasBornIn",Arrays.asList(new String[]{"Albert_Einstein"}));
         System.out.println(Configuration.getInstance());
 
         String fieldsString="sent";
