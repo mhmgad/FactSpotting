@@ -117,7 +117,9 @@ public class ElasticSearchFactSpotter implements IFactSpotter<Fact> {
         ElasticSearchFactSpotter fs=new ElasticSearchFactSpotter();
 //        ElasticSearchFactSpotter fs=new ElasticSearchFactSpotter("wiki_sent",fields,5,VerbalizerFactory.getInstance());
 
-        System.out.println(fs.spot(f));
+        ISpottedEvidence ev = fs.spot(f);
+        System.out.println(ev);
+        System.out.println(ev.getEntities());
     }
 
 

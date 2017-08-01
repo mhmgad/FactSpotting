@@ -1,5 +1,6 @@
 package de.mpii.factspotting.config;
 
+import de.mpii.de.mpii.processing.NEExtractor;
 import de.mpii.factspotting.FactSpotterFactory;
 import de.mpii.factspotting.text.ElasticSearchFactSpotter;
 import de.mpii.factspotting.text.verbalization.VerbalizerFactory;
@@ -104,6 +105,12 @@ public class Configuration {
      */
     private ElasticSearchFactSpotter.QueryStyle elasticQueryStyle;
 
+
+    /**
+     *
+     *
+     */
+    private NEExtractor neExtractor=NEExtractor.getInstance();
 
     public String getMatchingThreshold() {
         return matchingThreshold;
