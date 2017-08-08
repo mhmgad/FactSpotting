@@ -1,6 +1,7 @@
 package de.mpii.factspotting.text.verbalization.dictionarybased;
 
 import com.google.common.collect.Sets;
+import de.mpii.datastructures.BinaryFact;
 import de.mpii.datastructures.Fact;
 import de.mpii.factspotting.config.Configuration;
 import de.mpii.factspotting.text.verbalization.IFactVerbalizer;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 /**
  * Created by gadelrab on 3/16/17.
  */
-public class DictionaryBasedVerbalizer implements IFactVerbalizer<Fact> {
+public class DictionaryBasedVerbalizer implements IFactVerbalizer<BinaryFact> {
     Logger logger= LoggerFactory.getLogger(DictionaryBasedVerbalizer.class);
 
     IDictionary<TextParaphrase> predicatesDictionary;
@@ -51,7 +52,7 @@ public class DictionaryBasedVerbalizer implements IFactVerbalizer<Fact> {
      */
 
     @Override
-    public List<IParaphrase> getVerbalizations(Fact fact)
+    public List<IParaphrase> getVerbalizations(BinaryFact fact)
     {
 
         List<IParaphrase> verbalizations=new TreeList<>();
@@ -62,17 +63,13 @@ public class DictionaryBasedVerbalizer implements IFactVerbalizer<Fact> {
 
         logger.debug(predicateParaphrases.toString());
         // get paraphrases of the mentions
-        List<Collection<TextParaphrase>> argumentsParaphrases= fact.getArguments().stream().map(arg-> argumentMentions.getParaphrases(arg)).collect(Collectors.toList());
-
-        argumentsParaphrases.forEach(l-> logger.debug(l.toString()));
-        //combinations
+        //List<Collection<TextParaphrase>> argumentsParaphrases= fact.getArguments().stream().map(arg-> argumentMentions.getParaphrases(arg)).collect(Collectors.toList());
 
         ArrayList<Set<TextParaphrase>> combinationsSets = new ArrayList<>();
-        int numberOfArgs = fact.getArguments().size();
+        combinationsSets.add(new TreeSet<>(argumentMentions.getParaphrases(fact.getSubject())));
+        combinationsSets.add(new TreeSet<>(argumentMentions.getParaphrases(fact.getObject())));
 
-        for (int i=0;i<numberOfArgs;i++){
-            combinationsSets.add(new TreeSet<>(argumentsParaphrases.get(i)));
-        }
+
 
         Set<List<TextParaphrase>> combinations = Sets.cartesianProduct(combinationsSets);
 
@@ -80,16 +77,6 @@ public class DictionaryBasedVerbalizer implements IFactVerbalizer<Fact> {
                 combinations.forEach(args-> verbalizations.add(predicateParaphrase.getParaphrase(args)));
         }
 
-//        for (TextParaphrase predicateParaphrase: predicateParaphrases ) {
-//            //TODO extend support to n-tuples
-//            for(TextParaphrase subjectParaphrase:argumentsParaphrases.get(0)){
-//                for (TextParaphrase objectParaphrase:argumentsParaphrases.get(1)) {
-//                    verbalizations.add(predicateParaphrase.getParaphrase(subjectParaphrase,objectParaphrase ));
-//                }
-//            }
-//        }
-        // add the fact as its to the top of the list
-        //verbalizations.add(new TextParaphrase(fact.toSearchableString(),-2));
 
         return verbalizations;
     }
