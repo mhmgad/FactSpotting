@@ -98,10 +98,21 @@ public class FileUtils {
    * @throws IOException 
    */
   public static String getFileContent(File file, String encoding) throws IOException {
-    StringBuilder sb = new StringBuilder();
     BufferedReader reader = getBufferedUTF8Reader(file);
-    for (String line = reader.readLine(); 
-        line != null; 
+    return getFileContent(reader);
+  }
+
+  /**
+   * Returns the content of the file as string. Linebreaks
+   * are encoded as unix newlines (\n).
+   * @param reader File to get String content from.
+   * @return  String content of file.
+   * @throws IOException
+   */
+  public static String getFileContent(BufferedReader reader) throws IOException {
+    StringBuilder sb = new StringBuilder();
+    for (String line = reader.readLine();
+        line != null;
         line = reader.readLine()) {
       sb.append(line);
       sb.append('\n');
@@ -109,7 +120,7 @@ public class FileUtils {
     reader.close();
     return sb.toString();
   }
-  
+
   /**
    * Writes the content of the string to the (UTF-8 encoded) file.
    * 
