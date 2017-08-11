@@ -108,11 +108,12 @@ public class ElasticSearchFactSpotter implements IFactSpotter<Fact> {
 //        BinaryFact f=new BinaryFact("Albert_Einstein","wasBornIn","Ulm");
 //        BinaryFact f=new BinaryFact("Albert_Einstein","wasBornIn","");
 
-        Fact f=new Fact("wasBornIn",Arrays.asList(new String[]{"Albert_Einstein"}));
+        Fact f=new BinaryFact("Albert_Einstein","wasBornIn","ULM");
         System.out.println(Configuration.getInstance());
 
         String fieldsString="sent";
         List<String> fields=Arrays.asList(fieldsString.split(","));
+
 
         ElasticSearchFactSpotter fs=new ElasticSearchFactSpotter();
 //        ElasticSearchFactSpotter fs=new ElasticSearchFactSpotter("wiki_sent",fields,5,VerbalizerFactory.getInstance());

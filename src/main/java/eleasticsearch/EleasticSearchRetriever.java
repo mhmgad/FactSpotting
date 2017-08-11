@@ -267,7 +267,7 @@ public class EleasticSearchRetriever {
         ).size(resultSize);
 
 
-        loggger.debug("Query: "+searchSourceBuilder.toString());
+      //  loggger.debug("Query: "+searchSourceBuilder.toString());
 //        System.out.println(searchSourceBuilder.toString());
 
         Search search = new Search.Builder(searchSourceBuilder.toString())
@@ -307,7 +307,10 @@ public class EleasticSearchRetriever {
 
         EleasticSearchRetriever f=new EleasticSearchRetriever("wiki_sent");
 
-        System.out.println(f.getByTitle(5,Arrays.asList("albert einstein"), Arrays.asList("born in")));
+
+
+        System.out.println(f.searchFieldsSeparately(Arrays.asList("sent","title"),Arrays.asList(Arrays.asList("Albert","was born in","Ulm"))));
+//        System.out.println(f.getByTitle(5,Arrays.asList("albert einstein"), Arrays.asList("born in")));
 
 //        EleasticSearchRetriever f=new EleasticSearchRetriever("wiki");
 //
