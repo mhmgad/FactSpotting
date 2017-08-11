@@ -21,4 +21,9 @@ public class NullEvidence implements ISpottedEvidence{
     public String readable() {
         return "NULL";
     }
+
+    @Override
+    public int size() {
+        return 0;
+    }
 }

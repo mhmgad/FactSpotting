@@ -43,7 +43,12 @@ public class TextEvidence implements ISpottedEvidence{
 
     @Override
     public String readable() {
-        return "["+Joiner.on(",").join(documents.stream().map(d->"\""+d.getText()+"\"").collect(Collectors.toList()))+"]";
+        return "["+Joiner.on(",").join(documents.stream().map(d->"\""+d.getTitle()+"//"+d.getText()+"\"").collect(Collectors.toList()))+"]";
+    }
+
+    @Override
+    public int size() {
+        return documents.size();
     }
 
     @Override
@@ -53,4 +58,6 @@ public class TextEvidence implements ISpottedEvidence{
                 ", isSupporting=" + isSupporting()+
                 '}';
     }
+
+
 }

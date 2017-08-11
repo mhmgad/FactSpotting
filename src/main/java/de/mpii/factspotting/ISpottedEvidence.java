@@ -17,4 +17,6 @@ public interface ISpottedEvidence {
     public List<String> getEntities();
 
     public String readable();
+
+    int size();
 }
