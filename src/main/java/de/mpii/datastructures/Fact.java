@@ -1,6 +1,7 @@
 package de.mpii.datastructures;
 
 import com.google.common.base.Joiner;
+import de.mpii.utils.FactUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,12 @@ public class Fact implements IFact {
     }
 
     public String getIRISRepresenation(){
-        return getPredicate()+"("+Joiner.on(",").join(arguments.stream().map(arg-> '\''+arg+'\'').collect(Collectors.toList()))+").";
+        return FactUtils.getCleanPredicateName(getPredicate())+"("+Joiner.on(",").join(arguments.stream().map(arg-> '\''+arg+'\'').collect(Collectors.toList()))+").";
     }
+
+    public String getIRISQueryRepresenation() {
+        return "?- "+getIRISRepresenation();
+    }
+
 
 }
