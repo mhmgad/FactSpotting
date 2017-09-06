@@ -61,7 +61,7 @@ public class ElasticSearchFactSpotter implements IFactSpotter<Fact> {
 
 
     @Override
-    public ISpottedEvidence spot(Fact fact) {
+    public TextEvidence spot(Fact fact) {
 
         List<String> searchQueries=generateSearchQueries(fact);
         List<Document> docs=new LinkedList<>();

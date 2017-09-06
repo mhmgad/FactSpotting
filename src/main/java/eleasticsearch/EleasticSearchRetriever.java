@@ -2,7 +2,7 @@ package eleasticsearch;
 
 import de.mpii.datastructures.AnnotatedDocument;
 import de.mpii.datastructures.Document;
-import de.mpii.datastructures.SentAnnotatedDocument;
+//import de.mpii.datastructures.SentAnnotatedDocument;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestClientFactory;
 import io.searchbox.client.config.HttpClientConfig;
@@ -118,7 +118,7 @@ public class EleasticSearchRetriever {
     }
 
 
-    public List<SentAnnotatedDocument> getByTitle(int resultSize, List<String> pages, List<String> filteringString) throws IOException {
+    public List<AnnotatedDocument> getByTitle(int resultSize, List<String> pages, List<String> filteringString) throws IOException {
 
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -150,9 +150,9 @@ public class EleasticSearchRetriever {
 
         SearchResult response = client.execute(search);
         loggger.debug("hitsSize in response: " + response.getTotal());
-        List<SearchResult.Hit<SentAnnotatedDocument, Void>> responseList = response.getHits(SentAnnotatedDocument.class);
+        List<SearchResult.Hit<AnnotatedDocument, Void>> responseList = response.getHits(AnnotatedDocument.class);
 
-        List<SentAnnotatedDocument> docList = new ArrayList<>();
+        List<AnnotatedDocument> docList = new ArrayList<>();
 
         if (responseList != null){
             loggger.debug("hitsSize: " + responseList.size());
@@ -210,7 +210,7 @@ public class EleasticSearchRetriever {
         loggger.debug("hitsSize in response: " + response.getTotal());
 
         loggger.debug("response"+ response.getJsonString());
-        List<SearchResult.Hit<SentAnnotatedDocument, Void>> responseList = response.getHits(SentAnnotatedDocument.class);
+        List<SearchResult.Hit<AnnotatedDocument, Void>> responseList = response.getHits(AnnotatedDocument.class);
 
         List<Document> docList = new ArrayList<>();
 
@@ -279,7 +279,7 @@ public class EleasticSearchRetriever {
         loggger.debug("hitsSize in response: " + response.getTotal());
 
         loggger.debug("response"+ response.getJsonString());
-        List<SearchResult.Hit<SentAnnotatedDocument, Void>> responseList = response.getHits(SentAnnotatedDocument.class);
+        List<SearchResult.Hit<AnnotatedDocument, Void>> responseList = response.getHits(AnnotatedDocument.class);
 
         List<Document> docList = new ArrayList<>();
 

@@ -180,7 +180,7 @@ public class SentenceRetrievalExperiment {
                 pagesToCheck.add(object.getIdAsTitle());
             }
 
-            List<SentAnnotatedDocument> docsList=ret.getByTitle(esResultSize,pagesToCheck,relationParaphrases);
+            List<AnnotatedDocument> docsList=ret.getByTitle(esResultSize,pagesToCheck,relationParaphrases);
 
 
             AnnotatedDocuments annDocs = new AnnotatedDocuments();

@@ -19,6 +19,10 @@ public class TextEvidence implements ISpottedEvidence{
 
     Collection<Document> documents;
 
+    public TextEvidence() {
+        documents=new LinkedList<>();
+    }
+
     public TextEvidence(Collection<Document> documents) {
         this.documents = documents;
     }

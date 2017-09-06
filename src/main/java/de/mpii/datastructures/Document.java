@@ -1,5 +1,6 @@
 package de.mpii.datastructures;
 
+import com.google.gson.annotations.SerializedName;
 import io.searchbox.annotations.JestId;
 
 /**
@@ -12,12 +13,22 @@ public class Document {
     @JestId
     private String id;
 
+
     private String text;
     private String title;
 
 
     private int order;
     private String url;
+
+
+    String sent;
+
+
+    public String getText() {
+        return (sent!=null)? sent:text;
+
+    }
 
     public Document(String id, String text, String title, String url, int order) {
         this.id = id;
@@ -32,16 +43,14 @@ public class Document {
     }
 
     public String getId() {
-        return id;
+        return id!=null? id:title;
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
-    public String getText() {
-        return text;
-    }
+
 
     public void setText(String text) {
         this.text = text;
