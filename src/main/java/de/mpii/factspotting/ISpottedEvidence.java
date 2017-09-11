@@ -1,9 +1,11 @@
 package de.mpii.factspotting;
 
 import com.google.gson.*;
+import de.mpii.datastructures.Document;
 import de.mpii.factspotting.text.TextEvidence;
 
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -21,6 +23,8 @@ public interface ISpottedEvidence {
     public List<String> getEntities();
 
     public String readable();
+
+    public Collection<Document> getDocuments();
 
     int size();
 

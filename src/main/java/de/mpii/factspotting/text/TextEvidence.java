@@ -51,6 +51,11 @@ public class TextEvidence implements ISpottedEvidence{
     }
 
     @Override
+    public Collection<Document> getDocuments() {
+        return documents;
+    }
+
+    @Override
     public int size() {
         return documents.size();
     }
