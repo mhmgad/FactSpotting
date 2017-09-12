@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 
-mvn install:install-file -Dfile=./external/ajira-0.3.jar -DgroupId=ajira -DartifactId=ajira-0.3 -Dversion=0.3 -Dpackaging=jar
+#mvn install:install-file -Dfile=./libs/ajira-0.3.jar -DgroupId=ajira -DartifactId=ajira-0.3 -Dversion=0.3 -Dpackaging=jar
 
-mvn install:install-file -Dfile=./external/nlu-api-client-java-1.0.0.jar  -Dsources=./external/nlu-api-client-java-1.0.0-sources.jar -DgroupId=ambiverse -DartifactId=nlu-api-client-java-1.0.0 -Dversion=1.0.0 -Dpackaging=jar
+mvn install:install-file -Dfile=./libs/nlu-api-client-java-1.0.0.jar  -Dsources=./libs/nlu-api-client-java-1.0.0-sources.jar -DgroupId=ambiverse -DartifactId=nlu-api-client-java-1.0.0 -Dversion=1.0.0 -Dpackaging=jar
 
 
 #Ambiverse
