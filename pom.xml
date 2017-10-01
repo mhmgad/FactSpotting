@@ -61,7 +61,7 @@
                         </program>
 
                         <program>
-                            <mainClass>eleasticsearch.EleasticSearchRetriever</mainClass>
+                            <mainClass>de.mpii.retrievers.EleasticSearchRetriever</mainClass>
                             <id>get_elastic</id>
                         </program>
 
@@ -244,6 +244,11 @@
                 <version>4.1</version>
             </dependency>
 
+            <dependency>
+                <groupId>it.unipi.di.acube</groupId>
+                <artifactId>bing-api-java</artifactId>
+                <version>0.4</version>
+            </dependency>
 
         </dependencies>
     <!--</dependencyManagement>-->

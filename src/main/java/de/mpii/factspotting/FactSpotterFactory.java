@@ -1,6 +1,7 @@
 package de.mpii.factspotting;
 
 
+import de.mpii.factspotting.text.BingFactSpotter;
 import de.mpii.factspotting.text.ElasticSearchFactSpotter;
 
 /**
@@ -9,13 +10,16 @@ import de.mpii.factspotting.text.ElasticSearchFactSpotter;
 public class FactSpotterFactory {
 
 
-    public enum SpottingMethod{ELASTIC, NONE};
+    public enum SpottingMethod{ELASTIC, NONE,BING};
 
 
 
     public static IFactSpotter create(SpottingMethod method){
 
         switch (method){
+
+            case BING:
+                return new BingFactSpotter();
             case ELASTIC:
                 return new ElasticSearchFactSpotter();
             case NONE:

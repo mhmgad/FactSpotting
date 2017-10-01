@@ -32,11 +32,21 @@ public class Configuration {
     private static final String ELASTIC_QUERY_STYLE = "elastic.queryStyle";
 
 
+
+
     /**
      * instance of the configuration
      */
     private static Configuration config;
     private static boolean confFileAlreadySet=false;
+
+
+    /**
+     * Keys file
+     *
+     */
+    private Keys keys=Keys.getInstance();
+
     /**
      * configuration filepath
      */
@@ -305,6 +315,10 @@ public class Configuration {
 
     public ElasticSearchFactSpotter.QueryStyle getElasticQueryStyle() {
         return elasticQueryStyle;
+    }
+
+    public void setKeys(Keys keys) {
+        this.keys = keys;
     }
 }
 

@@ -10,7 +10,7 @@ import de.mpii.factspotting.config.Configuration;
 import de.mpii.factspotting.text.verbalization.IFactVerbalizer;
 import de.mpii.factspotting.text.verbalization.IParaphrase;
 import de.mpii.factspotting.text.verbalization.VerbalizerFactory;
-import eleasticsearch.EleasticSearchRetriever;
+import de.mpii.retrievers.EleasticSearchRetriever;
 
 import java.io.IOException;
 import java.util.Arrays;

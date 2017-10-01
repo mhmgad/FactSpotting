@@ -39,16 +39,21 @@ public class AnnotatedDocument extends Document{
     }
 
 
-
-
     public AnnotatedDocument(String id,String title ,String text,String url) {
+        this(id,title,text,url,0);
+    }
+
+
+    public AnnotatedDocument(String id,String title ,String text,String url, int order) {
 //        this(text,new Mentions());
-        super(id,title,text,url);
+        super(id,title,text,url,order);
         this.mentions = new Mentions();
         this.entity2Sentences = HashMultimap.create();
 
 
     }
+
+
 
 
     public AnnotatedDocument(String text,String url) {

@@ -1,14 +1,12 @@
-package eleasticsearch;
+package de.mpii.retrievers;
 
 import de.mpii.datastructures.AnnotatedDocument;
 import de.mpii.datastructures.Document;
-//import de.mpii.datastructures.SentAnnotatedDocument;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestClientFactory;
 import io.searchbox.client.config.HttpClientConfig;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
-
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -18,9 +16,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+//import de.mpii.datastructures.SentAnnotatedDocument;
 
 /**
  * Created by gadelrab on 12/12/16.
@@ -303,25 +302,25 @@ public class EleasticSearchRetriever {
 
 
 
-    public static void main(String[] args) throws IOException {
-
-        EleasticSearchRetriever f=new EleasticSearchRetriever("wiki_sent");
-
-
-
-        System.out.println(f.searchFieldsSeparately(Arrays.asList("sent","title"),Arrays.asList(Arrays.asList("Albert","was born in","Ulm"))));
-//        System.out.println(f.getByTitle(5,Arrays.asList("albert einstein"), Arrays.asList("born in")));
-
-//        EleasticSearchRetriever f=new EleasticSearchRetriever("wiki");
+//    public static void main(String[] args) throws IOException {
 //
-//        System.out.println(f.getDocuments(1,"obama"));
-//        System.out.println(f.getDocuments(2,"Barak Obama"));
-//        System.out.println(f.getDocuments(3,"Barak", "Obama"));
+//        EleasticSearchRetriever f=new EleasticSearchRetriever("wiki_sent");
 //
-//        System.out.println(f.getDocuments(4,"Oscars"));
-//        System.out.println(f.getDocuments(5,"Leonardo DiCaprio"));
-//        System.out.println(f.getDocuments(6,"Oscars","Leonardo DiCaprio"));
-
-    }
+//
+//
+//        System.out.println(f.searchFieldsSeparately(Arrays.asList("sent","title"),Arrays.asList(Arrays.asList("Albert","was born in","Ulm"))));
+////        System.out.println(f.getByTitle(5,Arrays.asList("albert einstein"), Arrays.asList("born in")));
+//
+////        EleasticSearchRetriever f=new EleasticSearchRetriever("wiki");
+////
+////        System.out.println(f.getDocuments(1,"obama"));
+////        System.out.println(f.getDocuments(2,"Barak Obama"));
+////        System.out.println(f.getDocuments(3,"Barak", "Obama"));
+////
+////        System.out.println(f.getDocuments(4,"Oscars"));
+////        System.out.println(f.getDocuments(5,"Leonardo DiCaprio"));
+////        System.out.println(f.getDocuments(6,"Oscars","Leonardo DiCaprio"));
+//
+//    }
 
 }

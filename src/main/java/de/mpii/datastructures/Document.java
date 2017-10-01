@@ -2,11 +2,14 @@ package de.mpii.datastructures;
 
 import com.google.gson.annotations.SerializedName;
 import io.searchbox.annotations.JestId;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * Created by gadelrab on 3/14/17.
  */
-public class Document {
+public class Document implements Comparable<Document> {
 
 
     //String title;
@@ -30,7 +33,7 @@ public class Document {
 
     }
 
-    public Document(String id, String text, String title, String url, int order) {
+    public Document(String id, String title, String text, String url, int order) {
         this.id = id;
         this.text = text;
         this.title = title;
@@ -38,8 +41,8 @@ public class Document {
         this.url = url;
     }
 
-    public Document(String id, String text, String title, String url) {
-        this(id,  text,  title,  url,0);
+    public Document(String id,String title, String text,  String url) {
+        this(id,    title,text,  url,0);
     }
 
     public String getId() {
@@ -78,5 +81,27 @@ public class Document {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public int compareTo(@NotNull Document o) {
+        return Integer.compare(this.getOrder(),o.getOrder());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Document)) return false;
+        Document document = (Document) o;
+        return Objects.equals(getId(), document.getId()) &&
+                Objects.equals(getText(), document.getText()) &&
+                Objects.equals(getTitle(), document.getTitle()) &&
+                Objects.equals(getUrl(), document.getUrl());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getId(), getText(), getTitle(), getUrl());
     }
 }

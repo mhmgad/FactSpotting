@@ -3,7 +3,7 @@ import de.mpii.datastructures.*;
 import de.mpii.de.mpii.processing.SentenceExtractor;
 import de.mpii.de.mpii.processing.entitydisambiguation.AmbiverseDocumentAnnotator;
 import de.mpii.de.mpii.processing.entitydisambiguation.DocumentAnnotator;
-import eleasticsearch.EleasticSearchRetriever;
+import de.mpii.retrievers.EleasticSearchRetriever;
 import mpi.tools.javatools.util.FileUtils;
 import org.apache.commons.cli.*;
 
