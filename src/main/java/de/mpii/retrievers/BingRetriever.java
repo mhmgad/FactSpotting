@@ -42,7 +42,7 @@ public class BingRetriever {
 
             docs.add(new AnnotatedDocument(entry.getName(),entry.getName(),entry.getSnippet(),entry.getDisplayUrl(),order++));
         }
-        TimeUnit.SECONDS.sleep(2);
+        TimeUnit.SECONDS.sleep(1);
         return docs;
     }
 
