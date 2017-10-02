@@ -8,9 +8,11 @@ import it.unipi.di.acube.searchapi.WebsearchApi;
 import it.unipi.di.acube.searchapi.callers.BingSearchApiCaller;
 import it.unipi.di.acube.searchapi.model.WebsearchResponse;
 import it.unipi.di.acube.searchapi.model.WebsearchResponseEntry;
-import org.eclipse.collections.impl.set.sorted.mutable.TreeSortedSet;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -28,7 +30,7 @@ public class BingRetriever {
     }
 
 
-    public List<AnnotatedDocument> search(String query) throws Exception {
+    public synchronized List<AnnotatedDocument> search(String query) throws Exception {
         WebsearchResponse response = api.query(query, numberOfResults);
         List<AnnotatedDocument> docs=new LinkedList<>();
 
