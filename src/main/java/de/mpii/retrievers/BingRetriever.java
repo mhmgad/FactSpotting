@@ -11,6 +11,7 @@ import it.unipi.di.acube.searchapi.model.WebsearchResponseEntry;
 import org.eclipse.collections.impl.set.sorted.mutable.TreeSortedSet;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class BingRetriever {
@@ -39,7 +40,7 @@ public class BingRetriever {
 
             docs.add(new AnnotatedDocument(entry.getName(),entry.getName(),entry.getSnippet(),entry.getDisplayUrl(),order++));
         }
-
+        TimeUnit.SECONDS.sleep(25);
         return docs;
     }
 
