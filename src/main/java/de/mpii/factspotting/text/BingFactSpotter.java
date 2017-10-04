@@ -1,6 +1,5 @@
 package de.mpii.factspotting.text;
 
-import de.mpii.datastructures.AnnotatedDocument;
 import de.mpii.datastructures.BinaryFact;
 import de.mpii.datastructures.Document;
 import de.mpii.datastructures.Fact;
@@ -10,7 +9,7 @@ import de.mpii.factspotting.config.Configuration;
 import de.mpii.factspotting.text.verbalization.IFactVerbalizer;
 import de.mpii.factspotting.text.verbalization.IParaphrase;
 import de.mpii.factspotting.text.verbalization.VerbalizerFactory;
-import de.mpii.retrievers.BingRetriever;
+import de.mpii.factspotting.text.retrievers.BingRetriever;
 
 import java.util.List;
 import java.util.stream.Collectors;

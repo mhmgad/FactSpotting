@@ -61,7 +61,7 @@
                         </program>
 
                         <program>
-                            <mainClass>de.mpii.retrievers.EleasticSearchRetriever</mainClass>
+                            <mainClass>de.mpii.factspotting.text.retrievers.EleasticSearchRetriever</mainClass>
                             <id>get_elastic</id>
                         </program>
 

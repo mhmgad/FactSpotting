@@ -1,4 +1,4 @@
-package de.mpii.retrievers;
+package de.mpii.factspotting.text.retrievers;
 
 import de.mpii.datastructures.AnnotatedDocument;
 import de.mpii.datastructures.Document;
