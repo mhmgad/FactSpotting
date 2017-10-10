@@ -30,11 +30,11 @@ public class Configuration {
     private static final String DOCUMENT_FIELDS_TO_SEARCH = "fieldsToSearch";
     private static final String MATCHING_THRESHOLD = "matchingThresholdPercentage";
     private static final String ELASTIC_QUERY_STYLE = "elastic.queryStyle";
-
-
+    private static final String SEARCH_CACHE = "bing.cacheFile";
 
 
     /**
+     *
      * instance of the configuration
      */
     private static Configuration config;
@@ -122,6 +122,11 @@ public class Configuration {
      */
     private NEExtractor neExtractor=NEExtractor.getInstance();
 
+    /**
+     * search results cache
+     */
+    private String cacheFilePath;
+
     public String getMatchingThreshold() {
         return matchingThreshold;
     }
@@ -203,60 +208,60 @@ public class Configuration {
         this.fieldsToSearch = fieldsToSearch;
     }
 
-    public static Configuration fromFile(String filename, boolean inResources){
+    public static Configuration fromFile(String filename, boolean inResources) {
 
-            Configuration conf=new Configuration();
-            Properties prop = new Properties();
-            InputStream input = null;
+        Configuration conf = new Configuration();
+        Properties prop = new Properties();
+        InputStream input = null;
 
-            try {
+        try {
             // configuration file loaded in resoruces
-                if (inResources){
-                    input = Configuration.class.getClassLoader().getResourceAsStream(filename);
+            if (inResources) {
+                input = Configuration.class.getClassLoader().getResourceAsStream(filename);
 
-                }
-                else{
-                    // configuration file form user
-                        input= new FileInputStream(filename);
-                    }
-                if (input == null) {
-                    System.out.println("Sorry, unable to find " + filename);
-                    return conf;
+            } else {
+                // configuration file form user
+                input = new FileInputStream(filename);
+            }
+            if (input == null) {
+                System.out.println("Sorry, unable to find " + filename);
+                return conf;
 
             }
 
-                //load a properties file from class path, inside static method
-                prop.load(input);
+            //load a properties file from class path, inside static method
+            prop.load(input);
 
-                //get the property value
-                conf.setPredicatesDictionariesFiles(asList(prop.getProperty(PREDICATES_DICTS,"")));
-                conf.setArgumentsMentionsFiles(asList(prop.getProperty(ARGUMENTS_DICTS,"")));
-                conf.setTextCorpora(Arrays.asList(prop.getProperty(TEXT_CORPORA,"wiki").split(",")));
-                conf.setFieldsToSearch(Arrays.asList(prop.getProperty(DOCUMENT_FIELDS_TO_SEARCH,"text,title").split(",")));
-                conf.setTotalParaphrases(Integer.parseInt(prop.getProperty(TOTAL_PARAPHRASES,"50")));
-                conf.setPerItemParaphrases(Integer.parseInt(prop.getProperty(PER_ITEM_PARAPHRASES,"50")));
-                conf.setVerbalizerType(VerbalizerFactory.VerbalizerType.valueOf( prop.getProperty(VERBALIZER,"DEFAULT")));
-                conf.setEvidencePerFactSize(Integer.parseInt(prop.getProperty(EVIDENCE_PER_FACT_SIZE,"5")));
-                conf.setMatchingThreshold(prop.getProperty(MATCHING_THRESHOLD,"10%"));
-                conf.setSpottingMethod(FactSpotterFactory.SpottingMethod.valueOf(prop.getProperty(SPOTTING,"NONE")));
-                conf.setElasticQueryStyle(ElasticSearchFactSpotter.QueryStyle.valueOf(prop.getProperty(ELASTIC_QUERY_STYLE, ElasticSearchFactSpotter.QueryStyle.SPLIT_QUERY.toString())));
+            //get the property value
+            conf.setPredicatesDictionariesFiles(asList(prop.getProperty(PREDICATES_DICTS, "")));
+            conf.setArgumentsMentionsFiles(asList(prop.getProperty(ARGUMENTS_DICTS, "")));
+            conf.setTextCorpora(Arrays.asList(prop.getProperty(TEXT_CORPORA, "wiki").split(",")));
+            conf.setFieldsToSearch(Arrays.asList(prop.getProperty(DOCUMENT_FIELDS_TO_SEARCH, "text,title").split(",")));
+            conf.setTotalParaphrases(Integer.parseInt(prop.getProperty(TOTAL_PARAPHRASES, "50")));
+            conf.setPerItemParaphrases(Integer.parseInt(prop.getProperty(PER_ITEM_PARAPHRASES, "50")));
+            conf.setVerbalizerType(VerbalizerFactory.VerbalizerType.valueOf(prop.getProperty(VERBALIZER, "DEFAULT")));
+            conf.setEvidencePerFactSize(Integer.parseInt(prop.getProperty(EVIDENCE_PER_FACT_SIZE, "5")));
+            conf.setMatchingThreshold(prop.getProperty(MATCHING_THRESHOLD, "10%"));
+            conf.setSpottingMethod(FactSpotterFactory.SpottingMethod.valueOf(prop.getProperty(SPOTTING, "NONE")));
+            conf.setElasticQueryStyle(ElasticSearchFactSpotter.QueryStyle.valueOf(prop.getProperty(ELASTIC_QUERY_STYLE, ElasticSearchFactSpotter.QueryStyle.SPLIT_QUERY.toString())));
+            conf.setCacheFilePath(prop.getProperty(SEARCH_CACHE, "./search_cache.tmp"));
 
 //                System.out.println(conf);
 
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            } finally{
-                if(input!=null){
-                    try {
-                        input.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-            return conf;
-
         }
+        return conf;
+
+    }
     private static List<String> asList(String property){
         List<String> files=new LinkedList<>();
         if(!property.trim().isEmpty())
@@ -319,6 +324,14 @@ public class Configuration {
 
     public void setKeys(Keys keys) {
         this.keys = keys;
+    }
+
+    public String getCacheFilePath() {
+        return cacheFilePath;
+    }
+
+    public void setCacheFilePath(String cacheFilePath) {
+        this.cacheFilePath = cacheFilePath;
     }
 }
 

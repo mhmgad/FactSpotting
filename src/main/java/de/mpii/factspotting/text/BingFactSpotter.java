@@ -11,6 +11,7 @@ import de.mpii.factspotting.text.verbalization.IParaphrase;
 import de.mpii.factspotting.text.verbalization.VerbalizerFactory;
 import de.mpii.factspotting.text.retrievers.BingRetriever;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,13 @@ public class BingFactSpotter implements IFactSpotter<Fact> {
     }
 
     public BingFactSpotter(int evidencePerFactSize, IFactVerbalizer verbalizer) {
-        this.bingRetriever=new BingRetriever(evidencePerFactSize);
+        try {
+            this.bingRetriever=new BingRetriever(evidencePerFactSize,Configuration.getInstance().getCacheFilePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         this.verbalizer=verbalizer;
     }
 

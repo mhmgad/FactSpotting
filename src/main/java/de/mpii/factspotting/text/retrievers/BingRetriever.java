@@ -4,12 +4,14 @@ import com.google.common.base.Joiner;
 import de.mpii.datastructures.AnnotatedDocument;
 import de.mpii.datastructures.Document;
 import de.mpii.factspotting.config.Keys;
+import it.unipi.di.acube.searchapi.CachedWebsearchApi;
 import it.unipi.di.acube.searchapi.WebsearchApi;
 import it.unipi.di.acube.searchapi.callers.BingSearchApiCaller;
 import it.unipi.di.acube.searchapi.model.WebsearchResponse;
 import it.unipi.di.acube.searchapi.model.WebsearchResponseEntry;
 
 import javax.print.Doc;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -20,21 +22,24 @@ public class BingRetriever {
     private static final Double SIM_THRESHOLD = 0.5;
     private final int numberOfResults;
     BingSearchApiCaller caller ;
-    WebsearchApi api;
+    CachedWebsearchApi api;
     SnippetsExtractor snippetsExtractor=new SnippetsExtractor();
 
-    public BingRetriever(int numberOfResults) {
+    public BingRetriever(int numberOfResults, String cacheFilepath) throws IOException, ClassNotFoundException {
         this.caller = new BingSearchApiCaller(Keys.getInstance().getBingKey());
 
-        this.api=new WebsearchApi(caller);
+        this.api= CachedWebsearchApi.builder().api(caller).path(cacheFilepath).create();
+
+
         this.numberOfResults=numberOfResults;
     }
 
 
 
     public synchronized List<Document> search(String query) throws Exception {
+        System.out.println(query);
         WebsearchResponse response = api.query(query, numberOfResults);
-        System.out.println(response.getJsonResponses());
+//        System.out.println(response.getJsonResponses());
         List<Document> docs=new LinkedList<>();
 
         int order=0;
@@ -49,7 +54,7 @@ public class BingRetriever {
 
 
 
-        TimeUnit.MILLISECONDS.sleep(50);
+        TimeUnit.MILLISECONDS.sleep(1000);
         return docs;
     }
 
@@ -57,7 +62,7 @@ public class BingRetriever {
     public List<Document> searchParaphrases(List<String> queryParaphrases) throws Exception {
         Set<Document> docs=new HashSet<>();
 
-        System.out.println(queryParaphrases);
+
 
         docs.addAll(search(Joiner.on(" | ").join(queryParaphrases.stream().map(s->s.replace('\t',' ')).collect(Collectors.toList()))));
 
@@ -101,12 +106,13 @@ public class BingRetriever {
 
     public static void main(String[] args) throws Exception {
 
-        BingRetriever retriever=new BingRetriever(3);
+        BingRetriever retriever=new BingRetriever(3,"./cache2.tmp");
 
+        System.out.println(retriever.searchParaphrases(Arrays.asList("Jennifer was casted in Mother","Lawrence acted in Mother")));
         System.out.println(retriever.search("Obama was born in Kenya"));
         System.out.println(retriever.searchParaphrases(Arrays.asList("Obama was born in Kenya","Obama birthplace is Kenya")));
 
-        System.out.println(retriever.searchParaphrases(Arrays.asList("Jennifer was casted in Mother","Lawrence acted in Mother")));
+
 
 //        System.out.println(f.searchFieldsSeparately(Arrays.asList("sent","title"),Arrays.asList(Arrays.asList("Albert","was born in","Ulm"))));
 //        System.out.println(f.getByTitle(5,Arrays.asList("albert einstein"), Arrays.asList("born in")));
