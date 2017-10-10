@@ -25,6 +25,7 @@ public class BingRetriever {
 
     public BingRetriever(int numberOfResults) {
         this.caller = new BingSearchApiCaller(Keys.getInstance().getBingKey());
+
         this.api=new WebsearchApi(caller);
         this.numberOfResults=numberOfResults;
     }
@@ -33,6 +34,7 @@ public class BingRetriever {
 
     public synchronized List<Document> search(String query) throws Exception {
         WebsearchResponse response = api.query(query, numberOfResults);
+        System.out.println(response.getJsonResponses());
         List<Document> docs=new LinkedList<>();
 
         int order=0;
@@ -47,7 +49,7 @@ public class BingRetriever {
 
 
 
-        TimeUnit.MILLISECONDS.sleep(500);
+        TimeUnit.MILLISECONDS.sleep(50);
         return docs;
     }
 
