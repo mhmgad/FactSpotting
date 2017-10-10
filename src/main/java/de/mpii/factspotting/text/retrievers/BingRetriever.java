@@ -3,6 +3,7 @@ package de.mpii.factspotting.text.retrievers;
 import com.google.common.base.Joiner;
 import de.mpii.datastructures.AnnotatedDocument;
 import de.mpii.datastructures.Document;
+import de.mpii.factspotting.config.Configuration;
 import de.mpii.factspotting.config.Keys;
 import it.unipi.di.acube.searchapi.CachedWebsearchApi;
 import it.unipi.di.acube.searchapi.WebsearchApi;
@@ -10,14 +11,17 @@ import it.unipi.di.acube.searchapi.callers.BingSearchApiCaller;
 import it.unipi.di.acube.searchapi.model.WebsearchResponse;
 import it.unipi.di.acube.searchapi.model.WebsearchResponseEntry;
 
+import javax.inject.Singleton;
 import javax.print.Doc;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+@Singleton
 public class BingRetriever {
 
+    private static BingRetriever instance;
 
     private static final Double SIM_THRESHOLD = 0.5;
     private final int numberOfResults;
@@ -25,7 +29,7 @@ public class BingRetriever {
     CachedWebsearchApi api;
     SnippetsExtractor snippetsExtractor=new SnippetsExtractor();
 
-    public BingRetriever(int numberOfResults, String cacheFilepath) throws IOException, ClassNotFoundException {
+    private BingRetriever(int numberOfResults, String cacheFilepath) throws IOException, ClassNotFoundException {
         this.caller = new BingSearchApiCaller(Keys.getInstance().getBingKey());
 
         this.api= CachedWebsearchApi.builder().api(caller).path(cacheFilepath).create();
@@ -127,6 +131,20 @@ public class BingRetriever {
 //        System.out.println(f.getDocuments(5,"Leonardo DiCaprio"));
 //        System.out.println(f.getDocuments(6,"Oscars","Leonardo DiCaprio"));
 
+    }
+
+
+    public synchronized static BingRetriever getInstance(){
+        if(instance==null) {
+            try {
+                instance=new BingRetriever(Configuration.getInstance().getEvidencePerFactSize(), Configuration.getInstance().getCacheFilePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return instance;
     }
 
 

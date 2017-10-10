@@ -28,13 +28,7 @@ public class BingFactSpotter implements IFactSpotter<Fact> {
     }
 
     public BingFactSpotter(int evidencePerFactSize, IFactVerbalizer verbalizer) {
-        try {
-            this.bingRetriever=new BingRetriever(evidencePerFactSize,Configuration.getInstance().getCacheFilePath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        this.bingRetriever=BingRetriever.getInstance();
         this.verbalizer=verbalizer;
     }
 
