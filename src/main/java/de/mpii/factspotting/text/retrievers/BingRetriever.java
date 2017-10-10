@@ -54,7 +54,7 @@ public class BingRetriever {
 
 
 
-        TimeUnit.MILLISECONDS.sleep(1000);
+        TimeUnit.MILLISECONDS.sleep(50);
         return docs;
     }
 
