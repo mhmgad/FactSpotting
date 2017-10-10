@@ -60,9 +60,6 @@ public class BingFactSpotter implements IFactSpotter<Fact> {
         Fact f=new BinaryFact("Albert_Einstein","wasBornIn","ULM");
         System.out.println(Configuration.getInstance());
 
-
-
-
         BingFactSpotter fs=new BingFactSpotter();
 //        ElasticSearchFactSpotter fs=new ElasticSearchFactSpotter("wiki_sent",fields,5,VerbalizerFactory.getInstance());
 
