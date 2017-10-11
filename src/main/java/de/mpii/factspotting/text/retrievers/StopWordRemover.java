@@ -1,8 +1,9 @@
 package de.mpii.factspotting.text.retrievers;
 
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import mpi.tools.javatools.util.FileUtils;
+
+import java.io.*;
 import java.util.HashMap;
 
 
@@ -22,13 +23,17 @@ public class StopWordRemover {
 	public StopWordRemover() {
 		this.stopwords = new HashMap<String, String>();
 		// populateStopWords(ApplicationProperty.dataPath+ "stopwords.txt");
-		populateStopWords(getClass().getClassLoader().getResource("smallStopwords.txt").getFile());
+		populateStopWords(getClass().getClassLoader().getResourceAsStream ("resources/smallStopwords.txt"));
 	}
 	
 	public StopWordRemover(String stopWordsFile) {
 		this.stopwords = new HashMap<String, String>();
 		// populateStopWords(ApplicationProperty.dataPath+ "stopwords.txt");
-		populateStopWords(stopWordsFile);
+		try {
+			populateStopWords(new FileInputStream(new File(stopWordsFile)));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 
@@ -82,15 +87,15 @@ public class StopWordRemover {
 	/**
 	 * 
 	 * Populate the stop words
-	 * 
+	 *
 	 * @param sourceFile
 	 *            file containing stop words
 	 */
-	public void populateStopWords(String sourceFile) {
+	public void populateStopWords(InputStream sourceFile) {
 		try {
 
 			// System.out.println("POPULATING STOP WORD REMOVER");
-			BufferedReader in = new BufferedReader(new FileReader(sourceFile));
+			BufferedReader in = FileUtils.getBufferedUTF8Reader(sourceFile);
 			String line = "";
 			while ((line = in.readLine()) != null) {
 				this.stopwords.put(line.toLowerCase().trim(), "");
@@ -101,6 +106,11 @@ public class StopWordRemover {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+
+	}
+
+	public static void main(String[] args) {
+		StopWordRemover stop = new StopWordRemover();
 
 	}
 }
