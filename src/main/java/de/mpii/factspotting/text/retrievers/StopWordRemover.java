@@ -23,7 +23,7 @@ public class StopWordRemover {
 	public StopWordRemover() {
 		this.stopwords = new HashMap<String, String>();
 		// populateStopWords(ApplicationProperty.dataPath+ "stopwords.txt");
-		populateStopWords(getClass().getClassLoader().getResourceAsStream ("resources/smallStopwords.txt"));
+		populateStopWords(getClass().getClassLoader().getResourceAsStream ("smallStopwords.txt"));
 	}
 	
 	public StopWordRemover(String stopWordsFile) {
