@@ -300,15 +300,23 @@ public class Configuration {
 
     @Override
     public String toString() {
-        return "Configuration{" +
-                "predicatesDictionariesFiles=" + predicatesDictionariesFiles +
-                ", argumentsMentionsFiles=" + argumentsMentionsFiles +
-                ", totalParaphrases=" + totalParaphrases +
-                ", perItemParaphrases=" + perItemParaphrases +
-                ", verbalizerType=" + verbalizerType +
+        return "Spotting_Configuration{" +'\n'+
+                "keys=" + keys +'\n'+
+                ", predicatesDictionariesFiles=" + predicatesDictionariesFiles +'\n'+
+                ", argumentsMentionsFiles=" + argumentsMentionsFiles +'\n'+
+                ", totalParaphrases=" + totalParaphrases +'\n'+
+                ", perItemParaphrases=" + perItemParaphrases +'\n'+
+                ", evidencePerFactSize=" + evidencePerFactSize +'\n'+
+                ", fieldsToSearch=" + fieldsToSearch +'\n'+
+                ", verbalizerType=" + verbalizerType +'\n'+
+                ", textCorpora=" + textCorpora +'\n'+
+                ", matchingThreshold='" + matchingThreshold + '\'' +'\n'+
+                ", spottingMethod=" + spottingMethod +'\n'+
+                ", elasticQueryStyle=" + elasticQueryStyle +'\n'+
+                ", neExtractor=" + neExtractor +'\n'+
+                ", cacheFilePath='" + cacheFilePath + '\'' +'\n'+
                 '}';
     }
-
 
     public void setSpottingMethod(FactSpotterFactory.SpottingMethod spottingMethod) {
         this.spottingMethod = spottingMethod;
