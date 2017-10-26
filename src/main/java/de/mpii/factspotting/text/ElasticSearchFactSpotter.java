@@ -64,6 +64,7 @@ public class ElasticSearchFactSpotter implements IFactSpotter<Fact> {
     public TextEvidence spot(Fact fact) {
 
         List<String> searchQueries=generateSearchQueries(fact);
+        System.out.println(searchQueries);
         List<Document> docs=new LinkedList<>();
         try {
             switch (queryStyle) {
@@ -108,7 +109,7 @@ public class ElasticSearchFactSpotter implements IFactSpotter<Fact> {
 //        BinaryFact f=new BinaryFact("Albert_Einstein","wasBornIn","Ulm");
 //        BinaryFact f=new BinaryFact("Albert_Einstein","wasBornIn","");
 
-        Fact f=new BinaryFact("Albert_Einstein","wasBornIn","ULM");
+        Fact f=new BinaryFact("Albert_Einstein","livedIn","Ulm");
         System.out.println(Configuration.getInstance());
 
         String fieldsString="sent";

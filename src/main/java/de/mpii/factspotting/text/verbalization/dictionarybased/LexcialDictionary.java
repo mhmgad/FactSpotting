@@ -75,7 +75,7 @@ public class  LexcialDictionary implements IDictionary<TextParaphrase> {
             key=key.replace("<","");
         if(key.endsWith(">"))
             key=key.replace(">","");
-        key=key.replace(":"," ").replaceAll("(_\\(.+?\\))$"," ").trim().replace("_"," ").replaceAll("(?=\\p{Upper})"," ").replaceAll(" +", " ");
+        key=key.replace(":"," ").replaceAll("^([a-z]{2,3})/","").replaceAll("(_\\(.+?\\))$"," ").trim().replace("_"," ").replaceAll("(?=\\p{Upper})"," ").replaceAll(" +", " ");
         return key;
 
     }
@@ -87,6 +87,14 @@ public class  LexcialDictionary implements IDictionary<TextParaphrase> {
 
     }
 
+    public static void main(String[] args) {
+        LexcialDictionary d=new LexcialDictionary();
+        System.out.println(d.getCleanName("AAA"));
+        System.out.println(d.getCleanName("AlllABCooN"));
+        System.out.println(d.getCleanName("<de/kill_A._W>"));
+        System.out.println(d.getCleanName("<eng/kill_A._W>"));
+
+    }
 
 
 }
