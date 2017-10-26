@@ -75,7 +75,7 @@ public class  LexcialDictionary implements IDictionary<TextParaphrase> {
             key=key.replace("<","");
         if(key.endsWith(">"))
             key=key.replace(">","");
-        key=key.replace(":"," ").replace("_"," ").replaceAll("(?=\\p{Upper})"," ");
+        key=key.replace(":"," ").replaceAll("(_\\(.+?\\))$"," ").trim().replace("_"," ").replaceAll("(?=\\p{Upper})"," ").replaceAll(" +", " ");
         return key;
     }
 
