@@ -64,7 +64,7 @@ public class ElasticSearchFactSpotter implements IFactSpotter<Fact> {
     public TextEvidence spot(Fact fact) {
 
         List<String> searchQueries=generateSearchQueries(fact);
-        System.out.println(searchQueries);
+//        System.out.println(searchQueries);
         List<Document> docs=new LinkedList<>();
         try {
             switch (queryStyle) {
