@@ -4,6 +4,7 @@ import com.google.common.base.Joiner;
 import de.mpii.datastructures.Document;
 import de.mpii.de.mpii.processing.NEExtractor;
 import de.mpii.factspotting.ISpottedEvidence;
+import org.elasticsearch.common.inject.internal.Join;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -66,6 +67,11 @@ public class TextEvidence implements ISpottedEvidence{
                 "documents=" + documents.stream().map(d->d.getText()).collect(Collectors.toList())+
                 ", isSupporting=" + isSupporting()+
                 '}';
+    }
+
+    @Override
+    public String getReadableString() {
+        return "#"+Joiner.on("\n#").join(documents.stream().map(d->d.getReadableString()).collect(Collectors.toList()));
     }
 
 

@@ -104,4 +104,8 @@ public class Document implements Comparable<Document> {
 
         return Objects.hash(getId(), getText(), getTitle(), getUrl());
     }
+
+    public String getReadableString() {
+        return "("+getTitle()+") "+getText();
+    }
 }

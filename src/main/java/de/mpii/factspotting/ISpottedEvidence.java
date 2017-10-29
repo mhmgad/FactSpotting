@@ -29,4 +29,5 @@ public interface ISpottedEvidence {
     int size();
 
 
+    String getReadableString();
 }
