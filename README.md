@@ -1,4 +1,4 @@
-# FactChecking
+# FactSpotting
 
 Checking the correctness of a fact based on some text corpus. The fact can appear in text in positive or negative context.
 
