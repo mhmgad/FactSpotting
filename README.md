@@ -21,9 +21,23 @@ Therefore, the easiest way is to tunnel the connection to the hosting server and
 
 `ssh -f <server> -L <serverPort>:localhost:<localPort> -N`
 
-for instant if it is hosted on `himalia`
+for instant if it is hosted on `sedna`
 
-`ssh -f himalia.mpi-inf.mpg.de -L 9200:localhost:9200 -N `
+`ssh -f sedna.mpi-inf.mpg.de -L 9200:localhost:9200 -N `
+
+## Configuration
+
+file `src/main/resources/factchecking.properties` can be used to configure the spotting. 
+TODO: add description for the configuration parameters
+
+## Running Fact Spotting 
+
+run `mvn install` to generate `*.sh` files to run different project parts. The generated scripts can be found under `assemble/bin`
+
+Note: The reserved memory can be edited from `pom.xml` file before installing or the generated `.sh` afterwards.
+
+After installing to run use script `exper_cli.sh` is runs java class `SentenceRetrievalExperiment.java`
+TODO: add description for the parameters 
 
 
 
