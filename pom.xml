@@ -27,6 +27,28 @@
                 </configuration>
             </plugin>
 
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.5</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <groupId>ambiverse</groupId>
+                            <artifactId>nlu-api-client-java-1.0.0</artifactId>
+                            <version>1.0.0</version>
+                            <packaging>jar</packaging>
+                            <file>${basedir}/libs/nlu-api-client-java-1.0.0.jar</file>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!--Plugin to generate running scripts-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -92,6 +114,60 @@
                 </configuration>
             </plugin>
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <!--This plugin's configuration is used to store Eclipse m2e settings only.
+                    It has no influence on the Maven build itself. -->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.codehaus.mojo</groupId>
+                                        <artifactId>aspectj-maven-plugin</artifactId>
+                                        <versionRange>[1.0,)</versionRange>
+                                        <goals>
+                                            <goal>test-compile</goal>
+                                            <goal>compile</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <execute />
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>
+                                            org.apache.maven.plugins
+                                        </groupId>
+                                        <artifactId>
+                                            maven-install-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [2.5,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>install-file</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <execute>
+                                            <runOnIncremental>false</runOnIncremental>
+                                        </execute>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
     </build>
 
 
@@ -276,6 +352,8 @@
         <jersey.version>2.23.2</jersey.version>
         <google-client.version>1.22.0</google-client.version>
     </properties>
+
+
 
 
 </project>
