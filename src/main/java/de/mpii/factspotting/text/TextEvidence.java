@@ -18,13 +18,13 @@ import java.util.stream.Collectors;
 public class TextEvidence implements ISpottedEvidence{
 
 
-    Collection<Document> documents;
+    List<Document> documents;
 
     public TextEvidence() {
         documents=new LinkedList<>();
     }
 
-    public TextEvidence(Collection<Document> documents) {
+    public TextEvidence(List<Document> documents) {
         this.documents = documents;
     }
 
@@ -52,7 +52,7 @@ public class TextEvidence implements ISpottedEvidence{
     }
 
     @Override
-    public Collection<Document> getDocuments() {
+    public List<Document> getDocuments() {
         return documents;
     }
 

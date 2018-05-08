@@ -24,7 +24,7 @@ public interface ISpottedEvidence {
 
     public String readable();
 
-    public Collection<Document> getDocuments();
+    public List<Document> getDocuments();
 
     int size();
 

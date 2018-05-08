@@ -1,5 +1,7 @@
 package de.mpii.datastructures;
 
+import de.mpii.dataprocessing.util.FactUtils;
+
 import java.util.ArrayList;
 
 /**
@@ -29,7 +31,7 @@ public class BinaryFact  extends Fact{
         return (getSubject()+"\t"+getPredicate() +"\t" +getObject()).trim();
     }
     public String toReadableString(){
-        return (getSubject()+" "+getPredicate() +" " +getObject()).trim();
+        return (FactUtils.getCleanName(getSubject())+" "+FactUtils.getCleanPredicateName(getPredicate()) +" " +FactUtils.getCleanName(getObject())).trim();
     }
 
 

@@ -1,9 +1,8 @@
 package de.mpii.datastructures;
 
 import com.google.common.base.Joiner;
-import de.mpii.utils.FactUtils;
+import de.mpii.dataprocessing.util.FactUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

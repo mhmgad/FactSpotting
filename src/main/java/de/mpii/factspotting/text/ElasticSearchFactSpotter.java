@@ -112,16 +112,19 @@ public class ElasticSearchFactSpotter implements IFactSpotter<Fact> {
         Fact f=new BinaryFact("Albert_Einstein","livedIn","Ulm");
         System.out.println(Configuration.getInstance());
 
-        String fieldsString="sent";
-        List<String> fields=Arrays.asList(fieldsString.split(","));
+        IFactVerbalizer mverbalizer = VerbalizerFactory.getInstance();
+        System.out.println(mverbalizer.getVerbalizations(f));
 
-
-        ElasticSearchFactSpotter fs=new ElasticSearchFactSpotter();
-//        ElasticSearchFactSpotter fs=new ElasticSearchFactSpotter("wiki_sent",fields,5,VerbalizerFactory.getInstance());
-
-        ISpottedEvidence ev = fs.spot(f);
-        System.out.println(ev);
-        System.out.println(ev.getEntities());
+//        String fieldsString="sent";
+//        List<String> fields=Arrays.asList(fieldsString.split(","));
+//
+//
+//        ElasticSearchFactSpotter fs=new ElasticSearchFactSpotter();
+////        ElasticSearchFactSpotter fs=new ElasticSearchFactSpotter("wiki_sent",fields,5,VerbalizerFactory.getInstance());
+//
+//        ISpottedEvidence ev = fs.spot(f);
+//        System.out.println(ev);
+//        System.out.println(ev.getEntities());
     }
 
 

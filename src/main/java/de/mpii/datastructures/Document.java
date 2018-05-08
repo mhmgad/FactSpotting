@@ -108,4 +108,14 @@ public class Document implements Comparable<Document> {
     public String getReadableString() {
         return "("+getTitle()+") "+getText();
     }
+
+    /**
+     *
+     * @return
+     */
+    public String getBriefReadableString() {
+        String cleanText=getText().replace("\\s+"," ");
+
+        return cleanText.substring(Math.min(200,cleanText.length()));
+    }
 }

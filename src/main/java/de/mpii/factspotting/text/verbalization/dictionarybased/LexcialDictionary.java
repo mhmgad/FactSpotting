@@ -6,6 +6,7 @@ import com.google.common.collect.TreeMultimap;
 import de.mpii.factspotting.config.Configuration;
 import de.mpii.factspotting.text.verbalization.TextParaphrase;
 import de.mpii.factspotting.utils.DataUtils;
+import de.mpii.dataprocessing.util.FactUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -65,20 +66,12 @@ public class  LexcialDictionary implements IDictionary<TextParaphrase> {
     @Override
     public Collection<TextParaphrase> getParaphrases(String key, int topk) {
         List<TextParaphrase> paraphs = predicate2patterns.get(key).stream().limit(topk).collect(Collectors.toList());
-        String cleanName= getCleanName(key);
+        String cleanName= FactUtils.getCleanName(key);
         paraphs.add(new TextParaphrase(cleanName,0));
         return paraphs ;
     }
 
-    private String getCleanName(String key) {
-        if(key.startsWith("<"))
-            key=key.replace("<","");
-        if(key.endsWith(">"))
-            key=key.replace(">","");
-        key=key.replace(":"," ").replaceAll("^([a-z]{2,3})/","").replaceAll("(_\\(.+?\\))$"," ").trim().replace("_"," ").replaceAll("(?=\\p{Upper})"," ").replaceAll(" +", " ");
-        return key;
 
-    }
 
 
     public static LexcialDictionary fromFiles(List<String> predicatesDictionariesFiles) {
@@ -89,10 +82,10 @@ public class  LexcialDictionary implements IDictionary<TextParaphrase> {
 
     public static void main(String[] args) {
         LexcialDictionary d=new LexcialDictionary();
-        System.out.println(d.getCleanName("AAA"));
-        System.out.println(d.getCleanName("AlllABCooN"));
-        System.out.println(d.getCleanName("<de/kill_A._W>"));
-        System.out.println(d.getCleanName("<eng/kill_A._W>"));
+//        System.out.println(d.getCleanName("AAA"));
+//        System.out.println(d.getCleanName("AlllABCooN"));
+//        System.out.println(d.getCleanName("<de/kill_A._W>"));
+//        System.out.println(d.getCleanName("<eng/kill_A._W>"));
 
     }
 
