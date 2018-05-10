@@ -116,6 +116,6 @@ public class Document implements Comparable<Document> {
     public String getBriefReadableString() {
         String cleanText=getText().replace("\\s+"," ");
 
-        return cleanText.substring(Math.min(200,cleanText.length()));
+        return cleanText.substring(Math.min(400,cleanText.length()));
     }
 }
