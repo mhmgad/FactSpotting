@@ -116,6 +116,6 @@ public class Document implements Comparable<Document> {
     public String getBriefReadableString() {
         String cleanText=getText().replaceAll("\\s+"," ");
 
-        return cleanText.substring(0,Math.min(400,cleanText.length()))+" ( from "+getTitle()+" page) ";
+        return cleanText.substring(0,Math.min(400,cleanText.length()))+" ( from "+getTitle()+" wiki page) ";
     }
 }
