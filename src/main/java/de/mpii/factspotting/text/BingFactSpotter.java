@@ -50,6 +50,24 @@ public class BingFactSpotter implements IFactSpotter<Fact> {
         return null;
     }
 
+    public ISpottedEvidence spotFullDocuments(Fact fact) {
+        List<IParaphrase> verbalizations=verbalizer.getVerbalizations(fact);
+
+        List<String> stringsList = verbalizations.stream().sorted().map(v -> v.getSearchableString()).collect(Collectors.toList());
+
+        try {
+            List<Document> docs = bingRetriever.searchParaphrasesFullDocument(stringsList);
+            System.out.println("docs "+docs.size() );
+            System.out.println(docs);
+            return new TextEvidence(fact,docs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
 
 
 

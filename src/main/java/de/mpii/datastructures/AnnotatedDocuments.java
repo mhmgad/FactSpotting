@@ -98,7 +98,7 @@ public class AnnotatedDocuments {
 
     public JSONArray toJSON(){
         JSONArray arr=new JSONArray();
-        docs.stream().forEach(j->arr.add(j.toJSON()));
+        docs.stream().forEach(j->arr.add(j.toJSON2()));
         return arr;
     }
 

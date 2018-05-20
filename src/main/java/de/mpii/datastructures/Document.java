@@ -1,15 +1,20 @@
 package de.mpii.datastructures;
 
+import com.google.common.base.Joiner;
 import com.google.gson.annotations.SerializedName;
 import io.searchbox.annotations.JestId;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
+import output.writers.SerializableData;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * Created by gadelrab on 3/14/17.
  */
-public class Document implements Comparable<Document> {
+public class Document implements Comparable<Document>,SerializableData {
 
 
     //String title;
@@ -116,6 +121,41 @@ public class Document implements Comparable<Document> {
     public String getBriefReadableString() {
         String cleanText=getText().replaceAll("\\s+"," ");
 
-        return cleanText.substring(0,Math.min(400,cleanText.length()))+" ( from "+getTitle()+" wiki page) ";
+        return cleanText.substring(0,Math.min(400,cleanText.length()));//+" ( from "+getTitle()+" wiki page) ";
     }
+
+    @Override
+    public String toJSON() {
+        return null;
+    }
+
+    @Override
+    public String toTriple() {
+        return null;
+    }
+
+    @Override
+    public String toTsv() {
+        return null;
+    }
+
+    public List<String> getCsvHeader(){
+        return Arrays.asList(new String[]{"id","url","title","text","order"});
+    }
+
+    @Override
+    public String toCsv() {
+        String id=StringEscapeUtils.escapeCsv(StringEscapeUtils.escapeHtml(getId()));
+        String url=StringEscapeUtils.escapeCsv(getUrl());
+        String title=StringEscapeUtils.escapeCsv(StringEscapeUtils.escapeHtml(getTitle()));
+        String text=StringEscapeUtils.escapeCsv(StringEscapeUtils.escapeHtml(getBriefReadableString()));
+
+
+        List<Object> line = Arrays.asList(id,url,title,text, getOrder());
+       return  Joiner.on(",").join(line);
+    }
+
+
+
+
 }

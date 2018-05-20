@@ -288,7 +288,7 @@ public class AnnotatedDocument extends Document{
         return mentions.hasEntities();
     }
 
-    public JSONObject toJSON(){
+    public JSONObject toJSON2(){
         JSONObject jsonObject=new JSONObject();
 
 

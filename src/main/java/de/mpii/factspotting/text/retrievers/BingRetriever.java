@@ -108,6 +108,14 @@ public class BingRetriever {
 //        return  docs.stream().sorted().limit(numberOfResults).collect(Collectors.toList());
     }
 
+    public List<Document> searchParaphrasesFullDocument(List<String> queryParaphrases) throws Exception {
+        List<Document> docs=search(Joiner.on(" | ").join(queryParaphrases.stream().map(s->s.replace('\t',' ')).collect(Collectors.toList())));
+        return docs;
+
+
+//        return  docs.stream().sorted().limit(numberOfResults).collect(Collectors.toList());
+    }
+
     public static void main(String[] args) throws Exception {
 
         BingRetriever retriever=new BingRetriever(3,"./cache2.tmp");

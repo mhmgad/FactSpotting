@@ -50,7 +50,7 @@ public class Configuration {
     /**
      * configuration filepath
      */
-    private static String configurationFile="factchecking.properties";
+    private static String configurationFile= "factchecking.properties";
     /**
      * indicates whether a file is in JAR or not. once filepath is changed this variable is turned to true.
      */
@@ -120,6 +120,7 @@ public class Configuration {
      *
      *
      */
+
     private NEExtractor neExtractor=NEExtractor.getInstance();
 
     /**
