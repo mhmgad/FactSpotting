@@ -151,6 +151,11 @@ public class Configuration {
         this.predicatesDictionariesFiles = predicatesDictionariesFiles;
     }
 
+    public static String getConfigurationFile(){
+        return configurationFile;
+    }
+
+
     public List<String> getArgumentsMentionsFiles() {
         return argumentsMentionsFiles;
     }
