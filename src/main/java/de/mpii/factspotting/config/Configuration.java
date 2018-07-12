@@ -50,7 +50,7 @@ public class Configuration {
     /**
      * configuration filepath
      */
-    private static String configurationFile= "factchecking.properties";
+    private static String configurationFile= "factchecking.properties_back_bing";
     /**
      * indicates whether a file is in JAR or not. once filepath is changed this variable is turned to true.
      */

@@ -1,5 +1,5 @@
 
-SPOTTING=ELASTIC
+SPOTTING=BING
 
 #Parahphrases generation
 verbalizer=DICTIONARY
@@ -8,19 +8,20 @@ verbalizer=DICTIONARY
 
 predicatesDictionaries=/home/gadelrab/mpiRoot/GW/D5data-7/gadelrab/explain/dicts/predicates_paraphrases_dictionary.tsv
 argumentsDictionaries=/home/gadelrab/mpiRoot/GW/D5data-7/gadelrab/explain/dicts/entities_mentions_dict.tsv
+
 #totalParaphrases=100
 #perItemParaphrases=10
 
 
 # Elasticsearch
-evidencePerFactSize=20
+#evidencePerFactSize=5
 #only 1 corpus is supported now
 textCorpora=wiki_sent
 fieldsToSearch=sent,title
 elastic.queryStyle=SPLIT_QUERY
 
 matchingThresholdPercentage=90%
-#bing.cacheFile=
+bing.cacheFile=bing_cache.tmp
 
 #elastic.queryStyle=
 
