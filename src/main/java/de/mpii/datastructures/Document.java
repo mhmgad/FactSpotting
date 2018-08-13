@@ -121,7 +121,7 @@ public class Document implements Comparable<Document>,SerializableData {
     public String getBriefReadableString() {
         String cleanText=getText().replaceAll("\\s+"," ");
 
-        return cleanText.substring(0,Math.min(400,cleanText.length()));//+" ( from "+getTitle()+" wiki page) ";
+        return cleanText.substring(0,Math.min(400,cleanText.length()))+" ( from "+getTitle()+" wiki page) ";
     }
 
     @Override
