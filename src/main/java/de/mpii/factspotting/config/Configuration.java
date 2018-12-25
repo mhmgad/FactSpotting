@@ -7,6 +7,7 @@ import de.mpii.factspotting.text.verbalization.VerbalizerFactory;
 
 import javax.inject.Singleton;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -39,6 +40,7 @@ public class Configuration {
      */
     private static Configuration config;
     private static boolean confFileAlreadySet=false;
+    private static ClassLoader classLoader;
 
 
     /**
@@ -214,7 +216,45 @@ public class Configuration {
         this.fieldsToSearch = fieldsToSearch;
     }
 
-    public static Configuration fromFile(String filename, boolean inResources) {
+    public static Configuration fromFile(String filename, boolean inResources,ClassLoader classLoader) {
+//        Configuration conf = new Configuration();
+
+//        InputStream input = null;
+
+        InputStream input = loadFile(filename, inResources, classLoader);
+        if (input == null) {
+            System.out.println("Sorry, unable to find " + filename);
+            return null;
+        }
+
+
+        return fromStream(input);
+    }
+
+    public static InputStream loadFile(String filename, boolean inResources, ClassLoader classLoader)  {
+        InputStream input = null;
+        if (inResources)
+            input = Configuration.class.getClassLoader().getResourceAsStream(filename);
+        else
+        if(classLoader!=null)
+            input=classLoader.getResourceAsStream(filename);
+        else
+        // configuration file form user
+        {
+            try {
+                input = new FileInputStream(filename);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        return input;
+    }
+
+
+
+        public static Configuration fromFile(String filename, boolean inResources) {
 
         Configuration conf = new Configuration();
         Properties prop = new Properties();
@@ -276,30 +316,99 @@ public class Configuration {
         return files;
     }
 
+    public static Configuration fromStream(InputStream input)  {
+        Configuration conf = new Configuration();
+        Properties prop = new Properties();
 
-    public static Configuration fromFile(String filename){
-            return fromFile(filename,!externalConfFile);
+
+
+        //load a properties file from class path, inside static method
+        try {
+            prop.load(input);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
+        //get the property value
+        conf.setPredicatesDictionariesFiles(asList(prop.getProperty(PREDICATES_DICTS, "")));
+        conf.setArgumentsMentionsFiles(asList(prop.getProperty(ARGUMENTS_DICTS, "")));
+        conf.setTextCorpora(Arrays.asList(prop.getProperty(TEXT_CORPORA, "wiki").split(",")));
+        conf.setFieldsToSearch(Arrays.asList(prop.getProperty(DOCUMENT_FIELDS_TO_SEARCH, "text,title").split(",")));
+        conf.setTotalParaphrases(Integer.parseInt(prop.getProperty(TOTAL_PARAPHRASES, "50")));
+        conf.setPerItemParaphrases(Integer.parseInt(prop.getProperty(PER_ITEM_PARAPHRASES, "50")));
+        conf.setVerbalizerType(VerbalizerFactory.VerbalizerType.valueOf(prop.getProperty(VERBALIZER, "DEFAULT")));
+        conf.setEvidencePerFactSize(Integer.parseInt(prop.getProperty(EVIDENCE_PER_FACT_SIZE, "5")));
+        conf.setMatchingThreshold(prop.getProperty(MATCHING_THRESHOLD, "10%"));
+        conf.setSpottingMethod(FactSpotterFactory.SpottingMethod.valueOf(prop.getProperty(SPOTTING, "NONE")));
+        conf.setElasticQueryStyle(ElasticSearchFactSpotter.QueryStyle.valueOf(prop.getProperty(ELASTIC_QUERY_STYLE, ElasticSearchFactSpotter.QueryStyle.SPLIT_QUERY.toString())));
+        conf.setCacheFilePath(prop.getProperty(SEARCH_CACHE, "./search_cache.tmp"));
 
 
-        public  synchronized static Configuration getInstance(){
-            if (config==null) {
-                config = Configuration.fromFile(configurationFile);
+        if (input != null) {
+            try {
+                input.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-            return config;
         }
 
 
-    public synchronized static boolean setConfigurationFile(String file){
+        return conf;
+    }
+
+
+
+//    public static Configuration fromFile(String filename){
+//            return fromFile(filename,!externalConfFile);
+//        }
+//
+//
+//
+//        public  synchronized static Configuration getInstance(){
+//            if (config==null) {
+//                config = Configuration.fromFile(configurationFile);
+//            }
+//
+//            return config;
+//        }
+//
+//
+//    public synchronized static boolean setConfigurationFile(String file){
+//        if(file==null||confFileAlreadySet)
+//            return false;
+//        else
+//        {
+//            configurationFile=file;
+//            confFileAlreadySet=true;
+//            externalConfFile=true;
+//            return true;
+//        }
+//    }
+
+    public static Configuration fromFile(String filename)  {
+        return fromFile(filename,!externalConfFile,classLoader);
+    }
+
+    public synchronized static Configuration getInstance() {
+        if(config==null)
+            config= Configuration.fromFile(configurationFile);
+
+        return config;
+    }
+
+
+
+
+    public synchronized static boolean setConfigurationFile(String file,ClassLoader remoteClassLoader){
         if(file==null||confFileAlreadySet)
             return false;
         else
         {
+
             configurationFile=file;
             confFileAlreadySet=true;
             externalConfFile=true;
+            classLoader=remoteClassLoader;
             return true;
         }
     }
