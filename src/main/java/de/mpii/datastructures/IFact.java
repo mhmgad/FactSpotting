@@ -8,6 +8,9 @@ public interface IFact {
 
 
     public String toSearchableString();
+    public String toReadableString();
+
+
 
 
 
