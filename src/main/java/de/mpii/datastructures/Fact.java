@@ -11,16 +11,9 @@ import java.util.stream.Collectors;
  */
 public class Fact implements IFact {
 
-
-
     List<String> arguments;
 
-
-
     String predicate;
-
-
-
 
 
     public Fact(String predicate, List<String> arguments) {
@@ -66,6 +59,12 @@ public class Fact implements IFact {
     public String getIRISQueryRepresenation() {
         return "?- "+getIRISRepresenation();
     }
+
+    @Override
+    public String toReadableString(){
+        return (FactUtils.getCleanName(arguments.get(0))+" "+FactUtils.getReadablePredicateName(getPredicate()) +" " +FactUtils.getCleanName(arguments.get(1))).trim();
+    }
+
 
 
 }
