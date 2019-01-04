@@ -15,17 +15,23 @@ public class FactSpotterFactory {
 
 
     public static IFactSpotter create(SpottingMethod method){
-
+        IFactSpotter sp=null;
         switch (method){
 
             case BING:
-                return new BingFactSpotter();
+                sp= new BingFactSpotter();
+                break;
             case ELASTIC:
-                return new ElasticSearchFactSpotter();
+                sp= new ElasticSearchFactSpotter();
+            break;
             case NONE:
             default:
-                return new DefualtFactSpotter();
+                sp= new DefualtFactSpotter();
+                break;
         }
+
+        System.out.println("*********************\nSpotterConfiguration:\n\n"+sp.toString()+"\n****************************************");
+        return sp;
 
     }
 

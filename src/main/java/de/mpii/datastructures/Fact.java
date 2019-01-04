@@ -49,11 +49,23 @@ public class Fact implements IFact {
     }
 
     public String getArgument(int index){
-        return arguments.get(index);
+        if(arguments.size()> (index-1))
+            return arguments.get(index);
+        else
+            return null;
     }
 
     public String getIRISRepresenation(){
         return FactUtils.getCleanPredicateName(getPredicate())+"("+Joiner.on(",").join(arguments.stream().map(arg-> '\''+arg+'\'').collect(Collectors.toList()))+").";
+    }
+
+
+    public String getSubject() {
+        return  getArgument(0);
+    }
+
+    public String getObject(){
+            return  getArgument(1);
     }
 
     public String getIRISQueryRepresenation() {
@@ -64,6 +76,20 @@ public class Fact implements IFact {
     public String toReadableString(){
         return (FactUtils.getCleanName(arguments.get(0))+" "+FactUtils.getReadablePredicateName(getPredicate()) +" " +FactUtils.getCleanName(arguments.get(1))).trim();
     }
+
+    public String getReadableSubject(){
+        return FactUtils.getCleanName(getSubject());
+    }
+
+    public String getReadableObject(){
+        return FactUtils.getCleanName(getObject());
+    }
+
+    public String getReadablePredicateName(){
+        return FactUtils.getReadablePredicateName(getPredicate());
+    }
+
+
 
 
 

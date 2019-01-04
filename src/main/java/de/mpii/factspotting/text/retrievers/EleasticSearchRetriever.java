@@ -299,10 +299,18 @@ public class EleasticSearchRetriever {
 
     }
 
+    @Override
+    public String toString() {
+        return "EleasticSearchRetriever{" +
+                "matchingThreshold='" + matchingThreshold + '\'' +
+                ", resultSize=" + resultSize +
+                ", indexName='" + indexName + '\'' +
+                ", factory=" + factory +
+                ", client=" + client +
+                '}';
+    }
 
-
-
-//    public static void main(String[] args) throws IOException {
+    //    public static void main(String[] args) throws IOException {
 //
 //        EleasticSearchRetriever f=new EleasticSearchRetriever("wiki_sent");
 //
