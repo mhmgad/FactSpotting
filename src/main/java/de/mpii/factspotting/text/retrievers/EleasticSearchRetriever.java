@@ -56,7 +56,6 @@ public class EleasticSearchRetriever {
 
     public EleasticSearchRetriever(String indexName,int resultSize) {
         this(indexName,resultSize,"30%");
-
     }
 
     public EleasticSearchRetriever(String indexName) {
