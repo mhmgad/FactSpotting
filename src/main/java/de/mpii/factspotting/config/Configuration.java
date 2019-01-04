@@ -281,7 +281,7 @@ public class Configuration {
             //get the property value
             conf.setPredicatesDictionariesFiles(asList(prop.getProperty(PREDICATES_DICTS, "")));
             conf.setArgumentsMentionsFiles(asList(prop.getProperty(ARGUMENTS_DICTS, "")));
-            conf.setTextCorpora(Arrays.asList(prop.getProperty(TEXT_CORPORA, "wiki").split(",")));
+            conf.setTextCorpora(Arrays.asList(prop.getProperty(TEXT_CORPORA, "error").split(",")));
             conf.setFieldsToSearch(Arrays.asList(prop.getProperty(DOCUMENT_FIELDS_TO_SEARCH, "text,title").split(",")));
             conf.setTotalParaphrases(Integer.parseInt(prop.getProperty(TOTAL_PARAPHRASES, "50")));
             conf.setPerItemParaphrases(Integer.parseInt(prop.getProperty(PER_ITEM_PARAPHRASES, "50")));
@@ -332,13 +332,13 @@ public class Configuration {
         //get the property value
         conf.setPredicatesDictionariesFiles(asList(prop.getProperty(PREDICATES_DICTS, "")));
         conf.setArgumentsMentionsFiles(asList(prop.getProperty(ARGUMENTS_DICTS, "")));
-        conf.setTextCorpora(Arrays.asList(prop.getProperty(TEXT_CORPORA, "wiki").split(",")));
+        conf.setTextCorpora(Arrays.asList(prop.getProperty(TEXT_CORPORA, "wiki_sent").split(",")));
         conf.setFieldsToSearch(Arrays.asList(prop.getProperty(DOCUMENT_FIELDS_TO_SEARCH, "text,title").split(",")));
         conf.setTotalParaphrases(Integer.parseInt(prop.getProperty(TOTAL_PARAPHRASES, "50")));
         conf.setPerItemParaphrases(Integer.parseInt(prop.getProperty(PER_ITEM_PARAPHRASES, "50")));
         conf.setVerbalizerType(VerbalizerFactory.VerbalizerType.valueOf(prop.getProperty(VERBALIZER, "DEFAULT")));
         conf.setEvidencePerFactSize(Integer.parseInt(prop.getProperty(EVIDENCE_PER_FACT_SIZE, "5")));
-        conf.setMatchingThreshold(prop.getProperty(MATCHING_THRESHOLD, "10%"));
+        conf.setMatchingThreshold(prop.getProperty(MATCHING_THRESHOLD, "30%"));
         conf.setSpottingMethod(FactSpotterFactory.SpottingMethod.valueOf(prop.getProperty(SPOTTING, "NONE")));
         conf.setElasticQueryStyle(ElasticSearchFactSpotter.QueryStyle.valueOf(prop.getProperty(ELASTIC_QUERY_STYLE, ElasticSearchFactSpotter.QueryStyle.SPLIT_QUERY.toString())));
         conf.setCacheFilePath(prop.getProperty(SEARCH_CACHE, "./search_cache.tmp"));
