@@ -127,5 +127,13 @@ public class ElasticSearchFactSpotter implements IFactSpotter<Fact> {
 //        System.out.println(ev.getEntities());
     }
 
-
+    @Override
+    public String toString() {
+        return "ElasticSearchFactSpotter{" +
+                "queryStyle=" + queryStyle +
+                ", fieldsToSearch=" + fieldsToSearch +
+                ", esR=" + esR +
+                ", verbalizer=" + verbalizer +
+                '}';
+    }
 }
