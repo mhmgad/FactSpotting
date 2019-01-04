@@ -30,7 +30,7 @@ public class EleasticSearchRetriever {
 
     private  String matchingThreshold;
     private  int resultSize=5;
-    private  String indexName="wiki";
+    private  String indexName="wiki_sent";
     JestClientFactory factory = new JestClientFactory();
 
     JestClient client;
@@ -55,7 +55,7 @@ public class EleasticSearchRetriever {
 
 
     public EleasticSearchRetriever(String indexName,int resultSize) {
-        this(indexName,resultSize,"10%");
+        this(indexName,resultSize,"30%");
 
     }
 
