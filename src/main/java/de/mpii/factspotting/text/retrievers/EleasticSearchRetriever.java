@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,31 +37,31 @@ public class EleasticSearchRetriever {
     JestClient client;
 
 
-    public EleasticSearchRetriever() {
+    public EleasticSearchRetriever(String serverURL) {
         factory.setHttpClientConfig(new HttpClientConfig
-                .Builder("http://localhost:9200")
+                .Builder(serverURL)
                 .multiThreaded(true)
                 .connTimeout(3000000)
-                .readTimeout(300000)
+                .readTimeout(3000000)
                 .build());
         client = factory.getObject();
     }
 
-    public EleasticSearchRetriever(String indexName,int resultSize,String matchingThreshold) {
-        this();
+    public EleasticSearchRetriever(String elasticUrl,String indexName,int resultSize,String matchingThreshold) {
+        this(elasticUrl);
         this.indexName = indexName;
         this.resultSize=resultSize;
         this.matchingThreshold=matchingThreshold;
     }
 
 
-    public EleasticSearchRetriever(String indexName,int resultSize) {
-        this(indexName,resultSize,"30%");
+    public EleasticSearchRetriever(String elasticUrl,String indexName,int resultSize) {
+        this(elasticUrl,indexName,resultSize,"30%");
     }
 
-    public EleasticSearchRetriever(String indexName) {
-        this(indexName,5);
-    }
+//    public EleasticSearchRetriever(String indexName) {
+//        this(indexName,5);
+//    }
 
     public List<AnnotatedDocument> getDocuments(int resultSize,String ... filteringString) throws IOException {
 
@@ -277,6 +278,7 @@ public class EleasticSearchRetriever {
         loggger.debug("hitsSize in response: " + response.getTotal());
 
         loggger.debug("response"+ response.getJsonString());
+        System.out.println("response"+ response.getJsonString());
         List<SearchResult.Hit<AnnotatedDocument, Void>> responseList = response.getHits(AnnotatedDocument.class);
 
         List<Document> docList = new ArrayList<>();
@@ -309,25 +311,25 @@ public class EleasticSearchRetriever {
                 '}';
     }
 
-    //    public static void main(String[] args) throws IOException {
+        public static void main(String[] args) throws IOException {
 //
-//        EleasticSearchRetriever f=new EleasticSearchRetriever("wiki_sent");
+//        EleasticSearchRetriever f=new EleasticSearchRetriever("wiki_sent",5);
 //
 //
 //
 //        System.out.println(f.searchFieldsSeparately(Arrays.asList("sent","title"),Arrays.asList(Arrays.asList("Albert","was born in","Ulm"))));
-////        System.out.println(f.getByTitle(5,Arrays.asList("albert einstein"), Arrays.asList("born in")));
+//        System.out.println(f.getByTitle(5,Arrays.asList("albert einstein"), Arrays.asList("born in")));
+
+//        EleasticSearchRetriever f=new EleasticSearchRetriever("wiki");
 //
-////        EleasticSearchRetriever f=new EleasticSearchRetriever("wiki");
-////
-////        System.out.println(f.getDocuments(1,"obama"));
-////        System.out.println(f.getDocuments(2,"Barak Obama"));
-////        System.out.println(f.getDocuments(3,"Barak", "Obama"));
-////
-////        System.out.println(f.getDocuments(4,"Oscars"));
-////        System.out.println(f.getDocuments(5,"Leonardo DiCaprio"));
-////        System.out.println(f.getDocuments(6,"Oscars","Leonardo DiCaprio"));
+//        System.out.println(f.getDocuments(1,"obama"));
+//        System.out.println(f.getDocuments(2,"Barak Obama"));
+//        System.out.println(f.getDocuments(3,"Barak", "Obama"));
 //
-//    }
+//        System.out.println(f.getDocuments(4,"Oscars"));
+//        System.out.println(f.getDocuments(5,"Leonardo DiCaprio"));
+//        System.out.println(f.getDocuments(6,"Oscars","Leonardo DiCaprio"));
+
+    }
 
 }

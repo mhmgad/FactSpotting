@@ -41,17 +41,17 @@ public class ElasticSearchFactSpotter implements IFactSpotter<Fact> {
 //    }
 
     public ElasticSearchFactSpotter(){
-        this(Configuration.getInstance().getTextCorpora(),Configuration.getInstance().getFieldsToSearch(),Configuration.getInstance().getEvidencePerFactSize(), Configuration.getInstance().getMatchingThreshold(),VerbalizerFactory.getInstance(),Configuration.getInstance().getElasticQueryStyle());
+        this(Configuration.getInstance().getElasticsearchURL(),Configuration.getInstance().getTextCorpora(),Configuration.getInstance().getFieldsToSearch(),Configuration.getInstance().getEvidencePerFactSize(), Configuration.getInstance().getMatchingThreshold(),VerbalizerFactory.getInstance(),Configuration.getInstance().getElasticQueryStyle());
     }
 
 
-    public ElasticSearchFactSpotter(List<String> indexName,List<String>fieldsToSearch,int resultSize,String matchingThreshold,IFactVerbalizer verbalizer,ElasticSearchFactSpotter.QueryStyle queryStyle) {
-       this(Joiner.on(",").join(indexName),fieldsToSearch,resultSize,matchingThreshold,verbalizer,queryStyle);
+    public ElasticSearchFactSpotter(String elasticSearchURL,List<String> indexName,List<String>fieldsToSearch,int resultSize,String matchingThreshold,IFactVerbalizer verbalizer,ElasticSearchFactSpotter.QueryStyle queryStyle) {
+       this(elasticSearchURL,Joiner.on(",").join(indexName),fieldsToSearch,resultSize,matchingThreshold,verbalizer,queryStyle);
     }
 
-    public ElasticSearchFactSpotter(String indexName,List<String>fieldsToSearch,int resultSize,String matchingThreshold,IFactVerbalizer verbalizer,ElasticSearchFactSpotter.QueryStyle queryStyle) {
+    public ElasticSearchFactSpotter(String elasticsearchURL,String indexName,List<String>fieldsToSearch,int resultSize,String matchingThreshold,IFactVerbalizer verbalizer,ElasticSearchFactSpotter.QueryStyle queryStyle) {
         //TODO only one index is supported now
-        this.esR = new EleasticSearchRetriever(indexName,resultSize,matchingThreshold);
+        this.esR = new EleasticSearchRetriever(elasticsearchURL,indexName,resultSize,matchingThreshold);
         this.fieldsToSearch=fieldsToSearch;
         this.verbalizer=verbalizer;
         this.queryStyle=queryStyle;

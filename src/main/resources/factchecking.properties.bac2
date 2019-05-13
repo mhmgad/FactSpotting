@@ -12,6 +12,7 @@ argumentsDictionaries=/GW/D5data-7/gadelrab/explain/dicts/entities_mentions_dict
 #totalParaphrases=100
 #perItemParaphrases=10
 
+elastic.url=http://localhost:9650
 
 # Elasticsearch
 #evidencePerFactSize=5

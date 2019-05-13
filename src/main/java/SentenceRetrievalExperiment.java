@@ -3,6 +3,7 @@ import de.mpii.datastructures.*;
 import de.mpii.de.mpii.processing.SentenceExtractor;
 import de.mpii.de.mpii.processing.entitydisambiguation.AmbiverseDocumentAnnotator;
 import de.mpii.de.mpii.processing.entitydisambiguation.DocumentAnnotator;
+import de.mpii.factspotting.config.Configuration;
 import de.mpii.factspotting.text.retrievers.EleasticSearchRetriever;
 import mpi.tools.javatools.util.FileUtils;
 import org.apache.commons.cli.*;
@@ -146,7 +147,7 @@ public class SentenceRetrievalExperiment {
 
     private void process(int esResultSize, PageMode pageMode , String inputFile, String relation, List<String> relationParaphrases, String outputFilePath) throws Exception {
 
-        EleasticSearchRetriever ret=new EleasticSearchRetriever("wiki_sent");
+        EleasticSearchRetriever ret=new EleasticSearchRetriever(Configuration.getInstance().getElasticsearchURL(),"wiki_sent",5);
 
         BufferedReader br = FileUtils.getBufferedUTF8Reader(inputFile);
 

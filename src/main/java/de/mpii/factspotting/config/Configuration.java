@@ -32,6 +32,7 @@ public class Configuration {
     private static final String MATCHING_THRESHOLD = "matchingThresholdPercentage";
     private static final String ELASTIC_QUERY_STYLE = "elastic.queryStyle";
     private static final String SEARCH_CACHE = "bing.cacheFile";
+    private static final String ELASTIC_URL="elastic.url";
 
 
     /**
@@ -124,6 +125,9 @@ public class Configuration {
      */
 
     private NEExtractor neExtractor=NEExtractor.getInstance();
+
+
+    private String elasticsearchURL="http://localhost:9650";
 
     /**
      * search results cache
@@ -342,6 +346,7 @@ public class Configuration {
         conf.setSpottingMethod(FactSpotterFactory.SpottingMethod.valueOf(prop.getProperty(SPOTTING, "NONE")));
         conf.setElasticQueryStyle(ElasticSearchFactSpotter.QueryStyle.valueOf(prop.getProperty(ELASTIC_QUERY_STYLE, ElasticSearchFactSpotter.QueryStyle.SPLIT_QUERY.toString())));
         conf.setCacheFilePath(prop.getProperty(SEARCH_CACHE, "./search_cache.tmp"));
+        conf.setElasticsearchURL(prop.getProperty(ELASTIC_URL, "http:localhost:9650"));
 
 
         if (input != null) {
@@ -430,6 +435,7 @@ public class Configuration {
                 ", elasticQueryStyle=" + elasticQueryStyle +'\n'+
                 ", neExtractor=" + neExtractor +'\n'+
                 ", cacheFilePath='" + cacheFilePath + '\'' +'\n'+
+                ", elasticURL='" + elasticsearchURL + '\'' +'\n'+
                 '}';
     }
 
@@ -455,6 +461,14 @@ public class Configuration {
 
     public void setCacheFilePath(String cacheFilePath) {
         this.cacheFilePath = cacheFilePath;
+    }
+
+    public String getElasticsearchURL() {
+        return elasticsearchURL;
+    }
+
+    public void setElasticsearchURL(String elasticsearchURL) {
+        this.elasticsearchURL = elasticsearchURL;
     }
 }
 

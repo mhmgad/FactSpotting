@@ -7,6 +7,7 @@ import de.mpii.datastructures.Sentence;
 import de.mpii.de.mpii.processing.SentenceExtractor;
 import de.mpii.de.mpii.processing.entitydisambiguation.AmbiverseDocumentAnnotator;
 import de.mpii.de.mpii.processing.entitydisambiguation.DocumentAnnotator;
+import de.mpii.factspotting.config.Configuration;
 import de.mpii.factspotting.text.retrievers.EleasticSearchRetriever;
 import mpi.tools.javatools.util.FileUtils;
 
@@ -41,7 +42,7 @@ public class CLIMain {
         if(sourceName.startsWith("ES_")) {
             sourceName = sourceName.substring(3);
             fromES=true;
-            engine.retriever=new EleasticSearchRetriever(sourceName);
+            engine.retriever=new EleasticSearchRetriever(Configuration.getInstance().getElasticsearchURL(),sourceName,5);
 
         }else
         {
