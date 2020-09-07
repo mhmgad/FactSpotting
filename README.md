@@ -1,6 +1,6 @@
 # FactSpotting
 
-Checking the correctness of a fact based on some text corpus. The fact can appear in text in positive or negative context.
+An engine to spot mentions of fact (in triple formats) in text corpora either indexed over Elasticsearch or through Bing API. The fact can appear in text in positive or negative context. Fact Spotting Engine is used as the under laying evidence curotor for _ExFaKT_
 
 ## Installing External Libs
 
@@ -30,26 +30,17 @@ for instant if it is hosted on `sedna`
 file `src/main/resources/factchecking.properties` can be used to configure the spotting. 
 TODO: add description for the configuration parameters
 
-## Running Fact Spotting 
+~~## Running Fact Spotting  ~~
 
-run `mvn install` to generate `*.sh` files to run different project parts. The generated scripts can be found under `assemble/bin`
+~~run `mvn install` to generate `*.sh` files to run different project parts. The generated scripts can be found under `assemble/bin` ~~
 
-Note: The reserved memory can be edited from `pom.xml` file before installing or the generated `.sh` afterwards.
+~~Note: The reserved memory can be edited from `pom.xml` file before installing or the generated `.sh` afterwards.~~
 
-After installing to run use script `exper_cli.sh` is runs java class `SentenceRetrievalExperiment.java`
-TODO: add description for the parameters 
-
-
+~~After installing to run use script `exper_cli.sh` is runs java class `SentenceRetrievalExperiment.java`
+TODO: add description for the parameters ~~
 
 
 
-## ~~Stics Corpus (Old-deprecated)~~
-
-~~package 'de.mpii.sticsAnalysis' parses stics news corpus~~
-
-~~class 'de.mpii.sticsAnalysis.CLIClass' offers an interface to load a file of stics articles. Then, it can be queried with list of YAGO3 entities separated with comas. It returns the sentences that contain **any of these entities** in the documents that **contains all of them**.~~
-
-~~to run it use `sh ./assemble/bin/stics_data.sh <stics file uncompressed> <-f: to write results to a file>`~~
 
 
 
