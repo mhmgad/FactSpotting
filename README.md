@@ -30,14 +30,14 @@ for instant if it is hosted on `sedna`
 file `src/main/resources/factchecking.properties` can be used to configure the spotting. 
 TODO: add description for the configuration parameters
 
-~~## Running Fact Spotting  ~~
+~~## Running Fact Spotting~~
 
-~~run `mvn install` to generate `*.sh` files to run different project parts. The generated scripts can be found under `assemble/bin` ~~
+~~run `mvn install` to generate `*.sh` files to run different project parts. The generated scripts can be found under `assemble/bin`~~
 
 ~~Note: The reserved memory can be edited from `pom.xml` file before installing or the generated `.sh` afterwards.~~
 
 ~~After installing to run use script `exper_cli.sh` is runs java class `SentenceRetrievalExperiment.java`
-TODO: add description for the parameters ~~
+TODO: add description for the parameters~~
 
 
 
